@@ -44,7 +44,7 @@
                                 </svg>
                             </div>
                             <input id="email" name="email" type="email" autocomplete="email" required autofocus
-                                class="block w-full pl-11 pr-4 py-4 bg-[#345344] border-transparent rounded-xl text-white placeholder-gray-400 italic focus:ring-4 focus:ring-[#DFFF00]/30 focus:border-[#DFFF00] transition-all duration-300" 
+                                class="block w-full pl-11 pr-4 py-4 bg-[#345344] border-transparent rounded-xl text-white placeholder-gray-400 focus:ring-4 focus:ring-[#DFFF00]/30 focus:border-[#DFFF00] transition-all duration-300" 
                                 placeholder="Email Terdaftar" value="{{ old('email') }}">
                         </div>
                         @error('email')

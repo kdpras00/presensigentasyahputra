@@ -28,7 +28,7 @@
             </thead>
             <tbody>
                 @forelse ($teachers as $teacher)
-                    <tr class="bg-white border-b border-gray-100 hover:bg-[#F3F4F6] transition-colors duration-200">
+                    <tr class="bg-white border-b border-gray-100 transition-colors duration-200">
                         <td class="px-6 py-4 font-bold text-gray-900 whitespace-nowrap">
                             <div class="flex items-center">
                                 <img src="{{ $teacher->avatar ? asset($teacher->avatar) : asset('images/avatars/default-avatar.svg') }}" alt="Foto {{ $teacher->name }}" class="w-10 h-10 rounded-xl object-cover border-2 border-white shadow-sm mr-4 bg-[#F3F4F6]">
@@ -40,7 +40,7 @@
                         </td>
                         <td class="px-6 py-4">
                             @if(optional($teacher->teacher)->assigned_class)
-                                <span class="bg-[#DFFF00]/20 text-[#345344] font-bold px-3 py-1.5 rounded-lg text-xs">
+                                <span class="text-[#345344] font-bold text-sm">
                                     {{ $teacher->teacher->assigned_class }}
                                 </span>
                             @else
@@ -52,11 +52,11 @@
                         </td>
                         <td class="px-6 py-4 text-center">
                             <div class="flex items-center justify-center space-x-3">
-                                <a href="{{ route('teachers.edit', $teacher) }}" class="font-bold text-[#345344] bg-[#DFFF00]/50 hover:bg-[#DFFF00] px-3 py-1.5 rounded-lg transition-colors text-xs">Edit</a>
+                                <a href="{{ route('teachers.edit', $teacher) }}" class="font-bold text-[#345344] hover:underline px-3 py-1.5 transition-colors text-xs">Edit</a>
                                 <form action="{{ route('teachers.destroy', $teacher) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="font-bold text-red-600 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg transition-colors text-xs">Hapus</button>
+                                    <button type="submit" class="font-bold text-red-600 hover:underline px-3 py-1.5 transition-colors text-xs">Hapus</button>
                                 </form>
                             </div>
                         </td>

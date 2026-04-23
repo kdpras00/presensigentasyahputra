@@ -7,11 +7,20 @@
     <div class="relative z-10 w-full max-w-5xl flex flex-col md:flex-row bg-white rounded-[2rem] shadow-2xl overflow-hidden mx-4 sm:mx-8">
         
         <!-- Left Side: Branding & Welcome -->
-        <div class="w-full md:w-5/12 p-10 lg:p-14 flex flex-col items-start justify-center bg-[#345344] text-white relative overflow-hidden group">
+        <div class="w-full md:w-5/12 p-10 lg:p-14 flex flex-col items-center justify-center bg-[#345344] text-white relative overflow-hidden group text-center">
             
-            <div class="relative z-10">
+            <!-- Background Decorations -->
+            <div class="absolute top-0 -left-4 w-72 h-72 bg-white/5 rounded-full mix-blend-overlay filter blur-3xl opacity-70 animate-blob"></div>
+            <div class="absolute -bottom-8 -right-4 w-72 h-72 bg-[#DFFF00]/10 rounded-full mix-blend-overlay filter blur-3xl opacity-70 animate-blob animation-delay-2000"></div>
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-white/5 rounded-full mix-blend-overlay filter blur-[100px] opacity-50"></div>
+
+            <div class="relative z-10 flex flex-col items-center">
+                <div class="mb-8 relative group/logo">
+                    <div class="absolute inset-0 bg-[#DFFF00]/20 blur-2xl rounded-full scale-110 group-hover/logo:scale-150 transition-transform duration-700"></div>
+                    <img src="{{ asset('images/gentalogoico.png') }}" alt="Logo" class="relative z-10 w-28 h-28 object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.3)] transform transition-transform duration-500 group-hover/logo:scale-110">
+                </div>
                 <h1 class="text-3xl lg:text-4xl font-extrabold tracking-tight mb-4 text-white leading-tight">SMA Genta Syaputra.</h1>
-                <p class="text-white/70 font-medium leading-relaxed">Sistem Presensi Digital Terpadu.</p>
+                <p class="text-white/70 font-medium leading-relaxed max-w-xs mx-auto">Sistem Presensi Digital Terpadu.</p>
             </div>
         </div>
 
@@ -33,7 +42,7 @@
                                 </svg>
                             </div>
                             <input id="email" name="email" type="text" autocomplete="username" required 
-                                class="block w-full pl-11 pr-4 py-4 bg-[#345344] border-transparent rounded-xl text-white placeholder-gray-400 italic focus:ring-4 focus:ring-[#DFFF00]/30 focus:border-[#DFFF00] transition-all duration-300" 
+                                class="block w-full pl-11 pr-4 py-4 bg-[#345344] border-transparent rounded-xl text-white placeholder-gray-400 focus:ring-4 focus:ring-[#DFFF00]/30 focus:border-[#DFFF00] transition-all duration-300" 
                                 placeholder="Email/NIS/NIP">
                         </div>
                         @error('email')
@@ -51,7 +60,7 @@
                                 </svg>
                             </div>
                             <input id="password" name="password" type="password" autocomplete="current-password" required 
-                                class="block w-full pl-11 pr-4 py-4 bg-[#345344] border-transparent rounded-xl text-white placeholder-gray-400 italic focus:ring-4 focus:ring-[#DFFF00]/30 focus:border-[#DFFF00] transition-all duration-300" 
+                                class="block w-full pl-11 pr-4 py-4 bg-[#345344] border-transparent rounded-xl text-white placeholder-gray-400 focus:ring-4 focus:ring-[#DFFF00]/30 focus:border-[#DFFF00] transition-all duration-300" 
                                 placeholder="Password">
                         </div>
                         <div class="flex items-center justify-end">

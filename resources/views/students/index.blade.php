@@ -26,36 +26,36 @@
         <table class="w-full text-sm text-left text-gray-600">
             <thead class="text-xs text-white uppercase bg-[#345344]">
                 <tr>
-                    <th scope="col" class="px-6 py-5 font-bold tracking-wider">Nama</th>
-                    <th scope="col" class="px-6 py-5 font-bold tracking-wider">NIS</th>
-                    <th scope="col" class="px-6 py-5 font-bold tracking-wider">Kelas</th>
-                    <th scope="col" class="px-6 py-5 font-bold tracking-wider">Angkatan</th>
-                    <th scope="col" class="px-6 py-5 font-bold tracking-wider">Email</th>
-                    <th scope="col" class="px-6 py-5 font-bold tracking-wider text-center">Aksi</th>
+                    <th scope="col" class="px-6 py-5 font-bold tracking-wider whitespace-nowrap">Nama</th>
+                    <th scope="col" class="px-6 py-5 font-bold tracking-wider whitespace-nowrap">NIS</th>
+                    <th scope="col" class="px-6 py-5 font-bold tracking-wider whitespace-nowrap">Kelas</th>
+                    <th scope="col" class="px-6 py-5 font-bold tracking-wider whitespace-nowrap">Angkatan</th>
+                    <th scope="col" class="px-6 py-5 font-bold tracking-wider whitespace-nowrap">Email</th>
+                    <th scope="col" class="px-6 py-5 font-bold tracking-wider whitespace-nowrap text-center">Aksi</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse($students as $student)
-                <tr class="bg-white border-b border-gray-100 hover:bg-[#F3F4F6] transition-colors duration-200">
+                <tr class="bg-white border-b border-gray-100 transition-colors duration-200">
                     <td class="px-6 py-4 font-bold text-gray-900 whitespace-nowrap">
                         <div class="flex items-center">
                             <img src="{{ $student->user->avatar ? asset($student->user->avatar) : asset('images/avatars/default-avatar.svg') }}" alt="Foto {{ $student->user->name }}" class="w-10 h-10 rounded-xl object-cover border-2 border-white shadow-sm mr-4 bg-[#F3F4F6]">
                             {{ $student->user->name }}
                         </div>
                     </td>
-                    <td class="px-6 py-4 font-mono text-gray-500 font-medium">{{ $student->nis }}</td>
+                    <td class="px-6 py-4 font-mono text-gray-500 font-medium whitespace-nowrap">{{ $student->nis }}</td>
                     <td class="px-6 py-4 font-medium text-gray-600">
-                        <span class="bg-[#F3F4F6] text-[#345344] font-bold px-3 py-1 rounded-lg">{{ $student->class }}</span>
+                        <span class="text-[#345344] font-bold whitespace-nowrap">{{ $student->class }}</span>
                     </td>
-                    <td class="px-6 py-4 text-gray-500 italic">{{ $student->generation ?? '-' }}</td>
-                    <td class="px-6 py-4 text-gray-500">{{ $student->user->email }}</td>
-                    <td class="px-6 py-4 text-center">
+                    <td class="px-6 py-4 text-gray-500">{{ $student->generation ?? '-' }}</td>
+                    <td class="px-6 py-4 text-gray-500 whitespace-nowrap">{{ $student->user->email }}</td>
+                    <td class="px-6 py-4 text-center whitespace-nowrap">
                         <div class="flex items-center justify-center space-x-3">
-                            <a href="{{ route('students.edit', $student) }}" class="font-bold text-[#345344] bg-[#DFFF00]/50 hover:bg-[#DFFF00] px-3 py-1.5 rounded-lg transition-colors text-xs">Edit</a>
+                            <a href="{{ route('students.edit', $student) }}" class="font-bold text-[#345344] hover:underline px-3 py-1.5 transition-colors text-xs">Edit</a>
                             <form action="{{ route('students.destroy', $student) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus?');">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="font-bold text-red-600 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-lg transition-colors text-xs">Hapus</button>
+                                <button type="submit" class="font-bold text-red-600 hover:underline px-3 py-1.5 transition-colors text-xs">Hapus</button>
                             </form>
                         </div>
                     </td>

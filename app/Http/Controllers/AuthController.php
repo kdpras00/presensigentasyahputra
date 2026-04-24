@@ -15,40 +15,23 @@ class AuthController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'email' => ['required', 'string'],
+            'username' => ['required', 'string'],
             'password' => ['required'],
         ]);
 
-        $login = $request->input('email');
-        $password = $request->input('password');
+        $credentials = [
+            'username' => $request->input('username'),
+            'password' => $request->input('password'),
+        ];
 
-        // Check if user exists by email
-        $user = \App\Models\User::where('email', $login)->first();
-
-        // If not found by email, try checking the student's NIS
-        if (!$user) {
-            $student = \App\Models\Student::with('user')->where('nis', $login)->first();
-            if ($student && $student->user) {
-                $user = $student->user;
-            }
-        }
-        
-        // If not found by NIS, try checking the teacher's NIP
-        if (!$user) {
-            $teacher = \App\Models\Teacher::with('user')->where('nip', $login)->first();
-            if ($teacher && $teacher->user) {
-                $user = $teacher->user;
-            }
-        }
-
-        if ($user && Auth::attempt(['email' => $user->email, 'password' => $password])) {
+        if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
             return redirect()->intended('dashboard');
         }
 
         return back()->withErrors([
-            'email' => 'Kredensial yang diberikan tidak cocok dengan data NIS/NIP/Email kami.',
-        ])->onlyInput('email');
+            'username' => 'Kredensial yang diberikan tidak cocok dengan data kami.',
+        ])->onlyInput('username');
     }
 
     public function destroy(Request $request)

@@ -34,7 +34,7 @@ class TeacherController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nip' => ['nullable', 'string', 'max:255', 'unique:teachers,nip'],
+            'username' => ['required', 'string', 'max:255', 'unique:users'],
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
@@ -43,6 +43,7 @@ class TeacherController extends Controller
 
         $user = User::create([
             'name' => $request->name,
+            'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => 'guru',
@@ -50,7 +51,6 @@ class TeacherController extends Controller
 
         \App\Models\Teacher::create([
             'user_id' => $user->id,
-            'nip' => $request->nip,
             'assigned_class' => $request->assigned_class,
         ]);
 
@@ -79,7 +79,7 @@ class TeacherController extends Controller
         }
 
         $request->validate([
-            'nip' => ['nullable', 'string', 'max:255', 'unique:teachers,nip,' . ($teacher->teacher ? $teacher->teacher->id : 'NULL')],
+            'username' => ['required', 'string', 'max:255', 'unique:users,username,' . $teacher->id],
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $teacher->id],
             'assigned_class' => ['nullable', 'string', 'max:255'],
@@ -87,18 +87,17 @@ class TeacherController extends Controller
 
         $teacher->update([
             'name' => $request->name,
+            'username' => $request->username,
             'email' => $request->email,
         ]);
 
         if ($teacher->teacher) {
             $teacher->teacher->update([
-                'nip' => $request->nip,
                 'assigned_class' => $request->assigned_class,
             ]);
         } else {
             \App\Models\Teacher::create([
                 'user_id' => $teacher->id,
-                'nip' => $request->nip,
                 'assigned_class' => $request->assigned_class,
             ]);
         }

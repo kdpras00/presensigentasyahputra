@@ -51,6 +51,15 @@
                 @enderror
             </div>
 
+            <!-- Username -->
+            <div>
+                <label for="username" class="block mb-2 text-sm font-bold text-gray-700">Username</label>
+                <input type="text" id="username" name="username" class="bg-[#F3F4F6] border-transparent text-gray-900 text-sm rounded-xl focus:ring-4 focus:ring-[#345344]/20 focus:border-[#345344] block w-full p-4 transition-all placeholder-gray-400" required value="{{ old('username', $user->username) }}">
+                @error('username')
+                    <p class="mt-2 text-sm text-red-500 font-medium">{{ $message }}</p>
+                @enderror
+            </div>
+
             <!-- Email -->
             <div>
                 <label for="email" class="block mb-2 text-sm font-bold text-gray-700">Email Address</label>

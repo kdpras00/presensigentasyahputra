@@ -90,14 +90,16 @@ class AttendanceController extends Controller
             ], 403);
         }
 
-        // Find student by NIS
-        $nis = $request->input('qr_code');
-        $student = Student::where('nis', $nis)->first();
+        // Find student by username (from the users table)
+        $username = $request->input('qr_code');
+        $student = Student::whereHas('user', function($query) use ($username) {
+            $query->where('username', $username);
+        })->first();
 
         if (!$student) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Siswa dengan NIS tersebut tidak ditemukan.'
+                'message' => 'Mohon maaf, data siswa dengan Username tersebut tidak ditemukan dalam sistem.'
             ], 404);
         }
 
@@ -105,7 +107,7 @@ class AttendanceController extends Controller
         if ($student->class !== $teacher->assigned_class) {
             return response()->json([
                 'status' => 'error',
-                'message' => "Siswa {$student->user->name} bukan dari kelas {$teacher->assigned_class}. Siswa ini dari kelas {$student->class}."
+                'message' => "Mohon maaf, {$student->user->name} tercatat sebagai siswa kelas {$student->class}."
             ], 403);
         }
 
@@ -140,7 +142,7 @@ class AttendanceController extends Controller
             $checkInTime = Carbon::parse($attendance->check_in_at)->format('H:i');
             return response()->json([
                 'status' => 'warning',
-                'message' => "{$student->user->name} sudah absen masuk hari ini pukul {$checkInTime}.",
+                'message' => "Mohon maaf, {$student->user->name} sudah tercatat melakukan absensi masuk pada pukul {$checkInTime}.",
                 'type' => 'masuk',
             ]);
         }
@@ -151,7 +153,7 @@ class AttendanceController extends Controller
         if ($currentTime < self::CHECK_IN_START) {
             return response()->json([
                 'status' => 'error',
-                'message' => "Belum waktunya absen masuk. Absen masuk dimulai pukul " . self::CHECK_IN_START,
+                'message' => "Mohon maaf, jadwal absensi masuk baru akan dimulai pada pukul " . self::CHECK_IN_START . ".",
                 'type' => 'masuk',
             ], 403);
         }
@@ -160,7 +162,7 @@ class AttendanceController extends Controller
         if ($currentTime > self::CHECK_IN_LIMIT) {
             return response()->json([
                 'status' => 'error',
-                'message' => "Sesi absen masuk sudah berakhir (pukul " . self::CHECK_IN_LIMIT . ").",
+                'message' => "Mohon maaf, sesi absensi masuk untuk hari ini telah ditutup pada pukul " . self::CHECK_IN_LIMIT . ".",
                 'type' => 'masuk',
             ], 403);
         }
@@ -208,7 +210,7 @@ class AttendanceController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => "{$student->user->name} ({$student->class}) tercatat MASUK — {$statusLabel} pukul {$now->format('H:i')}.",
+            'message' => "{$student->user->name} ({$student->class}) • {$statusLabel}",
             'type' => 'masuk',
         ]);
     }
@@ -222,7 +224,7 @@ class AttendanceController extends Controller
         if (!$attendance || !$attendance->check_in_at) {
             return response()->json([
                 'status' => 'error',
-                'message' => "{$student->user->name} belum absen masuk hari ini. Tidak bisa absen keluar.",
+                'message' => "Mohon maaf, {$student->user->name} belum melakukan absensi masuk hari ini, sehingga belum dapat absen keluar.",
                 'type' => 'keluar',
             ]);
         }
@@ -232,7 +234,7 @@ class AttendanceController extends Controller
             $checkOutTime = Carbon::parse($attendance->check_out_at)->format('H:i');
             return response()->json([
                 'status' => 'warning',
-                'message' => "{$student->user->name} sudah absen keluar hari ini pukul {$checkOutTime}.",
+                'message' => "Mohon maaf, {$student->user->name} sudah tercatat melakukan absensi keluar pada pukul {$checkOutTime}.",
                 'type' => 'keluar',
             ]);
         }
@@ -243,7 +245,7 @@ class AttendanceController extends Controller
         if ($currentTime < self::CHECK_OUT_TIME) {
             return response()->json([
                 'status' => 'error',
-                'message' => "Belum waktunya pulang. Absen pulang dimulai pukul " . self::CHECK_OUT_TIME,
+                'message' => "Mohon maaf, jadwal absensi kepulangan baru akan dimulai pada pukul " . self::CHECK_OUT_TIME . ".",
                 'type' => 'keluar',
             ], 403);
         }
@@ -252,7 +254,7 @@ class AttendanceController extends Controller
         if ($currentTime > self::CHECK_OUT_END) {
             return response()->json([
                 'status' => 'error',
-                'message' => "Sesi absen pulang sudah berakhir.",
+                'message' => "Mohon maaf, batas waktu absensi kepulangan untuk hari ini telah berakhir.",
                 'type' => 'keluar',
             ], 403);
         }
@@ -292,7 +294,7 @@ class AttendanceController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'message' => "{$student->user->name} ({$student->class}) tercatat KELUAR — {$statusLabel} pukul {$now->format('H:i')}.",
+            'message' => "{$student->user->name} ({$student->class}) • {$statusLabel}",
             'type' => 'keluar',
         ]);
     }

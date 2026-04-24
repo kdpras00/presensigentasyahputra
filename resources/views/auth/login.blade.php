@@ -33,7 +33,7 @@
                 <form action="{{ route('login') }}" method="POST" class="space-y-6">
                     @csrf
                     
-                    <!-- Input Email/NIS -->
+                    <!-- Input Username -->
                     <div class="space-y-1.5">
                         <div class="relative group">
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-[#DFFF00] transition-colors">
@@ -41,11 +41,11 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                 </svg>
                             </div>
-                            <input id="email" name="email" type="text" autocomplete="username" required 
+                            <input id="username" name="username" type="text" autocomplete="username" required 
                                 class="block w-full pl-11 pr-4 py-4 bg-[#345344] border-transparent rounded-xl text-white placeholder-gray-400 focus:ring-4 focus:ring-[#DFFF00]/30 focus:border-[#DFFF00] transition-all duration-300" 
-                                placeholder="Email/NIS/NIP">
+                                placeholder="Username">
                         </div>
-                        @error('email')
+                        @error('username')
                             <p class="text-sm text-red-500 ml-1 mt-1 font-medium">{{ $message }}</p>
                         @enderror
                     </div>

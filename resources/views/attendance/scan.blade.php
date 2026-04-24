@@ -97,7 +97,7 @@
 
                         <!-- Focus Overlay -->
                         <div class="absolute inset-0 pointer-events-none z-20 flex items-center justify-center">
-                            <div class="w-4/5 h-[85%] rounded-2xl relative" style="box-shadow: 0 0 0 2000px rgba(0,0,0,0.45);">
+                            <div class="w-[92%] h-[92%] rounded-2xl relative" style="box-shadow: 0 0 0 2000px rgba(0,0,0,0.45);">
                                 <div class="absolute -top-1 -left-1 w-8 h-8 rounded-tl-2xl border-t-[3px] border-l-[3px] border-[#DFFF00]"></div>
                                 <div class="absolute -top-1 -right-1 w-8 h-8 rounded-tr-2xl border-t-[3px] border-r-[3px] border-[#DFFF00]"></div>
                                 <div class="absolute -bottom-1 -left-1 w-8 h-8 rounded-bl-2xl border-b-[3px] border-l-[3px] border-[#DFFF00]"></div>
@@ -404,14 +404,11 @@
             const card = document.createElement('div');
             card.className = `${c.bg} ${c.border} border rounded-xl p-3 animate-fade-in`;
             card.innerHTML = `
-                <div class="flex items-start gap-2.5">
-                    <div class="w-7 h-7 ${c.icon} rounded-lg flex items-center justify-center shrink-0 mt-0.5">${iconSvg}</div>
-                    <div class="flex-1 min-w-0">
-                        <p class="text-xs font-bold ${c.text} truncate">${message}</p>
-                        <div class="flex items-center gap-2 mt-1">
-                            <span class="text-[10px] font-mono text-gray-400">${time}</span>
-                            ${modeLabel ? `<span class="text-[10px] font-bold text-gray-400 bg-white/60 px-1.5 py-0.5 rounded">${modeLabel}</span>` : ''}
-                        </div>
+                <div class="flex flex-col">
+                    <p class="text-xs font-bold ${c.text} leading-relaxed">${message}</p>
+                    <div class="flex items-center gap-2 mt-1.5">
+                        <span class="text-[10px] font-mono font-medium text-gray-400">${time}</span>
+                        ${modeLabel ? `<span class="text-[9px] font-bold text-gray-500 bg-white/50 border border-white/80 px-1.5 py-0.5 rounded-md uppercase tracking-widest">${modeLabel}</span>` : ''}
                     </div>
                 </div>`;
 

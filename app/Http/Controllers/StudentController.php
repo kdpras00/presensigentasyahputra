@@ -34,16 +34,17 @@ class StudentController extends Controller
     {
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
+            'username' => ['required', 'string', 'max:255', 'unique:users'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', 'min:8'],
             
-            'nis' => ['required', 'string', 'unique:students'],
             'class' => ['required', 'string'],
             'generation' => ['nullable', 'string'],
         ]);
 
         $user = User::create([
             'name' => $validated['name'],
+            'username' => $validated['username'],
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
             'role' => 'student',
@@ -51,7 +52,6 @@ class StudentController extends Controller
 
         Student::create([
             'user_id' => $user->id,
-            'nis' => $validated['nis'],
             'class' => $validated['class'],
             'generation' => $validated['generation'] ?? null,
         ]);
@@ -83,10 +83,10 @@ class StudentController extends Controller
     {
         $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
+            'username' => ['required', 'string', 'max:255', Rule::unique('users')->ignore($student->user_id)],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($student->user_id)],
             'password' => ['nullable', 'confirmed', 'min:8'],
             
-            'nis' => ['required', 'string', Rule::unique('students')->ignore($student->id)],
             'class' => ['required', 'string'],
             'generation' => ['nullable', 'string'],
         ]);
@@ -94,6 +94,7 @@ class StudentController extends Controller
         // Update User
         $userData = [
             'name' => $validated['name'],
+            'username' => $validated['username'],
             'email' => $validated['email'],
         ];
 
@@ -105,7 +106,6 @@ class StudentController extends Controller
 
         // Update Student
         $student->update([
-            'nis' => $validated['nis'],
             'class' => $validated['class'],
             'generation' => $validated['generation'],
         ]);

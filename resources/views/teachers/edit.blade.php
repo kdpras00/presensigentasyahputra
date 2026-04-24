@@ -23,12 +23,11 @@
                 @enderror
             </div>
 
-            <!-- NIP -->
+            <!-- Username -->
             <div>
-                <label for="nip" class="block mb-2 text-sm font-bold text-gray-700">NIP (Nomor Induk Pegawai)</label>
-                <input type="text" id="nip" name="nip" class="bg-[#F3F4F6] border-transparent text-gray-900 text-sm rounded-xl focus:ring-4 focus:ring-[#345344]/20 focus:border-[#345344] block w-full p-4 transition-all" value="{{ old('nip', optional($teacher->teacher)->nip) }}">
-                <p class="mt-1 text-xs text-gray-500">Boleh dikosongkan jika belum memiliki NIP</p>
-                @error('nip')
+                <label for="username" class="block mb-2 text-sm font-bold text-gray-700">Username</label>
+                <input type="text" id="username" name="username" class="bg-[#F3F4F6] border-transparent text-gray-900 text-sm rounded-xl focus:ring-4 focus:ring-[#345344]/20 focus:border-[#345344] block w-full p-4 transition-all placeholder-gray-400" required value="{{ old('username', $teacher->username) }}">
+                @error('username')
                     <p class="mt-2 text-sm text-red-500 font-medium">{{ $message }}</p>
                 @enderror
             </div>

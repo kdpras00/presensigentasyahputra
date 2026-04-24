@@ -20,7 +20,7 @@
             <thead class="text-xs text-white uppercase bg-[#345344]">
                 <tr>
                     <th scope="col" class="px-6 py-5 font-bold tracking-wider">Nama Lengkap</th>
-                    <th scope="col" class="px-6 py-5 font-bold tracking-wider">NIP</th>
+                    <th scope="col" class="px-6 py-5 font-bold tracking-wider">Username</th>
                     <th scope="col" class="px-6 py-5 font-bold tracking-wider">Kelas Diampu</th>
                     <th scope="col" class="px-6 py-5 font-bold tracking-wider">Email</th>
                     <th scope="col" class="px-6 py-5 font-bold tracking-wider text-center">Aksi</th>
@@ -36,7 +36,7 @@
                             </div>
                         </td>
                         <td class="px-6 py-4 font-mono text-gray-500 font-medium">
-                            {{ optional($teacher->teacher)->nip ?? '-' }}
+                            {{ $teacher->username }}
                         </td>
                         <td class="px-6 py-4">
                             @if(optional($teacher->teacher)->assigned_class)

@@ -27,7 +27,7 @@
             <thead class="text-xs text-white uppercase bg-[#345344]">
                 <tr>
                     <th scope="col" class="px-6 py-5 font-bold tracking-wider whitespace-nowrap">Nama</th>
-                    <th scope="col" class="px-6 py-5 font-bold tracking-wider whitespace-nowrap">NIS</th>
+                    <th scope="col" class="px-6 py-5 font-bold tracking-wider whitespace-nowrap">Username</th>
                     <th scope="col" class="px-6 py-5 font-bold tracking-wider whitespace-nowrap">Kelas</th>
                     <th scope="col" class="px-6 py-5 font-bold tracking-wider whitespace-nowrap">Angkatan</th>
                     <th scope="col" class="px-6 py-5 font-bold tracking-wider whitespace-nowrap">Email</th>
@@ -43,7 +43,7 @@
                             {{ $student->user->name }}
                         </div>
                     </td>
-                    <td class="px-6 py-4 font-mono text-gray-500 font-medium whitespace-nowrap">{{ $student->nis }}</td>
+                    <td class="px-6 py-4 font-mono text-gray-500 font-medium whitespace-nowrap">{{ $student->user->username }}</td>
                     <td class="px-6 py-4 font-medium text-gray-600">
                         <span class="text-[#345344] font-bold whitespace-nowrap">{{ $student->class }}</span>
                     </td>

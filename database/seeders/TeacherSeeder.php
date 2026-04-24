@@ -20,6 +20,7 @@ class TeacherSeeder extends Seeder
         if (!User::where('email', 'guru@gentasyaputra.sch.id')->exists()) {
             $guru = User::create([
                 'name' => 'Guru Test',
+                'username' => 'guru',
                 'email' => 'guru@gentasyaputra.sch.id',
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'),
@@ -29,7 +30,6 @@ class TeacherSeeder extends Seeder
             
             \App\Models\Teacher::create([
                 'user_id' => $guru->id,
-                'nip' => '198001012005011001',
                 'assigned_class' => 'XII IPA 1',
             ]);
         }
@@ -43,8 +43,10 @@ class TeacherSeeder extends Seeder
 
         foreach ($additionalTeachers as $data) {
             if (!User::where('email', $data['email'])->exists()) {
+                $username = strstr($data['email'], '@', true);
                 $user = User::create([
                     'name' => $data['name'],
+                    'username' => $username,
                     'email' => $data['email'],
                     'email_verified_at' => now(),
                     'password' => Hash::make('password'),
@@ -54,7 +56,6 @@ class TeacherSeeder extends Seeder
 
                 \App\Models\Teacher::create([
                     'user_id' => $user->id,
-                    'nip' => '198' . rand(100000000000000, 999999999999999),
                     'assigned_class' => $data['class'],
                 ]);
             }

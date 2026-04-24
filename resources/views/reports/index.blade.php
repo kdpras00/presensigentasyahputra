@@ -68,7 +68,7 @@
                     <tr class="border-b border-gray-100">
                         <th class="text-left px-6 py-4 text-[10px] font-bold text-gray-400 uppercase tracking-wider">No</th>
                         <th class="text-left px-6 py-4 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Nama Siswa</th>
-                        <th class="text-left px-6 py-4 text-[10px] font-bold text-gray-400 uppercase tracking-wider">NIS</th>
+                        <th class="text-left px-6 py-4 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Username</th>
                         <th class="text-left px-6 py-4 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Kelas</th>
                         <th class="text-center px-6 py-4 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Masuk</th>
                         <th class="text-center px-6 py-4 text-[10px] font-bold text-gray-400 uppercase tracking-wider">Keluar</th>
@@ -88,7 +88,7 @@
                                 </div>
                             </td>
                             <td class="px-6 py-4 font-mono text-gray-400 text-xs font-bold">
-                                {{ $attendance->student->nis ?? '-' }}
+                                {{ optional($attendance->student->user)->username ?? '-' }}
                             </td>
                             <td class="px-6 py-4">
                                 <span class="bg-gray-100 text-gray-600 font-bold text-xs px-2.5 py-1 rounded-md">{{ $attendance->student->class ?? '-' }}</span>

@@ -18,6 +18,7 @@ class StudentSeeder extends Seeder
         // 1. Create User account for Student
         $user = User::create([
             'name' => 'Siswa Test',
+            'username' => 'siswa',
             'email' => 'siswa@gentasyaputra.sch.id',
             'email_verified_at' => now(),
             'password' => Hash::make('password'),
@@ -28,7 +29,6 @@ class StudentSeeder extends Seeder
         // 2. Create Student Data Linked to User
         Student::create([
             'user_id' => $user->id,
-            'nis' => '1234567890',
             'class' => 'XII IPA 1',
             // Add other fields if required by your Student model, like 'phone', 'address' etc
         ]);
@@ -42,7 +42,6 @@ class StudentSeeder extends Seeder
         foreach ($dummyStudents as $studentUser) {
             Student::create([
                 'user_id' => $studentUser->id,
-                'nis' => rand(1000000000, 9999999999),
                 'class' => 'XI IPA ' . rand(1, 3),
             ]);
         }

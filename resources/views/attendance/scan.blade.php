@@ -20,9 +20,7 @@
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <!-- Left: Class & Clock -->
                 <div class="flex items-center gap-4">
-                    <div class="w-11 h-11 bg-white/10 rounded-xl flex items-center justify-center text-[#DFFF00]">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4h2v-4zM6 6h12v12H6V6z"></path></svg>
-                    </div>
+                    
                     <div>
                         <p class="text-white/50 text-[10px] font-bold uppercase tracking-widest">Terminal Presensi</p>
                         <div class="flex items-center gap-3">

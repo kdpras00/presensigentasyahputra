@@ -241,6 +241,22 @@
             const resTitle = document.getElementById('restriction-title');
             const resMsg = document.getElementById('restriction-message');
 
+            // --- AUTO MODE SWITCHING ---
+            // If we are in the Masuk window and NOT in masuk mode, switch to it
+            if (currentTime >= timeRules.masuk_start && currentTime <= timeRules.masuk_end) {
+                if (currentMode !== 'masuk') {
+                    currentMode = 'masuk';
+                    updateModeUI();
+                }
+            } 
+            // If we are in the Keluar window and NOT in keluar mode, switch to it
+            else if (currentTime >= timeRules.keluar_start && currentTime <= timeRules.keluar_end) {
+                if (currentMode !== 'keluar') {
+                    currentMode = 'keluar';
+                    updateModeUI();
+                }
+            }
+
             let isAllowed = false;
 
             if (currentMode === 'masuk') {
@@ -265,9 +281,6 @@
 
             if (isAllowed) {
                 overlay.classList.add('hidden');
-                if (html5QrCode && html5QrCode.getState() === 1) { // Idle
-                   // Camera was paused or something, but we let it run
-                }
             } else {
                 overlay.classList.remove('hidden');
             }

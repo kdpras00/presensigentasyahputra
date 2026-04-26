@@ -43,6 +43,9 @@ class AttendanceController extends Controller
         $now = Carbon::now();
         $currentTime = $now->format('H:i');
         
+        // Logic: 
+        // 1. If current time is before the check-out window, default to 'masuk'
+        // 2. If current time is on or after check-out starts, default to 'keluar'
         $mode = 'masuk';
         if ($currentTime >= self::CHECK_OUT_TIME) {
             $mode = 'keluar';

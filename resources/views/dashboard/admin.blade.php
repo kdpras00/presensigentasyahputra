@@ -1,91 +1,94 @@
 @extends('layouts.app')
 
 @section('header')
-    <h2 class="font-bold text-xl text-gray-800 leading-tight">
-        Beranda Utama
-    </h2>
+    {{-- Header text removed as requested --}}
 @endsection
 
 @section('content')
-<div class="space-y-6">
+<div class="space-y-8">
 
-    <!-- Welcome -->
-    <div class="bg-[#345344] rounded-2xl p-6 flex items-center justify-between">
-        <div>
-            <p class="text-white/50 text-xs font-medium">Selamat datang kembali,</p>
-            <h2 class="text-white text-xl font-bold mt-0.5">{{ Auth::user()->name }}</h2>
-            <p class="text-white/40 text-xs mt-1">{{ \Carbon\Carbon::now()->translatedFormat('l, d F Y') }}</p>
+    <!-- Simplified Banner -->
+    <div class="bg-[#345344] rounded-[2.5rem] p-10 relative overflow-hidden shadow-2xl shadow-[#345344]/20">
+        <div class="relative z-10">
+            <h2 class="text-4xl font-black text-white leading-tight tracking-tighter mb-2">Dashboard Admin</h2>
+            <p class="text-white/60 text-sm font-medium">Selamat datang admin, kelola sistem dengan bijak dan efisien.</p>
         </div>
-        <div class="hidden md:block text-right">
-            <p class="text-white/40 text-[10px] font-bold uppercase tracking-widest">Role</p>
-            <p class="text-[#DFFF00] text-sm font-bold">Administrator</p>
+        
+        <!-- Decoration -->
+        <div class="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-white/5 rounded-full pointer-events-none"></div>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div class="bg-white rounded-3xl p-6 shadow-[0_10px_40px_rgba(0,0,0,0.03)] border border-gray-50">
+            <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Total Siswa</p>
+            <h3 class="text-3xl font-bold text-[#345344]">{{ $totalStudents }}</h3>
+            <p class="text-[10px] font-semibold text-gray-300 uppercase tracking-wider mt-1">Terdaftar</p>
+        </div>
+
+        <div class="bg-white rounded-3xl p-6 shadow-[0_10px_40px_rgba(0,0,0,0.03)] border border-gray-50">
+            <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Total Guru</p>
+            <h3 class="text-3xl font-bold text-[#345344]">{{ $totalTeachers }}</h3>
+            <p class="text-[10px] font-semibold text-gray-300 uppercase tracking-wider mt-1">Aktif</p>
+        </div>
+
+        <div class="bg-white rounded-3xl p-6 shadow-[0_10px_40px_rgba(0,0,0,0.03)] border border-gray-50">
+            <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Kehadiran</p>
+            <h3 class="text-3xl font-bold text-green-600">{{ $presentToday }}</h3>
+            <p class="text-[10px] font-semibold text-gray-300 uppercase tracking-wider mt-1">Hari Ini</p>
+        </div>
+
+        <div class="bg-white rounded-3xl p-6 shadow-[0_10px_40px_rgba(0,0,0,0.03)] border border-gray-50">
+            <p class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-4">Terlambat</p>
+            <h3 class="text-3xl font-bold text-yellow-600">{{ $lateToday }}</h3>
+            <p class="text-[10px] font-semibold text-gray-300 uppercase tracking-wider mt-1">Hari Ini</p>
         </div>
     </div>
 
-    <!-- Stats -->
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <div class="bg-white rounded-xl p-5 border border-gray-100">
-            <p class="text-xs text-gray-400 font-medium mb-3">Total Siswa</p>
-            <div class="flex items-baseline gap-2">
-                <h3 class="text-3xl font-bold text-gray-800">{{ $totalStudents ?? 0 }}</h3>
-                <span class="text-[10px] font-bold text-[#345344] bg-[#DFFF00] px-2 py-0.5 rounded-full">Aktif</span>
-            </div>
+    <!-- Recent Activity Section -->
+    <div class="bg-white rounded-[2.5rem] shadow-[0_10px_40px_rgba(0,0,0,0.03)] border border-gray-50 overflow-hidden">
+        <div class="px-8 py-4 border-b border-gray-200 flex justify-between items-center">
+            <h4 class="text-xs font-bold text-gray-400 uppercase tracking-wider">Log Aktivitas Terbaru</h4>
+            <a href="{{ route('reports.index') }}" class="text-xs font-bold text-[#345344] hover:underline">Lihat Semua</a>
         </div>
-        <div class="bg-white rounded-xl p-5 border border-gray-100">
-            <p class="text-xs text-gray-400 font-medium mb-3">Total Guru</p>
-            <div class="flex items-baseline gap-2">
-                <h3 class="text-3xl font-bold text-gray-800">{{ $totalTeachers ?? 0 }}</h3>
-                <span class="text-[10px] font-bold text-white bg-[#345344] px-2 py-0.5 rounded-full">Staf</span>
-            </div>
+        
+        @if($recentActivity->count() > 0)
+        <div class="overflow-x-auto">
+            <table class="w-full text-left">
+                <thead>
+                    <tr class="bg-gray-50">
+                        <th class="px-8 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider">Nama</th>
+                        <th class="px-8 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider text-center">Waktu</th>
+                        <th class="px-8 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider text-center">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    @foreach($recentActivity as $activity)
+                    <tr class="hover:bg-gray-50/50 transition-colors">
+                        <td class="px-8 py-4">
+                            <p class="text-sm font-bold text-gray-800 leading-none mb-1">{{ optional($activity->student->user)->name ?? '-' }}</p>
+                            <p class="text-[10px] font-semibold text-gray-400 uppercase tracking-wider">Siswa</p>
+                        </td>
+                        <td class="px-8 py-4 text-center font-mono text-sm text-gray-500">
+                            {{ $activity->check_in_at ? \Carbon\Carbon::parse($activity->check_in_at)->format('H:i') : '-' }}
+                        </td>
+                        <td class="px-8 py-4 text-center">
+                            @if($activity->check_in_status == 'present')
+                                <span class="text-green-600 bg-green-50 text-[10px] font-bold px-3 py-1 rounded-full border border-green-100">Hadir</span>
+                            @else
+                                <span class="text-yellow-600 bg-yellow-50 text-[10px] font-bold px-3 py-1 rounded-full border border-yellow-100">Terlambat</span>
+                            @endif
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
-        <div class="bg-white rounded-xl p-5 border border-gray-100">
-            <p class="text-xs text-gray-400 font-medium mb-3">Hadir Hari Ini</p>
-            <div class="flex items-baseline gap-2">
-                <h3 class="text-3xl font-bold text-green-600">{{ $presentToday ?? 0 }}</h3>
-                <span class="text-xs text-gray-400 font-medium">/ {{ $totalStudents ?? 0 }}</span>
-            </div>
+        @else
+        <div class="text-center py-20 bg-gray-50/50">
+            <p class="text-[10px] font-black text-gray-300 uppercase tracking-[0.2em]">Belum ada aktivitas hari ini</p>
         </div>
-        <div class="bg-white rounded-xl p-5 border border-gray-100">
-            <p class="text-xs text-gray-400 font-medium mb-3">Belum Absen</p>
-            <h3 class="text-3xl font-bold text-red-500">{{ $absentToday ?? 0 }}</h3>
-        </div>
-    </div>
-
-    <!-- Quick Actions -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <a href="{{ route('students.index') }}" class="bg-white rounded-xl p-5 border border-gray-100 hover:border-gray-200 transition-colors group">
-            <div class="flex items-center gap-3">
-                <div class="w-9 h-9 bg-blue-50 rounded-lg flex items-center justify-center">
-                    <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                </div>
-                <div>
-                    <p class="text-sm font-bold text-gray-800">Data Siswa</p>
-                    <p class="text-xs text-gray-400">Kelola data siswa</p>
-                </div>
-            </div>
-        </a>
-        <a href="{{ route('teachers.index') }}" class="bg-white rounded-xl p-5 border border-gray-100 hover:border-gray-200 transition-colors group">
-            <div class="flex items-center gap-3">
-                <div class="w-9 h-9 bg-green-50 rounded-lg flex items-center justify-center">
-                    <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-                </div>
-                <div>
-                    <p class="text-sm font-bold text-gray-800">Data Guru</p>
-                    <p class="text-xs text-gray-400">Kelola data guru</p>
-                </div>
-            </div>
-        </a>
-        <a href="{{ route('reports.index') }}" class="bg-white rounded-xl p-5 border border-gray-100 hover:border-gray-200 transition-colors group">
-            <div class="flex items-center gap-3">
-                <div class="w-9 h-9 bg-purple-50 rounded-lg flex items-center justify-center">
-                    <svg class="w-4 h-4 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                </div>
-                <div>
-                    <p class="text-sm font-bold text-gray-800">Rekap Kehadiran</p>
-                    <p class="text-xs text-gray-400">Lihat laporan absensi</p>
-                </div>
-            </div>
-        </a>
+        @endif
     </div>
 </div>
 @endsection

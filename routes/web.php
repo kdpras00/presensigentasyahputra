@@ -4,8 +4,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 
 Route::get('/', function () {
-    return redirect()->route('login');
+    return view('welcome');
 });
+
+Route::get('/public/present', [\App\Http\Controllers\PublicAttendanceController::class, 'present'])->name('public.present');
+Route::get('/public/absent', [\App\Http\Controllers\PublicAttendanceController::class, 'absent'])->name('public.absent');
 
 Route::middleware('guest')->group(function () {
     Route::get('login', [AuthController::class, 'create'])->name('login');

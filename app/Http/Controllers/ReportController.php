@@ -17,10 +17,19 @@ class ReportController extends Controller
     {
         $user = Auth::user();
         $date = $request->input('date', Carbon::today()->format('Y-m-d'));
+        $search = $request->input('search');
         
         // Base query
         $query = Attendance::with(['student.user', 'teacher.user'])
                     ->whereDate('check_in_at', $date);
+
+        // Filter by search
+        if ($search) {
+            $query->whereHas('student.user', function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('username', 'like', "%{$search}%");
+            });
+        }
 
         // If guru, filter by assigned class only
         $assignedClass = null;

@@ -37,7 +37,13 @@ class DashboardController extends Controller
         $checkedOutToday = Attendance::whereDate('check_out_at', $today)->whereNotNull('check_out_at')->count();
         $absentToday = $totalStudents - ($presentToday + $lateToday);
 
-        return view('dashboard.admin', compact('totalStudents', 'totalTeachers', 'presentToday', 'lateToday', 'absentToday', 'checkedOutToday'));
+        $recentActivity = Attendance::with('student.user')
+            ->whereDate('check_in_at', $today)
+            ->latest('check_in_at')
+            ->take(10)
+            ->get();
+
+        return view('dashboard.admin', compact('totalStudents', 'totalTeachers', 'presentToday', 'lateToday', 'absentToday', 'checkedOutToday', 'recentActivity'));
     }
 
     private function teacherDashboard()
@@ -92,15 +98,14 @@ class DashboardController extends Controller
         $user = Auth::user();
         $student = $user->student;
         
-        $myAttendance = collect();
-        $attendanceStats = ['present' => 0, 'late' => 0, 'alpha' => 0];
+        $recentLogs = collect();
+        $todayAttendance = null;
 
         if ($student) {
-            $myAttendance = Attendance::where('student_id', $student->id)->latest('check_in_at')->take(5)->get();
-            $attendanceStats['present'] = Attendance::where('student_id', $student->id)->where('check_in_status', 'present')->count();
-            $attendanceStats['late'] = Attendance::where('student_id', $student->id)->where('check_in_status', 'late')->count();
+            $recentLogs = Attendance::where('student_id', $student->id)->latest('check_in_at')->take(10)->get();
+            $todayAttendance = Attendance::where('student_id', $student->id)->whereDate('check_in_at', Carbon::today())->first();
         }
 
-        return view('dashboard.student', compact('myAttendance', 'attendanceStats'));
+        return view('dashboard.student', compact('student', 'recentLogs', 'todayAttendance'));
     }
 }

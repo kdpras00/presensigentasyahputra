@@ -304,17 +304,34 @@ class AttendanceController extends Controller
 
     /**
      * Show the Digital ID Card for STUDENT.
-     * Contains Static QR with their NIS.
+     * Contains Static QR with their NIS (username).
+     *
+     * Best Practice: Validate ALL required data in the controller
+     * before the view is rendered. Never let null reach the view layer.
      */
     public function showStudentQr()
     {
         $user = Auth::user();
+
+        // 1. Ensure student profile exists
         if (!$user->student) {
-             abort(404, 'Data siswa tidak lengkap.');
+            abort(404, 'Data profil siswa tidak ditemukan.');
         }
 
+        // 2. Ensure user relation on student is loaded
+        $student = $user->student->load('user');
+
+        // 3. Ensure QR text (username) is not null — fail early with a clear message
+        if (empty($user->username)) {
+            return redirect()->back()->withErrors([
+                'qr' => 'Username / NIS belum diatur. Silakan hubungi administrator untuk melengkapi data Anda.'
+            ]);
+        }
+
+        // 4. Cast to string explicitly as a final safety measure before passing to view
         return view('attendance.my-qr', [
-            'student' => $user->student
+            'student'   => $student,
+            'qrContent' => (string) $user->username,
         ]);
     }
 

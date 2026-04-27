@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('header')
-    <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+    <h2 class="font-bold text-2xl text-white tracking-tighter">
         Edit Data Siswa: {{ $student->user->name }}
     </h2>
 @endsection
@@ -30,7 +30,7 @@
             </div>
             <div>
                 <label for="class" class="block mb-2 text-sm font-bold text-gray-700">Kelas</label>
-                <select id="class" name="class" class="bg-[#F3F4F6] border-transparent text-gray-900 text-sm rounded-xl focus:ring-4 focus:ring-[#345344]/20 focus:border-[#345344] block w-full p-4 transition-all pr-10">
+                <select id="class" name="class" class="tom-select w-full">
                     <option value="10 IPA 1" {{ old('class', $student->class) == '10 IPA 1' ? 'selected' : '' }}>10 IPA 1</option>
                     <option value="10 IPA 2" {{ old('class', $student->class) == '10 IPA 2' ? 'selected' : '' }}>10 IPA 2</option>
                     <option value="10 IPS 1" {{ old('class', $student->class) == '10 IPS 1' ? 'selected' : '' }}>10 IPS 1</option>
@@ -38,6 +38,18 @@
                 </select>
                 @error('class') <p class="text-red-500 font-medium text-xs mt-1">{{ $message }}</p> @enderror
             </div>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    new TomSelect("#class", {
+                        create: false,
+                        sortField: {
+                            field: "text",
+                            direction: "asc"
+                        }
+                    });
+                });
+            </script>
             <div>
                 <label for="generation" class="block mb-2 text-sm font-bold text-gray-700">Angkatan</label>
                 <input type="text" id="generation" name="generation" class="bg-[#F3F4F6] border-transparent text-gray-900 text-sm rounded-xl focus:ring-4 focus:ring-[#345344]/20 focus:border-[#345344] block w-full p-4 transition-all placeholder-gray-400" placeholder="2023/2024" value="{{ old('generation', $student->generation) }}">

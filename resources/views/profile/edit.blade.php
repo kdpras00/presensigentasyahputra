@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('header')
-    <h2 class="font-bold text-2xl text-gray-800 dark:text-gray-200 leading-tight">
-        {{ __('Update Profile') }}
+    <h2 class="font-bold text-2xl text-white tracking-tighter">
+        Update Profile
     </h2>
 @endsection
 
@@ -11,7 +11,7 @@
     <div class="bg-white rounded-3xl shadow-lg border-transparent p-10">
         
         @if (session('success'))
-            <div class="p-4 mb-6 text-sm text-[#345344] rounded-xl bg-[#DFFF00]/50 font-bold" role="alert">
+            <div class="p-4 mb-6 text-sm text-green-800 rounded-xl bg-green-50 border border-green-100 font-bold" role="alert">
                 {{ session('success') }}
             </div>
         @endif
@@ -31,12 +31,12 @@
                     </div>
                 </div>
                 
-                <input type="file" id="avatar" name="avatar" class="block w-full max-w-sm text-sm text-gray-500
-                    file:mr-4 file:py-2.5 file:px-4
+                <input type="file" id="avatar" name="avatar" class="block w-full max-w-sm text-xs text-gray-400
+                    file:mr-6 file:py-3 file:px-8
                     file:rounded-xl file:border-0
-                    file:text-sm file:font-semibold
-                    file:bg-[#DFFF00] file:text-[#345344]
-                    hover:file:bg-[#cbe600] transition-all cursor-pointer bg-[#F3F4F6] rounded-xl" accept="image/*">
+                    file:text-xs file:font-semibold
+                    file:bg-[#345344] file:text-white
+                    hover:file:bg-[#2a4337] transition-all cursor-pointer bg-gray-50 border border-gray-100 rounded-xl shadow-sm" accept="image/*">
                 @error('avatar')
                     <p class="mt-2 text-sm text-red-500 font-medium">{{ $message }}</p>
                 @enderror
@@ -89,7 +89,7 @@
             </div>
 
             <div class="flex items-center justify-end space-x-4 pt-6 mt-6 border-t border-gray-100">
-                <button type="submit" class="text-[#345344] bg-[#DFFF00] hover:bg-[#cbe600] focus:ring-4 focus:outline-none focus:ring-[#DFFF00]/50 font-bold rounded-xl text-sm px-8 py-3.5 text-center transition-all shadow-md">
+                <button type="submit" class="text-white bg-[#345344] hover:bg-[#2a4337] focus:ring-4 focus:outline-none focus:ring-[#345344]/20 font-bold rounded-xl text-sm px-8 py-3.5 text-center transition-all shadow-lg shadow-[#345344]/10">
                     Update Profile
                 </button>
             </div>

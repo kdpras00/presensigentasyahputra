@@ -1,7 +1,7 @@
 @extends('layouts.guest')
 
 @section('content')
-<div class="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#F3F4F6] selection:bg-[#DFFF00]">
+<div class="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#F3F4F6] selection:bg-[#345344] selection:text-white">
     
     <!-- Login Container -->
     <div class="relative z-10 w-full max-w-5xl flex flex-col md:flex-row bg-white rounded-[2rem] shadow-2xl overflow-hidden mx-4 sm:mx-8">
@@ -11,15 +11,15 @@
             
             <!-- Background Decorations -->
             <div class="absolute top-0 -left-4 w-72 h-72 bg-white/5 rounded-full mix-blend-overlay filter blur-3xl opacity-70 animate-blob"></div>
-            <div class="absolute -bottom-8 -right-4 w-72 h-72 bg-[#DFFF00]/10 rounded-full mix-blend-overlay filter blur-3xl opacity-70 animate-blob animation-delay-2000"></div>
+            <div class="absolute -bottom-8 -right-4 w-72 h-72 bg-white/5 rounded-full mix-blend-overlay filter blur-3xl opacity-70 animate-blob animation-delay-2000"></div>
             <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-white/5 rounded-full mix-blend-overlay filter blur-[100px] opacity-50"></div>
 
             <div class="relative z-10 flex flex-col items-center">
                 <div class="mb-8 relative group/logo">
-                    <div class="absolute inset-0 bg-[#DFFF00]/20 blur-2xl rounded-full scale-110 group-hover/logo:scale-150 transition-transform duration-700"></div>
+                    <div class="absolute inset-0 bg-white/10 blur-2xl rounded-full scale-110 group-hover/logo:scale-150 transition-transform duration-700"></div>
                     <img src="{{ asset('images/gentalogoico.png') }}" alt="Logo" class="relative z-10 w-28 h-28 object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.3)] transform transition-transform duration-500 group-hover/logo:scale-110">
                 </div>
-                <h1 class="text-3xl lg:text-4xl font-extrabold tracking-tight mb-4 text-white leading-tight">SMA Genta Syaputra.</h1>
+                <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight mb-4 text-white leading-none whitespace-nowrap">SMA Genta Syaputra.</h1>
                 <p class="text-white/70 font-medium leading-relaxed max-w-xs mx-auto">Sistem Presensi Digital Terpadu.</p>
             </div>
         </div>
@@ -36,13 +36,13 @@
                     <!-- Input Username -->
                     <div class="space-y-1.5">
                         <div class="relative group">
-                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-[#DFFF00] transition-colors">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-white transition-colors">
                                 <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                 </svg>
                             </div>
                             <input id="username" name="username" type="text" autocomplete="username" required 
-                                class="block w-full pl-11 pr-4 py-4 bg-[#345344] border-transparent rounded-xl text-white placeholder-gray-400 focus:ring-4 focus:ring-[#DFFF00]/30 focus:border-[#DFFF00] transition-all duration-300" 
+                                class="block w-full pl-11 pr-4 py-4 bg-[#345344] border-transparent rounded-xl text-white placeholder-gray-400 focus:ring-4 focus:ring-white/10 focus:border-white/20 transition-all duration-300" 
                                 placeholder="Username">
                         </div>
                         @error('username')
@@ -54,13 +54,13 @@
                     <div class="space-y-1.5">
                         
                         <div class="relative group">
-                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-[#DFFF00] transition-colors">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-white transition-colors">
                                 <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                                 </svg>
                             </div>
                             <input id="password" name="password" type="password" autocomplete="current-password" required 
-                                class="block w-full pl-11 pr-4 py-4 bg-[#345344] border-transparent rounded-xl text-white placeholder-gray-400 focus:ring-4 focus:ring-[#DFFF00]/30 focus:border-[#DFFF00] transition-all duration-300" 
+                                class="block w-full pl-11 pr-4 py-4 bg-[#345344] border-transparent rounded-xl text-white placeholder-gray-400 focus:ring-4 focus:ring-white/10 focus:border-white/20 transition-all duration-300" 
                                 placeholder="Password">
                         </div>
                         <div class="flex items-center justify-end">
@@ -70,7 +70,7 @@
 
                     <!-- Submit Button -->
                     <div class="pt-4">
-                        <button type="submit" class="w-full flex justify-center items-center gap-2 py-4 px-4 rounded-xl text-sm font-bold text-white bg-[#345344] hover:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-[#DFFF00]/30 transition-all duration-300">
+                        <button type="submit" class="w-full flex justify-center items-center gap-2 py-4 px-4 rounded-xl text-sm font-bold text-white bg-[#345344] hover:bg-gray-800 focus:outline-none focus:ring-4 focus:ring-white/10 transition-all duration-300">
                             MASUK
                         </button>
                     </div>

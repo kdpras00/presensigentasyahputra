@@ -13,10 +13,24 @@ class TeacherController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $teachers = User::with('teacher')->where('role', 'guru')->latest()->paginate(10);
-        return view('teachers.index', compact('teachers'));
+        $search = $request->input('search');
+        
+        $teachers = User::with('teacher')
+            ->where('role', 'guru')
+            ->when($search, function ($query, $search) {
+                return $query->where(function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                      ->orWhere('username', 'like', "%{$search}%")
+                      ->orWhere('email', 'like', "%{$search}%");
+                });
+            })
+            ->latest()
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('teachers.index', compact('teachers', 'search'));
     }
 
     /**

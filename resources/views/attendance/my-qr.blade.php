@@ -34,7 +34,7 @@
                         </div>
                         <div class="flex flex-col items-end">
                             <span class="text-white/80 text-[10px] font-black uppercase tracking-[0.2em] drop-shadow-md">SMA GENTA</span>
-                            <span class="text-[#DFFF00] font-black text-base -mt-1 drop-shadow-md">SYAPUTRA</span>
+                            <span class="text-white font-black text-base -mt-1 drop-shadow-md">SYAPUTRA</span>
                         </div>
                     </div>
 
@@ -49,8 +49,8 @@
                 <!-- Avatar (Overlapping) -->
                 <div class="absolute top-[44%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
                     <div class="w-32 h-32 rounded-full border-8 border-white shadow-xl overflow-hidden bg-gray-100">
-                        @if(Auth::user()->avatar)
-                            <img src="{{ asset(Auth::user()->avatar) }}" class="w-full h-full object-cover" alt="Avatar">
+                        @if($student->user->avatar)
+                            <img src="{{ asset($student->user->avatar) }}" class="w-full h-full object-cover" alt="Avatar">
                         @else
                             <div class="w-full h-full flex items-center justify-center text-[#148C64]">
                                 <svg class="w-16 h-16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
@@ -62,8 +62,8 @@
                 <!-- Content -->
                 <div class="flex-1 pt-8 px-8 pb-10 flex flex-col items-center justify-between text-center">
                     <div>
-                        <h3 class="text-xl font-black text-gray-900 uppercase tracking-tight leading-tight">{{ Auth::user()->name }}</h3>
-                        <p class="text-sm font-bold text-gray-500 mt-2 font-mono tracking-widest">{{ Auth::user()->username }}</p>
+                        <h3 class="text-xl font-black text-gray-900 uppercase tracking-tight leading-tight">{{ $student->user->name }}</h3>
+                        <p class="text-sm font-bold text-gray-500 mt-2 font-mono tracking-widest">{{ $student->user->username }}</p>
                     </div>
 
                     <div class="w-full pt-8 border-t border-gray-100 flex justify-between items-center">
@@ -94,14 +94,14 @@
                     </div>
                     <div class="flex flex-col items-end">
                         <span class="text-white/60 text-[10px] font-black uppercase tracking-[0.2em] drop-shadow-md">IDENTITAS</span>
-                        <span class="text-[#DFFF00] font-black text-base -mt-1 drop-shadow-md">VERIFIED</span>
+                        <span class="text-white font-black text-base -mt-1 drop-shadow-md">VERIFIED</span>
                     </div>
                 </div>
 
                 <div class="flex-1 flex flex-col items-center justify-center p-8 relative z-10">
-                    <!-- QR Section -->
+                    <!-- QR Section: using pre-validated $qrContent from controller -->
                     <div id="qr-container" class="bg-white p-5 rounded-[2.5rem] shadow-2xl">
-                        {!! QrCode::size(160)->margin(1)->generate(Auth::user()->username) !!}
+                        {!! QrCode::size(160)->margin(1)->generate($qrContent) !!}
                     </div>
                 </div>
 

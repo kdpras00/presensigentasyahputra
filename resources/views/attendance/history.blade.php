@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('header')
-    <h2 class="font-extrabold text-2xl text-gray-800 dark:text-gray-200 leading-tight">
+    <h2 class="font-bold text-2xl text-white tracking-tighter">
         Riwayat Absensi Saya
     </h2>
 @endsection
@@ -31,9 +31,9 @@
                     </td>
                     <td class="px-6 py-4">
                         @if($attendance->check_in_status == 'present')
-                            <span class="bg-[#DFFF00]/20 text-[#345344] font-bold px-3 py-1 rounded-lg text-xs">Tepat Waktu</span>
+                            <span class="bg-green-50 text-green-700 font-bold px-3 py-1 rounded-lg text-xs border border-green-100">Hadir</span>
                         @elseif($attendance->check_in_status == 'late')
-                            <span class="bg-yellow-100 border-yellow-200 border text-yellow-800 font-bold px-3 py-1 rounded-lg text-xs">Terlambat</span>
+                            <span class="bg-yellow-50 border-yellow-100 border text-yellow-700 font-bold px-3 py-1 rounded-lg text-xs">Terlambat</span>
                         @else
                             <span class="text-gray-400 text-xs">-</span>
                         @endif
@@ -43,9 +43,9 @@
                     </td>
                     <td class="px-6 py-4">
                         @if($attendance->check_out_status == 'present')
-                            <span class="bg-blue-100 border-blue-200 border text-blue-800 font-bold px-3 py-1 rounded-lg text-xs">Pulang</span>
+                            <span class="bg-blue-50 border-blue-100 border text-blue-700 font-bold px-3 py-1 rounded-lg text-xs">Pulang</span>
                         @elseif($attendance->check_out_status == 'early_leave')
-                            <span class="bg-orange-100 border-orange-200 border text-orange-800 font-bold px-3 py-1 rounded-lg text-xs">Pulang Awal</span>
+                            <span class="bg-orange-50 border-orange-100 border text-orange-700 font-bold px-3 py-1 rounded-lg text-xs">Pulang Awal</span>
                         @else
                             <span class="text-gray-400 text-xs">Belum</span>
                         @endif

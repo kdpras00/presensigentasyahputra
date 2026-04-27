@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('header')
-    <h2 class="font-bold text-2xl text-gray-800 dark:text-gray-200 leading-tight">
+    <h2 class="font-bold text-2xl text-white tracking-tighter">
         {{ __('Edit Data Guru') }}
     </h2>
 @endsection
@@ -35,7 +35,7 @@
             <!-- Assigned Class -->
             <div>
                 <label for="assigned_class" class="block mb-2 text-sm font-bold text-gray-700">Kelas Diampu</label>
-                <select id="assigned_class" name="assigned_class" class="bg-[#F3F4F6] border-transparent text-gray-900 text-sm rounded-xl focus:ring-4 focus:ring-[#345344]/20 focus:border-[#345344] block w-full p-4 transition-all">
+                <select id="assigned_class" name="assigned_class" class="tom-select w-full">
                     <option value="">-- Pilih Kelas --</option>
                     @foreach($availableClasses as $class)
                         <option value="{{ $class }}" {{ old('assigned_class', optional($teacher->teacher)->assigned_class) == $class ? 'selected' : '' }}>{{ $class }}</option>
@@ -46,6 +46,18 @@
                     <p class="mt-2 text-sm text-red-500 font-medium">{{ $message }}</p>
                 @enderror
             </div>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    new TomSelect("#assigned_class", {
+                        create: false,
+                        sortField: {
+                            field: "text",
+                            direction: "asc"
+                        }
+                    });
+                });
+            </script>
 
             <!-- Email -->
             <div>
@@ -79,7 +91,7 @@
                 <a href="{{ route('teachers.index') }}" class="text-gray-500 hover:text-gray-900 font-bold px-4 py-2 transition-colors">
                     Batal
                 </a>
-                <button type="submit" class="text-[#345344] bg-[#DFFF00] hover:bg-[#cbe600] focus:ring-4 focus:outline-none focus:ring-[#DFFF00]/50 font-bold rounded-xl text-sm px-8 py-3.5 text-center transition-all shadow-md">
+                <button type="submit" class="text-white bg-[#345344] hover:bg-[#2a4337] focus:ring-4 focus:outline-none focus:ring-[#345344]/20 font-bold rounded-xl text-sm px-8 py-3.5 text-center transition-all shadow-lg shadow-[#345344]/10">
                     Update Data
                 </button>
             </div>

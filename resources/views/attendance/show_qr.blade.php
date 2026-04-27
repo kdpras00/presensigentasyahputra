@@ -34,7 +34,7 @@
                         </div>
                         <div class="flex flex-col items-end">
                             <span class="text-white/80 text-[10px] font-black uppercase tracking-[0.2em] drop-shadow-md">SMA GENTA</span>
-                            <span class="text-[#DFFF00] font-black text-base -mt-1 drop-shadow-md">SYAPUTRA</span>
+                            <span class="text-white font-black text-base -mt-1 drop-shadow-md">SYAPUTRA</span>
                         </div>
                     </div>
 
@@ -94,14 +94,14 @@
                     </div>
                     <div class="flex flex-col items-end">
                         <span class="text-white/60 text-[10px] font-black uppercase tracking-[0.2em] drop-shadow-md">IDENTITAS</span>
-                        <span class="text-[#DFFF00] font-black text-base -mt-1 drop-shadow-md">VERIFIED</span>
+                        <span class="text-white font-black text-base -mt-1 drop-shadow-md">VERIFIED</span>
                     </div>
                 </div>
 
                 <div class="flex-1 flex flex-col items-center justify-center p-8 relative z-10">
                     <!-- QR Section -->
                     <div id="qr-container" class="bg-white p-5 rounded-[2.5rem] shadow-2xl">
-                        {!! QrCode::size(160)->margin(1)->generate(Auth::user()->username) !!}
+                        {!! QrCode::size(160)->margin(1)->generate((string) Auth::user()->username) !!}
                     </div>
                 </div>
 

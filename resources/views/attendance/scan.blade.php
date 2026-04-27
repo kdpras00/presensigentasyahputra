@@ -20,7 +20,6 @@
             <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <!-- Left: Class & Clock -->
                 <div class="flex items-center gap-4">
-                    
                     <div>
                         <p class="text-white/50 text-[10px] font-bold uppercase tracking-widest">Terminal Presensi</p>
                         <div class="flex items-center gap-3">
@@ -36,11 +35,11 @@
                     <span class="text-white/40 text-[10px] font-bold uppercase tracking-widest hidden md:block">Mode:</span>
                     <button id="mode-toggle" onclick="toggleMode()" class="relative flex items-center p-1 rounded-xl bg-white/10 border border-white/10 transition-all duration-300 hover:bg-white/15 cursor-pointer">
                         <div id="mode-pill" class="absolute top-1 h-[calc(100%-8px)] rounded-lg transition-all duration-300 ease-in-out
-                            {{ $mode === 'masuk' ? 'bg-[#DFFF00]/25' : 'bg-orange-500/25' }}"
+                            {{ $mode === 'masuk' ? 'bg-white/20' : 'bg-orange-500/25' }}"
                             style="width: calc(50% - 4px); left: {{ $mode === 'masuk' ? '4px' : 'calc(50%)' }};"></div>
 
                         <div id="mode-opt-masuk" class="relative z-10 flex items-center gap-1.5 px-4 py-2 rounded-lg text-xs font-bold transition-colors duration-300
-                            {{ $mode === 'masuk' ? 'text-[#DFFF00]' : 'text-white/30' }}">
+                            {{ $mode === 'masuk' ? 'text-white' : 'text-white/30' }}">
                             <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"></path></svg>
                             MASUK
                         </div>
@@ -54,113 +53,99 @@
             </div>
         </div>
 
-        <!-- Main Content: Scanner + Info Side -->
+        <!-- Main Content -->
         <div class="grid grid-cols-1 lg:grid-cols-5 gap-5">
             
-            <!-- Scanner (3/5 width on desktop) -->
+            <!-- Scanner Hardware Area -->
             <div class="lg:col-span-3">
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden relative">
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden relative min-h-[450px] flex flex-col items-center justify-center">
                     
-                    <!-- Time-Restricted Overlay -->
-                    <div id="time-restriction-overlay" class="hidden absolute inset-0 z-[45] bg-white/95 backdrop-blur-md flex flex-col items-center justify-center p-8 text-center">
-                        <div class="w-20 h-20 bg-orange-50 rounded-full flex items-center justify-center mb-6">
-                            <svg class="w-10 h-10 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                        </div>
-                        <h3 class="text-2xl font-extrabold text-gray-800 mb-3" id="restriction-title">Sesi Absensi Belum Dibuka</h3>
-                        <p class="text-gray-500 max-w-sm leading-relaxed mb-8" id="restriction-message">
-                            Absensi masuk hanya diperbolehkan mulai pukul <b>{{ $timeRules['masuk_start'] }}</b> hingga <b>{{ $timeRules['masuk_end'] }}</b>.
-                        </p>
-                        <div class="flex flex-col sm:flex-row gap-3">
-                            <div class="px-5 py-3 bg-gray-50 rounded-xl border border-gray-100 flex items-center gap-3">
-                                <div class="w-2 h-2 rounded-full bg-green-500"></div>
-                                <div>
-                                    <p class="text-[10px] font-bold text-gray-400 uppercase leading-none mb-1">Jadwal Masuk</p>
-                                    <p class="text-xs font-extrabold text-gray-700 leading-none">{{ $timeRules['masuk_start'] }} - {{ $timeRules['masuk_end'] }}</p>
-                                </div>
+                    <div class="p-10 text-center w-full">
+                        <div class="mb-8">
+                            <div class="w-28 h-28 bg-[#345344]/5 rounded-[2.5rem] flex items-center justify-center mx-auto mb-6 border-2 border-dashed border-[#345344]/20 group hover:border-[#345344]/40 transition-all duration-500 shadow-inner">
+                                <svg class="w-14 h-14 text-[#345344]/40 group-hover:scale-110 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path>
+                                </svg>
                             </div>
-                            <div class="px-5 py-3 bg-gray-50 rounded-xl border border-gray-100 flex items-center gap-3">
-                                <div class="w-2 h-2 rounded-full bg-orange-500"></div>
-                                <div>
-                                    <p class="text-[10px] font-bold text-gray-400 uppercase leading-none mb-1">Jadwal Pulang</p>
-                                    <p class="text-xs font-extrabold text-gray-700 leading-none">{{ $timeRules['keluar_start'] }} - {{ $timeRules['keluar_end'] }}</p>
+                            <h2 class="text-3xl font-black text-gray-800 tracking-tight leading-tight">Scanner Hardware<br><span class="text-[#345344]/40">Siap Digunakan</span></h2>
+                            <p class="text-sm text-gray-500 font-medium mt-3">Silakan scan kartu atau QR Code siswa pada alat scanner</p>
+                        </div>
+
+                        <!-- Scanner Input Field -->
+                        <div class="max-w-xs mx-auto relative group">
+                            <div class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+                                <div class="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse"></div>
+                            </div>
+                            <input type="text" id="scanner-input" autocomplete="off" autofocus
+                                class="w-full pl-10 pr-4 py-5 bg-gray-50 border-2 border-transparent rounded-[1.5rem] text-center font-mono text-2xl font-black text-[#345344] focus:bg-white focus:border-[#345344] focus:ring-8 focus:ring-[#345344]/5 transition-all duration-300 placeholder:text-gray-300 shadow-sm"
+                                placeholder="WAITING...">
+                            
+                            <div id="status-indicator" class="mt-6 text-[10px] font-black uppercase tracking-[0.3em] text-green-600 flex items-center justify-center gap-2 bg-green-50 py-2 px-4 rounded-full border border-green-100 mx-auto w-fit">
+                                <span class="flex h-2 w-2 rounded-full bg-green-500"></span>
+                                Standby & Monitoring
+                            </div>
+                        </div>
+
+                        <div class="mt-12 pt-8 border-t border-gray-50">
+                            <p class="text-[10px] text-gray-400 font-black uppercase tracking-widest mb-2">Petunjuk Penggunaan</p>
+                            <div class="flex justify-center gap-8">
+                                <div class="text-center">
+                                    <div class="text-[11px] font-bold text-gray-500">Auto Focus</div>
+                                    <div class="text-[9px] text-gray-400">Sistem mengunci input</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-[11px] font-bold text-gray-500">Auto Process</div>
+                                    <div class="text-[9px] text-gray-400">Scan & Kirim otomatis</div>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Scanner Container -->
-                    <div class="relative aspect-[4/3] bg-gray-900">
-                        <!-- Camera Feed -->
-                        <div id="reader" class="w-full h-full"></div>
-
-                        <!-- Focus Overlay -->
-                        <div class="absolute inset-0 pointer-events-none z-20 flex items-center justify-center">
-                            <div class="w-[92%] h-[92%] rounded-2xl relative" style="box-shadow: 0 0 0 2000px rgba(0,0,0,0.45);">
-                                <div class="absolute -top-1 -left-1 w-8 h-8 rounded-tl-2xl border-t-[3px] border-l-[3px] border-[#DFFF00]"></div>
-                                <div class="absolute -top-1 -right-1 w-8 h-8 rounded-tr-2xl border-t-[3px] border-r-[3px] border-[#DFFF00]"></div>
-                                <div class="absolute -bottom-1 -left-1 w-8 h-8 rounded-bl-2xl border-b-[3px] border-l-[3px] border-[#DFFF00]"></div>
-                                <div class="absolute -bottom-1 -right-1 w-8 h-8 rounded-br-2xl border-b-[3px] border-r-[3px] border-[#DFFF00]"></div>
-                                <div id="scan-line" class="absolute left-2 right-2 h-0.5 bg-[#DFFF00] shadow-[0_0_8px_rgba(223,255,0,0.6)] animate-scan-line"></div>
-                            </div>
+                    <!-- Status Feedback Overlay -->
+                    <div id="status-overlay" class="absolute inset-0 z-30 flex flex-col items-center justify-center bg-white/98 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-500 scale-95">
+                        <div id="status-icon-wrapper" class="w-32 h-32 rounded-[2.5rem] flex items-center justify-center mb-8 transition-transform duration-700 scale-50 shadow-2xl">
+                            <span id="status-icon" class="text-white"></span>
                         </div>
-
-                        <!-- Status Overlay -->
-                        <div id="status-overlay" class="absolute inset-0 z-30 flex flex-col items-center justify-center bg-white/95 backdrop-blur-sm opacity-0 pointer-events-none transition-all duration-300 scale-95">
-                            <div id="status-icon-wrapper" class="w-16 h-16 rounded-2xl flex items-center justify-center mb-4 transition-transform duration-500 scale-50">
-                                <span id="status-icon" class="text-white"></span>
-                            </div>
-                            <h3 id="status-title" class="text-xl font-extrabold text-gray-800 mb-1"></h3>
-                            <p id="status-desc" class="text-sm text-gray-500 text-center px-8 font-medium"></p>
-                            <p id="status-type" class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mt-3"></p>
-                        </div>
-
-                        <!-- Loading State -->
-                        <div id="loading-state" class="absolute inset-0 z-40 flex flex-col items-center justify-center bg-gray-900 transition-opacity duration-500">
-                            <div class="flex space-x-1.5 mb-4">
-                                <div class="w-2.5 h-2.5 bg-[#DFFF00] rounded-full animate-bounce" style="animation-delay: 0s;"></div>
-                                <div class="w-2.5 h-2.5 bg-[#DFFF00] rounded-full animate-bounce" style="animation-delay: 0.1s;"></div>
-                                <div class="w-2.5 h-2.5 bg-[#DFFF00] rounded-full animate-bounce" style="animation-delay: 0.2s;"></div>
-                            </div>
-                            <p class="text-sm text-white/60 font-medium">Mempersiapkan kamera...</p>
-                        </div>
-                    </div>
-
-                    <!-- Scanner Footer -->
-                    <div class="px-5 py-3 bg-gray-50 border-t border-gray-100 flex items-center justify-between">
-                        <p class="text-[10px] text-gray-400 font-medium">Arahkan QR Code siswa ke area kotak di atas</p>
-                        <button id="help-btn" class="text-[10px] font-bold text-gray-400 hover:text-gray-600 uppercase tracking-wider transition-colors flex items-center gap-1">
-                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                            Bantuan
-                        </button>
+                        <h3 id="status-title" class="text-4xl font-black text-gray-800 mb-3 tracking-tighter"></h3>
+                        <p id="status-desc" class="text-xl text-gray-500 text-center px-12 font-medium leading-relaxed max-lg"></p>
+                        <div id="status-type-badge" class="mt-8 px-6 py-2 rounded-full text-xs font-black uppercase tracking-[0.25em] shadow-sm"></div>
                     </div>
                 </div>
             </div>
 
-            <!-- Right Sidebar: Last 5 scans (2/5 width) -->
+            <!-- Right Sidebar: Scan History -->
             <div class="lg:col-span-2">
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 h-full">
-                    <div class="px-5 py-4 border-b border-gray-100">
-                        <h3 class="text-sm font-extrabold text-gray-800">Riwayat Scan</h3>
-                        <p class="text-[10px] text-gray-400 font-medium mt-0.5">Hasil scan terakhir sesi ini</p>
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 h-full flex flex-col">
+                    <div class="px-6 py-5 border-b border-gray-100 flex items-center justify-between bg-gray-50/30">
+                        <div>
+                            <h3 class="text-sm font-black text-gray-800 uppercase tracking-tight">Log Aktivitas</h3>
+                            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest mt-0.5">Real-time History</p>
+                        </div>
+                        <div class="bg-white px-3 py-1.5 rounded-xl border border-gray-200 shadow-sm">
+                            <span id="scan-count" class="text-sm font-black text-[#345344]">0</span>
+                            <span class="text-[9px] font-black text-gray-400 uppercase ml-1">Entries</span>
+                        </div>
                     </div>
-                    <div id="scan-history" class="p-4 space-y-2 max-h-[400px] overflow-y-auto">
+                    <div id="scan-history" class="p-5 space-y-4 flex-grow overflow-y-auto max-h-[500px]">
                         <!-- Empty state -->
-                        <div id="history-empty" class="text-center py-12">
-                            <div class="w-10 h-10 bg-gray-50 rounded-full flex items-center justify-center mx-auto mb-2">
-                                <svg class="w-5 h-5 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                        <div id="history-empty" class="text-center py-24">
+                            <div class="w-20 h-20 bg-gray-50 rounded-[2rem] flex items-center justify-center mx-auto mb-5 border-2 border-dashed border-gray-200">
+                                <svg class="w-10 h-10 text-gray-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
                             </div>
-                            <p class="text-xs text-gray-400 font-medium">Belum ada scan</p>
+                            <p class="text-xs text-gray-400 font-black uppercase tracking-[0.2em]">Belum Ada Scan</p>
                         </div>
                     </div>
 
-                    <!-- Mode indicator at bottom -->
-                    <div id="mode-indicator" class="px-5 py-3 border-t border-gray-100 flex items-center gap-2 transition-colors duration-300
+                    <!-- Bottom Status Indicator -->
+                    <div id="mode-indicator" class="px-6 py-5 border-t border-gray-100 flex items-center gap-4 transition-all duration-500
                         {{ $mode === 'masuk' ? 'bg-green-50/50' : 'bg-orange-50/50' }}">
-                        <div id="mode-dot" class="w-2 h-2 rounded-full animate-pulse transition-colors duration-300
-                            {{ $mode === 'masuk' ? 'bg-green-400' : 'bg-orange-400' }}"></div>
-                        <span id="mode-label" class="text-[10px] font-bold uppercase tracking-widest transition-colors duration-300
-                            {{ $mode === 'masuk' ? 'text-green-600' : 'text-orange-600' }}">
-                            Mode {{ $mode === 'masuk' ? 'Absen Masuk' : 'Absen Keluar' }} Aktif
+                        <div id="mode-dot" class="w-3 h-3 rounded-full animate-pulse transition-all duration-500
+                            {{ $mode === 'masuk' ? 'bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)]' : 'bg-orange-500 shadow-[0_0_10px_rgba(249,115,22,0.5)]' }}"></div>
+                        <span id="mode-label" class="text-xs font-black uppercase tracking-[0.2em] transition-colors duration-500
+                            {{ $mode === 'masuk' ? 'text-green-700' : 'text-orange-700' }}">
+                            MODE: {{ $mode === 'masuk' ? 'ABSEN MASUK' : 'ABSEN KELUAR' }}
                         </span>
                     </div>
                 </div>
@@ -170,378 +155,235 @@
     @endif
 </div>
 
+<!-- Floating Notification Area -->
+<div id="notification-container" class="fixed top-8 right-8 z-[100] w-full max-w-sm flex flex-col gap-4 pointer-events-none"></div>
+
 <style>
-    @keyframes scan-line {
-        0% { top: 8px; opacity: 0; }
-        10% { opacity: 1; }
-        90% { opacity: 1; }
-        100% { top: calc(100% - 8px); opacity: 0; }
+    /* Better Scrollbar */
+    #scan-history::-webkit-scrollbar { width: 6px; }
+    #scan-history::-webkit-scrollbar-track { background: transparent; }
+    #scan-history::-webkit-scrollbar-thumb { background: #f1f5f9; border-radius: 10px; }
+    #scan-history::-webkit-scrollbar-thumb:hover { background: #e2e8f0; }
+
+    /* Animations */
+    .notif-entrance { animation: notif-slide-in 0.6s cubic-bezier(0.19, 1, 0.22, 1) forwards; }
+    .notif-exit { animation: notif-slide-out 0.5s cubic-bezier(0.19, 1, 0.22, 1) forwards; }
+    @keyframes notif-slide-in {
+        from { opacity: 0; transform: translateY(-20px) scale(0.95); }
+        to { opacity: 1; transform: translateY(0) scale(1); }
     }
-    .animate-scan-line {
-        animation: scan-line 2.5s ease-in-out infinite;
+    @keyframes notif-slide-out {
+        from { opacity: 1; transform: translateY(0) scale(1); }
+        to { opacity: 0; transform: translateY(-20px) scale(0.95); }
     }
-    #reader { border: none !important; }
-    #reader video {
-        object-fit: cover !important;
-        width: 100% !important;
-        height: 100% !important;
+
+    .fade-in-up { animation: fade-in-up 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; }
+    @keyframes fade-in-up {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
     }
-    #reader__dashboard_section_csr,
-    #reader__dashboard_section_swaplink,
-    #reader__scan_region > img,
-    #reader__scan_region > br {
-        display: none !important;
-    }
-    #reader__scan_region {
-        border: none !important;
-        min-height: unset !important;
-    }
-    #qr-shaded-region { border: none !important; }
-    #scan-history::-webkit-scrollbar { width: 4px; }
-    #scan-history::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 4px; }
 </style>
 
-<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Live clock
-        const clockEl = document.getElementById('live-clock');
-        if (clockEl) {
-            function updateClock() {
-                const now = new Date();
-                clockEl.textContent = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-            }
-            updateClock();
-            setInterval(updateClock, 1000);
+    $(document).ready(function() {
+        // Clock
+        function updateClock() {
+            const now = new Date();
+            $('#live-clock').text(now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
         }
+        setInterval(updateClock, 1000);
+        updateClock();
 
         @if(!$error)
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        let isScanning = true;
-        let html5QrCode;
+        const csrfToken = $('meta[name="csrf-token"]').attr('content');
         let currentMode = '{{ $mode }}';
-        let scanHistory = [];
+        let scanTotal = 0;
+        let isProcessing = false;
+        const scannerInput = $('#scanner-input');
 
-        // ========== MODE TOGGLE ==========
+        // Focus management for USB Scanner
+        function refocus() {
+            if (!isProcessing && !scannerInput.is(':focus')) {
+                scannerInput.focus();
+            }
+        }
+        $(document).on('click keydown', refocus);
+        setInterval(refocus, 1000);
+
+        // Mode Switching
         window.toggleMode = function() {
             currentMode = currentMode === 'masuk' ? 'keluar' : 'masuk';
             updateModeUI();
-            checkTimeRestriction();
         };
 
-        const timeRules = @json($timeRules);
-
-        function checkTimeRestriction() {
-            const now = new Date();
-            const hours = String(now.getHours()).padStart(2, '0');
-            const minutes = String(now.getMinutes()).padStart(2, '0');
-            const currentTime = `${hours}:${minutes}`;
-
-            const overlay = document.getElementById('time-restriction-overlay');
-            const resTitle = document.getElementById('restriction-title');
-            const resMsg = document.getElementById('restriction-message');
-
-            // --- AUTO MODE SWITCHING ---
-            // If we are in the Masuk window and NOT in masuk mode, switch to it
-            if (currentTime >= timeRules.masuk_start && currentTime <= timeRules.masuk_end) {
-                if (currentMode !== 'masuk') {
-                    currentMode = 'masuk';
-                    updateModeUI();
-                }
-            } 
-            // If we are in the Keluar window and NOT in keluar mode, switch to it
-            else if (currentTime >= timeRules.keluar_start && currentTime <= timeRules.keluar_end) {
-                if (currentMode !== 'keluar') {
-                    currentMode = 'keluar';
-                    updateModeUI();
-                }
-            }
-
-            let isAllowed = false;
-
-            if (currentMode === 'masuk') {
-                if (currentTime >= timeRules.masuk_start && currentTime <= timeRules.masuk_end) {
-                    isAllowed = true;
-                } else {
-                    resTitle.innerText = currentTime < timeRules.masuk_start 
-                        ? 'Sesi Absen Masuk Belum Dibuka' 
-                        : 'Sesi Absen Masuk Telah Berakhir';
-                    resMsg.innerHTML = `Absensi <b>MASUK</b> hanya diperbolehkan pada pukul <b>${timeRules.masuk_start}</b> hingga <b>${timeRules.masuk_end}</b>.`;
-                }
-            } else {
-                if (currentTime >= timeRules.keluar_start && currentTime <= timeRules.keluar_end) {
-                    isAllowed = true;
-                } else {
-                    resTitle.innerText = currentTime < timeRules.keluar_start 
-                        ? 'Sesi Absen Pulang Belum Dibuka' 
-                        : 'Sesi Absen Pulang Telah Berakhir';
-                    resMsg.innerHTML = `Absensi <b>PULANG</b> hanya diperbolehkan pada pukul <b>${timeRules.keluar_start}</b> hingga <b>${timeRules.keluar_end}</b>.`;
-                }
-            }
-
-            if (isAllowed) {
-                overlay.classList.add('hidden');
-            } else {
-                overlay.classList.remove('hidden');
-            }
-        }
-
-        // Initial check
-        checkTimeRestriction();
-        // Periodically check every minute
-        setInterval(checkTimeRestriction, 60000);
-
         function updateModeUI() {
-            const pill = document.getElementById('mode-pill');
-            const optMasuk = document.getElementById('mode-opt-masuk');
-            const optKeluar = document.getElementById('mode-opt-keluar');
-            const indicator = document.getElementById('mode-indicator');
-            const dot = document.getElementById('mode-dot');
-            const label = document.getElementById('mode-label');
+            const pill = $('#mode-pill');
+            const optMasuk = $('#mode-opt-masuk');
+            const optKeluar = $('#mode-opt-keluar');
+            const indicator = $('#mode-indicator');
+            const dot = $('#mode-dot');
+            const label = $('#mode-label');
 
             if (currentMode === 'masuk') {
-                pill.style.left = '4px';
-                pill.className = pill.className.replace('bg-orange-500/25', 'bg-[#DFFF00]/25');
-                if (!pill.className.includes('bg-[#DFFF00]/25')) pill.className += ' bg-[#DFFF00]/25';
-
-                optMasuk.classList.remove('text-white/30');
-                optMasuk.classList.add('text-[#DFFF00]');
-                optKeluar.classList.remove('text-orange-300');
-                optKeluar.classList.add('text-white/30');
-
-                indicator.classList.remove('bg-orange-50/50');
-                indicator.classList.add('bg-green-50/50');
-                dot.classList.remove('bg-orange-400');
-                dot.classList.add('bg-green-400');
-                label.classList.remove('text-orange-600');
-                label.classList.add('text-green-600');
-                label.textContent = 'Mode Absen Masuk Aktif';
+                pill.css('left', '4px').removeClass('bg-orange-500/25').addClass('bg-white/20');
+                optMasuk.removeClass('text-white/30').addClass('text-white');
+                optKeluar.removeClass('text-orange-300').addClass('text-white/30');
+                indicator.removeClass('bg-orange-50/50').addClass('bg-green-50/50');
+                dot.removeClass('bg-orange-500 shadow-[0_0_10px_rgba(249,115,22,0.5)]').addClass('bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)]');
+                label.removeClass('text-orange-700').addClass('text-green-700').text('MODE: ABSEN MASUK');
             } else {
-                pill.style.left = 'calc(50%)';
-                pill.className = pill.className.replace('bg-[#DFFF00]/25', 'bg-orange-500/25');
-                if (!pill.className.includes('bg-orange-500/25')) pill.className += ' bg-orange-500/25';
+                pill.css('left', 'calc(50%)').removeClass('bg-white/20').addClass('bg-orange-500/25');
+                optKeluar.removeClass('text-white/30').addClass('text-orange-300');
+                optMasuk.removeClass('text-white').addClass('text-white/30');
+                indicator.removeClass('bg-green-50/50').addClass('bg-orange-50/50');
+                dot.removeClass('bg-green-500 shadow-[0_0_10px_rgba(34,197,94,0.5)]').addClass('bg-orange-500 shadow-[0_0_10px_rgba(249,115,22,0.5)]');
+                label.removeClass('text-green-700').addClass('text-orange-700').text('MODE: ABSEN KELUAR');
+            }
+            scannerInput.focus();
+        }
 
-                optKeluar.classList.remove('text-white/30');
-                optKeluar.classList.add('text-orange-300');
-                optMasuk.classList.remove('text-[#DFFF00]');
-                optMasuk.classList.add('text-white/30');
+        // Notification System
+        function showNotification(type, message) {
+            const id = 'notif-' + Date.now();
+            let iconSvg = '<svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>';
+            if (type === 'success') iconSvg = '<svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>';
+            if (type === 'warning') iconSvg = '<svg class="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>';
+            if (type === 'error') iconSvg = '<svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>';
 
-                indicator.classList.remove('bg-green-50/50');
-                indicator.classList.add('bg-orange-50/50');
-                dot.classList.remove('bg-green-400');
-                dot.classList.add('bg-orange-400');
-                label.classList.remove('text-green-600');
-                label.classList.add('text-orange-600');
-                label.textContent = 'Mode Absen Keluar Aktif';
+            const html = `
+                <div id="${id}" class="notif-entrance flex items-start p-5 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] bg-white pointer-events-auto border border-gray-100">
+                    <div class="flex-shrink-0 w-10 h-10 rounded-2xl bg-gray-50 flex items-center justify-center mr-4">
+                        ${iconSvg}
+                    </div>
+                    <div class="flex-grow">
+                        <p class="text-[13px] font-black text-gray-800 leading-snug">${message}</p>
+                        <p class="text-[9px] text-gray-400 font-black uppercase tracking-[0.2em] mt-1.5">Sistem Presensi Genta</p>
+                    </div>
+                </div>
+            `;
+
+            $('#notification-container').prepend(html);
+            setTimeout(() => {
+                $(`#${id}`).removeClass('notif-entrance').addClass('notif-exit');
+                setTimeout(() => $(`#${id}`).remove(), 600);
+            }, 6000);
+        }
+
+        // Process Scan Input
+        scannerInput.on('keypress', function(e) {
+            if (e.which === 13) {
+                const code = $(this).val().trim();
+                if (code && !isProcessing) {
+                    executeScanRequest(code);
+                }
+                $(this).val('');
+            }
+        });
+
+        function executeScanRequest(code) {
+            isProcessing = true;
+            scannerInput.prop('disabled', true);
+            $('#status-indicator').html('<span class="flex h-2 w-2 rounded-full bg-blue-500 animate-ping"></span> MENGHUBUNGI SERVER...');
+
+            $.ajax({
+                url: "{{ route('attendance.store') }}",
+                method: "POST",
+                data: JSON.stringify({ qr_code: code, mode: currentMode }),
+                contentType: "application/json",
+                headers: { "X-CSRF-TOKEN": csrfToken, "Accept": "application/json" },
+                success: function(res) {
+                    processResponse(res);
+                },
+                error: function(xhr) {
+                    const res = xhr.responseJSON || { status: 'error', message: 'Koneksi Server Bermasalah.' };
+                    processResponse(res);
+                },
+                complete: function() {
+                    isProcessing = false;
+                    scannerInput.prop('disabled', false).val('').focus();
+                    $('#status-indicator').html('<span class="flex h-2 w-2 rounded-full bg-green-500"></span> Standby & Monitoring');
+                }
+            });
+        }
+
+        function processResponse(data) {
+            const titleMap = { success: 'BERHASIL!', warning: 'PERHATIAN', error: 'GAGAL!' };
+            const statusTitle = titleMap[data.status] || 'HMM...';
+
+            showLargeFeedback(data.status, statusTitle, data.message, data.type);
+            showNotification(data.status, data.message);
+            
+            if (data.status !== 'error') {
+                updateHistoryList(data.status, data.message, data.type);
             }
         }
 
-        // ========== SOUND SYSTEM ==========
-        const AudioCtx = window.AudioContext || window.webkitAudioContext;
-        let audioCtx = null;
+        function showLargeFeedback(status, title, message, type) {
+            const overlay = $('#status-overlay');
+            const wrapper = $('#status-icon-wrapper');
+            const icon = $('#status-icon');
+            const badge = $('#status-type-badge');
 
-        function getAudioCtx() {
-            if (!audioCtx) audioCtx = new AudioCtx();
-            return audioCtx;
+            overlay.removeClass('opacity-0 scale-95 pointer-events-none').addClass('opacity-100 scale-100');
+            wrapper.removeClass('scale-50 bg-green-500 bg-yellow-500 bg-red-500 shadow-green-500/40 shadow-yellow-500/40 shadow-red-500/40').addClass('scale-100');
+            
+            if (status === 'success') {
+                wrapper.addClass('bg-green-500 shadow-2xl shadow-green-500/40');
+                icon.html('<svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M5 13l4 4L19 7"></path></svg>');
+                badge.removeClass('bg-yellow-100 text-yellow-800 bg-red-100 text-red-800').addClass('bg-green-100 text-green-700 border border-green-200');
+            } else if (status === 'warning') {
+                wrapper.addClass('bg-yellow-500 shadow-2xl shadow-yellow-500/40');
+                icon.html('<svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M12 9v2m0 4h.01"></path></svg>');
+                badge.removeClass('bg-green-100 text-green-700 bg-red-100 text-red-700').addClass('bg-yellow-100 text-yellow-700 border border-yellow-200');
+            } else {
+                wrapper.addClass('bg-red-500 shadow-2xl shadow-red-500/40');
+                icon.html('<svg class="w-16 h-16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="4" d="M6 18L18 6M6 6l12 12"></path></svg>');
+                badge.removeClass('bg-green-100 text-green-700 bg-yellow-100 text-yellow-700').addClass('bg-red-100 text-red-700 border border-red-200');
+            }
+
+            $('#status-title').text(title);
+            $('#status-desc').text(message);
+            badge.text(type === 'masuk' ? 'LOG: ABSENSI MASUK' : (type === 'keluar' ? 'LOG: ABSENSI KELUAR' : 'SYSTEM LOG'));
+
+            setTimeout(() => {
+                overlay.removeClass('opacity-100 scale-100').addClass('opacity-0 scale-95 pointer-events-none');
+                wrapper.removeClass('scale-100').addClass('scale-50');
+            }, 2500);
         }
 
-        function playTone(freq, duration, type = 'sine', gainVal = 0.3) {
-            const ctx = getAudioCtx();
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc.type = type;
-            osc.frequency.setValueAtTime(freq, ctx.currentTime);
-            gain.gain.setValueAtTime(gainVal, ctx.currentTime);
-            gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
-            osc.connect(gain);
-            gain.connect(ctx.destination);
-            osc.start(ctx.currentTime);
-            osc.stop(ctx.currentTime + duration);
-        }
-
-        function playSoundMasuk() {
-            [523.25, 659.25, 783.99, 1046.50].forEach((freq, i) => {
-                setTimeout(() => playTone(freq, 0.35, 'sine', 0.25), i * 120);
-            });
-        }
-
-        function playSoundKeluar() {
-            [783.99, 659.25, 523.25, 392.00].forEach((freq, i) => {
-                setTimeout(() => playTone(freq, 0.4, 'triangle', 0.22), i * 150);
-            });
-        }
-
-        function playSoundWarning() {
-            playTone(440, 0.15, 'square', 0.15);
-            setTimeout(() => playTone(440, 0.15, 'square', 0.15), 200);
-        }
-
-        function playSoundError() {
-            playTone(200, 0.5, 'sawtooth', 0.12);
-        }
-
-        // ========== UI ==========
-        const loadingState = document.getElementById('loading-state');
-        const statusOverlay = document.getElementById('status-overlay');
-        const iconWrapper = document.getElementById('status-icon-wrapper');
-        const statusIcon = document.getElementById('status-icon');
-        const statusTitle = document.getElementById('status-title');
-        const statusDesc = document.getElementById('status-desc');
-        const statusType = document.getElementById('status-type');
-
-        function addToHistory(status, message, type) {
-            const container = document.getElementById('scan-history');
-            const emptyState = document.getElementById('history-empty');
-            if (emptyState) emptyState.remove();
+        function updateHistoryList(status, message, type) {
+            $('#history-empty').hide();
+            scanTotal++;
+            $('#scan-count').text(scanTotal);
 
             const now = new Date();
-            const time = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-
-            const colors = {
-                success: { bg: 'bg-green-50', border: 'border-green-100', text: 'text-green-700', icon: 'bg-green-100 text-green-600' },
-                warning: { bg: 'bg-yellow-50', border: 'border-yellow-100', text: 'text-yellow-700', icon: 'bg-yellow-100 text-yellow-600' },
-                error: { bg: 'bg-red-50', border: 'border-red-100', text: 'text-red-700', icon: 'bg-red-100 text-red-600' }
+            const timeStr = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+            
+            const styles = {
+                success: 'border-green-100 bg-green-50/50 text-green-800',
+                warning: 'border-yellow-100 bg-yellow-50/50 text-yellow-800',
+                error: 'border-red-100 bg-red-50/50 text-red-800'
             };
-            const c = colors[status] || colors.error;
+            const s = styles[status] || styles.error;
+            const modeName = type === 'masuk' ? 'MASUK' : (type === 'keluar' ? 'KELUAR' : 'INFO');
 
-            const iconSvg = status === 'success'
-                ? '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>'
-                : status === 'warning'
-                ? '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01"></path></svg>'
-                : '<svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>';
-
-            const modeLabel = type === 'masuk' ? 'Masuk' : type === 'keluar' ? 'Keluar' : '';
-
-            const card = document.createElement('div');
-            card.className = `${c.bg} ${c.border} border rounded-xl p-3 animate-fade-in`;
-            card.innerHTML = `
-                <div class="flex flex-col">
-                    <p class="text-xs font-bold ${c.text} leading-relaxed">${message}</p>
-                    <div class="flex items-center gap-2 mt-1.5">
-                        <span class="text-[10px] font-mono font-medium text-gray-400">${time}</span>
-                        ${modeLabel ? `<span class="text-[9px] font-bold text-gray-500 bg-white/50 border border-white/80 px-1.5 py-0.5 rounded-md uppercase tracking-widest">${modeLabel}</span>` : ''}
+            const item = `
+                <div class="p-5 rounded-3xl border ${s} fade-in-up shadow-sm">
+                    <div class="flex justify-between items-center mb-2.5">
+                        <span class="text-[9px] font-black uppercase tracking-[0.2em] px-2.5 py-1 rounded-full bg-white/60 border border-white/80 shadow-sm">${modeName}</span>
+                        <span class="text-[10px] font-mono font-black opacity-40">${timeStr}</span>
                     </div>
-                </div>`;
+                    <p class="text-xs font-black leading-relaxed tracking-tight">${message}</p>
+                </div>
+            `;
 
-            container.insertBefore(card, container.firstChild);
-
-            // Keep max 10 items
-            while (container.children.length > 10) {
-                container.removeChild(container.lastChild);
+            $('#scan-history').prepend(item);
+            if ($('#scan-history').children().length > 15) {
+                $('#scan-history').children().last().remove();
             }
         }
-
-        function showStatus(type, title, message, scanType) {
-            statusOverlay.classList.remove('opacity-0', 'scale-95', 'pointer-events-none');
-            statusOverlay.classList.add('opacity-100', 'scale-100');
-            
-            iconWrapper.className = 'w-16 h-16 rounded-2xl flex items-center justify-center mb-4 transition-transform duration-500 transform scale-100 shadow-lg';
-            
-            if (type === 'success') {
-                iconWrapper.classList.add('bg-green-500');
-                statusIcon.innerHTML = '<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"></path></svg>';
-            } else if (type === 'warning') {
-                iconWrapper.classList.add('bg-yellow-500');
-                statusIcon.innerHTML = '<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>';
-            } else {
-                iconWrapper.classList.add('bg-red-500');
-                statusIcon.innerHTML = '<svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>';
-            }
-
-            statusTitle.innerText = title;
-            statusDesc.innerText = message;
-            if (scanType) {
-                statusType.innerText = scanType === 'masuk' ? 'Absen Masuk' : 'Absen Keluar';
-            }
-
-            // Play sound
-            if (type === 'success' && scanType === 'masuk') playSoundMasuk();
-            else if (type === 'success' && scanType === 'keluar') playSoundKeluar();
-            else if (type === 'warning') playSoundWarning();
-            else if (type === 'error') playSoundError();
-
-            // Add to history
-            addToHistory(type, message, scanType);
-        }
-
-        function resetStatus() {
-            statusOverlay.classList.remove('opacity-100', 'scale-100');
-            statusOverlay.classList.add('opacity-0', 'scale-95', 'pointer-events-none');
-            
-            iconWrapper.classList.remove('scale-100', 'bg-green-500', 'bg-yellow-500', 'bg-red-500');
-            iconWrapper.classList.add('scale-50');
-            statusType.innerText = '';
-
-            setTimeout(() => { isScanning = true; }, 400);
-        }
-
-        function onScanSuccess(decodedText) {
-            if (!isScanning) return;
-            isScanning = false;
-
-            fetch("{{ route('attendance.store') }}", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "X-CSRF-TOKEN": csrfToken,
-                    "Accept": "application/json"
-                },
-                body: JSON.stringify({ qr_code: decodedText, mode: currentMode })
-            })
-            .then(response => response.json())
-            .then(data => {
-                let shortTitle = 'Hmm...';
-                if (data.status === 'success') shortTitle = 'Berhasil!';
-                if (data.status === 'warning') shortTitle = 'Perhatian';
-                if (data.status === 'error') shortTitle = 'Gagal';
-
-                showStatus(data.status, shortTitle, data.message, data.type || null);
-                setTimeout(() => resetStatus(), 3500);
-            })
-            .catch(err => {
-                console.error(err);
-                showStatus('error', 'Koneksi Bermasalah', 'Gagal terhubung ke server. Periksa koneksi dan coba lagi.');
-                setTimeout(() => resetStatus(), 3000);
-            });
-        }
-
-        function onScanFailure() {}
-
-        // Setup Scanner
-        html5QrCode = new Html5Qrcode("reader");
-        const config = { fps: 10, qrbox: { width: 450, height: 450 }, aspectRatio: 1.333 };
-
-        html5QrCode.start(
-            { facingMode: "user" }, config, onScanSuccess, onScanFailure
-        ).then(() => {
-            loadingState.classList.add('opacity-0');
-            setTimeout(() => loadingState.classList.add('hidden'), 500);
-        }).catch((err) => {
-            console.error(err);
-            loadingState.innerHTML = `
-                <div class="text-center">
-                    <div class="w-12 h-12 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-3">
-                        <svg class="w-6 h-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
-                    </div>
-                    <p class="text-sm text-white/70 font-medium mb-1">Gagal mengakses kamera</p>
-                    <p class="text-xs text-white/40 mb-4">Pastikan izin kamera telah diberikan</p>
-                    <button onclick="location.reload()" class="px-5 py-2 bg-white/10 text-white/80 rounded-lg text-xs font-bold hover:bg-white/20 transition">Muat Ulang</button>
-                </div>`;
-            loadingState.classList.remove('opacity-0');
-        });
-
-        document.getElementById('help-btn').addEventListener('click', () => {
-             alert('Jika kamera tidak muncul:\n1. Pastikan Anda memberikan izin akses kamera ke browser.\n2. Coba muat ulang halaman atau hapus cache browser Anda.\n3. Hubungi petugas IT jika masih bermasalah.');
-        });
         @endif
     });
 </script>
-
-<style>
-    @keyframes fade-in {
-        from { opacity: 0; transform: translateY(-8px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-    .animate-fade-in { animation: fade-in 0.3s ease-out; }
-</style>
 @endsection

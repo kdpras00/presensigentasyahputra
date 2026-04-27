@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('header')
-    <h2 class="font-bold text-xl text-gray-800 leading-tight">
+    <h2 class="font-bold text-2xl text-white tracking-tighter">
         Dashboard
     </h2>
 @endsection

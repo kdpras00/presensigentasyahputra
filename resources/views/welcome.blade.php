@@ -91,16 +91,7 @@
                     </div>
                 </div>
 
-                <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                    <a href="{{ route('login') }}" class="px-8 py-4 bg-white text-[#345344] font-bold rounded-2xl hover:bg-gray-100 transition-all duration-300 shadow-xl hover:scale-105">
-                        Masuk ke Sistem
-                    </a>
-                    <button onclick="showDemoNotif()" class="px-8 py-4 bg-white/10 text-white font-bold rounded-2xl hover:bg-white/20 transition-all duration-300 border border-white/20">
-                        Demo Notifikasi
-                    </button>
-                </div>
 
-                <div id="demo-notif-container" class="fixed top-8 right-8 z-[60] w-full max-w-sm flex flex-col gap-3 pointer-events-none"></div>
 
                 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
                 <script>
@@ -123,39 +114,7 @@
                     setInterval(updateLiveClock, 1000);
                     updateLiveClock();
 
-                    function showDemoNotif() {
-                        const id = 'demo-' + Date.now();
-                        const html = `
-                            <div id="${id}" class="notif-entrance flex items-center p-5 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] bg-white pointer-events-auto text-left border border-gray-100">
-                                <div class="flex-shrink-0 w-10 h-10 rounded-2xl bg-gray-50 flex items-center justify-center mr-4">
-                                    <svg class="w-5 h-5 text-[#345344]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
-                                </div>
-                                <div class="flex-grow">
-                                    <p class="text-xs font-black text-gray-800 leading-tight uppercase tracking-tight">Presensi Berhasil</p>
-                                    <p class="text-[11px] text-gray-500 font-medium mt-1 leading-relaxed">Siswa telah melakukan absensi melalui sistem scanner.</p>
-                                </div>
-                            </div>
-                        `;
-                        $('#demo-notif-container').prepend(html);
-                        setTimeout(() => {
-                            $(`#${id}`).addClass('notif-exit');
-                            setTimeout(() => $(`#${id}`).remove(), 500);
-                        }, 5000);
-                    }
                 </script>
-
-                <style>
-                    .notif-entrance { animation: notif-slide-in 0.5s cubic-bezier(0.19, 1, 0.22, 1) forwards; }
-                    .notif-exit { animation: notif-slide-out 0.5s cubic-bezier(0.19, 1, 0.22, 1) forwards; }
-                    @keyframes notif-slide-in {
-                        from { opacity: 0; transform: translateY(-20px) scale(0.95); }
-                        to { opacity: 1; transform: translateY(0) scale(1); }
-                    }
-                    @keyframes notif-slide-out {
-                        from { opacity: 1; transform: translateY(0) scale(1); }
-                        to { opacity: 0; transform: translateY(-20px) scale(0.95); }
-                    }
-                </style>
 
                 <div class="mt-16 text-white/50 text-sm font-medium">
                     &copy; {{ date('Y') }} SMA Genta Syaputra. All rights reserved.

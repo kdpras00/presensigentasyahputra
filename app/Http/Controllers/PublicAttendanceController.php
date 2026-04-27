@@ -23,7 +23,8 @@ class PublicAttendanceController extends Controller
             'title' => 'Siswa Sudah Presensi',
             'students' => $students,
             'theme' => 'green',
-            'subtitle' => 'Daftar siswa yang telah tercatat hadir hari ini.'
+            'subtitle' => 'Daftar siswa yang telah tercatat hadir hari ini.',
+            'password' => 'PRESENT'
         ]);
     }
 
@@ -41,7 +42,8 @@ class PublicAttendanceController extends Controller
             'title' => 'Siswa Belum Presensi',
             'students' => $students,
             'theme' => 'red',
-            'subtitle' => 'Daftar siswa yang belum melakukan presensi hari ini.'
+            'subtitle' => 'Daftar siswa yang belum melakukan presensi hari ini.',
+            'password' => 'ABSENT'
         ]);
     }
 }

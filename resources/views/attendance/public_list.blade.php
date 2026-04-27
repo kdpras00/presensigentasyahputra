@@ -17,7 +17,8 @@
             }
         </style>
     </head>
-    <body class="antialiased bg-[#F1F5F9] min-h-screen">
+    <body class="antialiased bg-[#F1F5F9] min-h-screen overflow-hidden">
+        <div id="main-content" class="blur-md pointer-events-none select-none transition-all duration-700">
         <!-- Header -->
         <div class="relative overflow-hidden {{ $theme === 'green' ? 'bg-[#345344]' : 'bg-red-900' }} py-16 lg:py-24">
             <div class="absolute top-0 left-0 w-full h-full opacity-10">
@@ -116,5 +117,95 @@
         <div class="text-center pb-12">
             <p class="text-[10px] text-gray-400 font-black uppercase tracking-[0.3em]">© {{ date('Y') }} SMA GENTA SYAPUTRA </p>
         </div>
+        </div> <!-- End main-content -->
+
+        <!-- Password Popup Overlay -->
+        <div id="password-overlay" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm transition-opacity duration-500">
+            <div class="bg-white rounded-[2rem] p-10 shadow-2xl w-full max-w-md mx-4 transform transition-all duration-500 border border-white/20 relative overflow-hidden">
+                <!-- Decorative background -->
+                <div class="absolute -top-24 -right-24 w-64 h-64 {{ $theme === 'green' ? 'bg-green-100' : 'bg-red-100' }} rounded-full blur-3xl opacity-50 pointer-events-none"></div>
+                
+                <div class="relative z-10 text-center">
+                    <div class="w-20 h-20 mx-auto {{ $theme === 'green' ? 'bg-[#345344]' : 'bg-red-900' }} rounded-2xl flex items-center justify-center mb-6 shadow-lg">
+                        <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                    </div>
+                    
+                    <h2 class="text-2xl font-black text-gray-900 mb-2 uppercase tracking-tight">Halaman Terkunci</h2>
+                    <p class="text-gray-500 text-sm mb-8 font-medium">Masukkan kata sandi untuk mengakses data {{ strtolower($title) }}.</p>
+                    
+                    <div class="relative">
+                        <input type="password" id="page-password" class="w-full bg-gray-50 border border-gray-200 {{ $theme === 'green' ? 'text-[#345344]' : 'text-red-900' }} placeholder:text-gray-300 text-center text-lg font-black tracking-widest rounded-xl px-4 py-4 focus:ring-2 {{ $theme === 'green' ? 'focus:ring-[#345344] focus:border-[#345344]' : 'focus:ring-red-900 focus:border-red-900' }} transition-all outline-none" placeholder="•••••••">
+                        <p id="password-error" class="text-red-500 text-xs font-bold mt-3 opacity-0 transition-opacity">Kata sandi salah, silakan coba lagi.</p>
+                    </div>
+                    
+                    <button id="submit-password" class="w-full mt-6 {{ $theme === 'green' ? 'bg-[#345344] hover:bg-[#2a4337]' : 'bg-red-900 hover:bg-red-800' }} text-white font-black uppercase tracking-widest text-sm py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                        Buka Kunci
+                    </button>
+                    
+                    <a href="{{ url('/') }}" class="inline-block mt-6 text-gray-400 hover:text-gray-600 text-xs font-black uppercase tracking-widest transition-colors">
+                        Kembali ke Beranda
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const targetPassword = "{{ $password ?? '' }}";
+                const overlay = document.getElementById('password-overlay');
+                const mainContent = document.getElementById('main-content');
+                const passwordInput = document.getElementById('page-password');
+                const submitBtn = document.getElementById('submit-password');
+                const errorMsg = document.getElementById('password-error');
+
+                function unlockPage() {
+                    overlay.classList.remove('opacity-100');
+                    overlay.classList.add('opacity-0', 'pointer-events-none');
+                    
+                    setTimeout(() => {
+                        overlay.style.display = 'none';
+                    }, 500);
+
+                    mainContent.classList.remove('blur-md', 'pointer-events-none', 'select-none');
+                    document.body.classList.remove('overflow-hidden');
+                }
+
+                function checkPassword() {
+                    if (passwordInput.value === targetPassword) {
+                        unlockPage();
+                        sessionStorage.setItem('unlocked_' + targetPassword, 'true');
+                    } else {
+                        errorMsg.classList.remove('opacity-0');
+                        passwordInput.value = '';
+                        passwordInput.classList.add('border-red-500', 'bg-red-50');
+                        
+                        setTimeout(() => {
+                            errorMsg.classList.add('opacity-0');
+                            passwordInput.classList.remove('border-red-500', 'bg-red-50');
+                        }, 3000);
+                    }
+                }
+
+                // Check if already unlocked in session
+                if (targetPassword && sessionStorage.getItem('unlocked_' + targetPassword) === 'true') {
+                    overlay.style.display = 'none';
+                    mainContent.classList.remove('blur-md', 'pointer-events-none', 'select-none');
+                    document.body.classList.remove('overflow-hidden');
+                } else if (targetPassword) {
+                    passwordInput.focus();
+                } else {
+                    // No password set, unlock by default
+                    unlockPage();
+                }
+
+                submitBtn.addEventListener('click', checkPassword);
+                
+                passwordInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        checkPassword();
+                    }
+                });
+            });
+        </script>
     </body>
 </html>

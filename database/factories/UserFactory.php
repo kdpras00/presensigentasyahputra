@@ -23,11 +23,12 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
-        $email = fake()->unique()->safeEmail();
+        $faker = $this->faker ?? (function_exists('fake') ? fake() : \Faker\Factory::create());
+        $email = $faker->unique()->safeEmail();
         $username = strstr($email, '@', true);
 
         return [
-            'name' => fake()->name(),
+            'name' => $faker->name(),
             'username' => $username,
             'email' => $email,
             'email_verified_at' => now(),

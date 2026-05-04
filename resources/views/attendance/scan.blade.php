@@ -67,7 +67,12 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path>
                                 </svg>
                             </div>
-                            <h2 class="text-3xl font-black text-gray-800 tracking-tight leading-tight">Scanner Hardware<br><span class="text-[#345344]/40">Siap Digunakan</span></h2>
+                            <h2 class="text-3xl font-black text-gray-800 tracking-tight leading-tight">
+                                Scanner Hardware<br>
+                                <span class="{{ $sessionStatus == 'closed' ? 'text-red-500' : 'text-[#345344]/40' }}">
+                                    {{ $sessionStatus == 'closed' ? 'Sesi Ditutup' : 'Siap Digunakan' }}
+                                </span>
+                            </h2>
                             <p class="text-sm text-gray-500 font-medium mt-3">Silakan scan kartu atau QR Code siswa pada alat scanner</p>
                         </div>
 
@@ -80,9 +85,19 @@
                                 class="w-full pl-10 pr-4 py-5 bg-gray-50 border-2 border-transparent rounded-[1.5rem] text-center font-mono text-2xl font-black text-[#345344] focus:bg-white focus:border-[#345344] focus:ring-8 focus:ring-[#345344]/5 transition-all duration-300 placeholder:text-gray-300 shadow-sm"
                                 placeholder="WAITING...">
                             
-                            <div id="status-indicator" class="mt-6 text-[10px] font-black uppercase tracking-[0.3em] text-green-600 flex items-center justify-center gap-2 bg-green-50 py-2 px-4 rounded-full border border-green-100 mx-auto w-fit">
-                                <span class="flex h-2 w-2 rounded-full bg-green-500"></span>
-                                Standby & Monitoring
+                            <div id="status-indicator" class="mt-6 text-[10px] font-black uppercase tracking-[0.3em] flex items-center justify-center gap-2 py-2 px-4 rounded-full border mx-auto w-fit transition-all duration-500
+                                @if($sessionStatus == 'masuk_tepat')
+                                    bg-green-50 text-green-600 border-green-100
+                                @elseif($sessionStatus == 'masuk_telat')
+                                    bg-yellow-50 text-yellow-600 border-yellow-100
+                                @elseif($sessionStatus == 'keluar')
+                                    bg-orange-50 text-orange-600 border-orange-100
+                                @else
+                                    bg-red-50 text-red-600 border-red-100
+                                @endif">
+                                <span class="flex h-2 w-2 rounded-full 
+                                    @if($sessionStatus == 'masuk_tepat') bg-green-500 @elseif($sessionStatus == 'masuk_telat') bg-yellow-500 @elseif($sessionStatus == 'keluar') bg-orange-500 @else bg-red-500 @endif animate-pulse"></span>
+                                {{ $sessionMessage }}
                             </div>
                         </div>
 

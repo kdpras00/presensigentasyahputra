@@ -33,6 +33,8 @@ Route::middleware('auth')->group(function () {
     Route::middleware('role:admin')->group(function () {
         Route::resource('students', \App\Http\Controllers\StudentController::class);
         Route::resource('teachers', \App\Http\Controllers\TeacherController::class);
+        Route::get('/schedules', [\App\Http\Controllers\ScheduleController::class, 'index'])->name('schedules.index');
+        Route::post('/schedules', [\App\Http\Controllers\ScheduleController::class, 'update'])->name('schedules.update');
     });
     
     // Shared Report Route (Admin & Guru)

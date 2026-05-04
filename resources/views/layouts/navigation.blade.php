@@ -52,6 +52,12 @@
                         <svg class="w-6 h-6 mr-4 {{ request()->routeIs('reports.*') ? 'text-white' : 'text-white/40 group-hover:text-white' }} transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
                         <span class="text-base font-bold tracking-tight">Laporan</span>
                     </a>
+
+                    <a href="{{ route('schedules.index') }}" 
+                       class="flex items-center px-4 py-3.5 rounded-2xl transition-all duration-300 group {{ request()->routeIs('schedules.*') ? 'bg-white/10 text-white shadow-lg' : 'text-white/40 hover:bg-white/10 active:bg-white/20 hover:text-white' }}">
+                        <svg class="w-6 h-6 mr-4 {{ request()->routeIs('schedules.*') ? 'text-white' : 'text-white/40 group-hover:text-white' }} transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                        <span class="text-base font-bold tracking-tight">Kelola Jadwal</span>
+                    </a>
                 </div>
             </div>
             @endif

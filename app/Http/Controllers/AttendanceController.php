@@ -12,11 +12,28 @@ use Illuminate\Support\Facades\Notification;
 
 class AttendanceController extends Controller
 {
-    // Time constants
-    const CHECK_IN_START = '07:00';   // Mulai boleh absen masuk
-    const CHECK_IN_LIMIT = '07:15';   // Batas akhir absen masuk & jam masuk
-    const CHECK_OUT_TIME = '11:30';   // Mulai boleh absen pulang
-    const CHECK_OUT_END  = '17:15';   // Akhir sesi absen pulang
+    // Hardcoded constants removed in favor of database-driven schedules
+    
+    /**
+     * Get the schedule for the current day.
+     */
+    private function getCurrentSchedule()
+    {
+        $daysMap = [
+            'Monday'    => 'Senin',
+            'Tuesday'   => 'Selasa',
+            'Wednesday' => 'Rabu',
+            'Thursday'  => 'Kamis',
+            'Friday'    => 'Jumat',
+            'Saturday'  => 'Sabtu',
+            'Sunday'    => 'Minggu',
+        ];
+
+        $dayName = Carbon::now()->format('l');
+        $indonesianDay = $daysMap[$dayName] ?? $dayName;
+
+        return \App\Models\Schedule::where('day', $indonesianDay)->first();
+    }
 
     /**
      * Show the scan page for GURU only.
@@ -43,23 +60,58 @@ class AttendanceController extends Controller
         $now = Carbon::now();
         $currentTime = $now->format('H:i');
         
+        $schedule = $this->getCurrentSchedule();
+
+        if (!$schedule || $schedule->is_off) {
+            return view('attendance.scan', [
+                'assignedClass' => $teacher->assigned_class,
+                'mode' => null,
+                'error' => 'Hari ini adalah hari libur atau tidak ada jadwal presensi.',
+            ]);
+        }
+
+        $checkInStart = $schedule->start_time ? Carbon::parse($schedule->start_time)->format('H:i') : '07:00';
+        $checkInLimit = $schedule->late_time ? Carbon::parse($schedule->late_time)->format('H:i') : '07:15';
+        $checkOutTime = $schedule->checkout_start_time ? Carbon::parse($schedule->checkout_start_time)->format('H:i') : '11:30';
+        $checkOutEnd = $schedule->end_time ? Carbon::parse($schedule->end_time)->format('H:i') : '17:00';
+
         // Logic: 
         // 1. If current time is before the check-out window, default to 'masuk'
         // 2. If current time is on or after check-out starts, default to 'keluar'
         $mode = 'masuk';
-        if ($currentTime >= self::CHECK_OUT_TIME) {
+        if ($currentTime >= $checkOutTime) {
             $mode = 'keluar';
+        }
+
+        // Determine current session status for UI
+        $sessionStatus = 'closed';
+        $sessionMessage = 'Sesi Presensi Belum Dimulai';
+
+        if ($currentTime >= $checkInStart && $currentTime < $checkInLimit) {
+            $sessionStatus = 'masuk_tepat';
+            $sessionMessage = 'Sesi Masuk: Tepat Waktu';
+        } elseif ($currentTime >= $checkInLimit && $currentTime < $checkOutTime) {
+            $sessionStatus = 'masuk_telat';
+            $sessionMessage = 'Sesi Masuk: Terlambat';
+        } elseif ($currentTime >= $checkOutTime && $currentTime <= $checkOutEnd) {
+            $sessionStatus = 'keluar';
+            $sessionMessage = 'Sesi Pulang: Dibuka';
+        } elseif ($currentTime > $checkOutEnd) {
+            $sessionStatus = 'closed';
+            $sessionMessage = 'Sesi Presensi Hari Ini Berakhir';
         }
 
         return view('attendance.scan', [
             'assignedClass' => $teacher->assigned_class,
             'mode' => $mode,
             'error' => null,
+            'sessionStatus' => $sessionStatus,
+            'sessionMessage' => $sessionMessage,
             'timeRules' => [
-                'masuk_start' => self::CHECK_IN_START,
-                'masuk_end' => self::CHECK_IN_LIMIT,
-                'keluar_start' => self::CHECK_OUT_TIME,
-                'keluar_end' => self::CHECK_OUT_END,
+                'masuk_start' => $checkInStart,
+                'masuk_end' => $checkInLimit,
+                'keluar_start' => $checkOutTime,
+                'keluar_end' => $checkOutEnd,
             ]
         ]);
     }
@@ -127,18 +179,27 @@ class AttendanceController extends Controller
             })
             ->first();
 
+        $schedule = $this->getCurrentSchedule();
+
+        if (!$schedule || $schedule->is_off) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Hari ini tidak ada jadwal presensi.'
+            ], 403);
+        }
+
         // Use mode from frontend (teacher's choice)
         if ($mode === 'masuk') {
-            return $this->handleCheckIn($student, $teacher, $attendance, $now);
+            return $this->handleCheckIn($student, $teacher, $attendance, $now, $schedule);
         } else {
-            return $this->handleCheckOut($student, $teacher, $attendance, $now);
+            return $this->handleCheckOut($student, $teacher, $attendance, $now, $schedule);
         }
     }
 
     /**
      * Handle Check-In logic.
      */
-    private function handleCheckIn(Student $student, $teacher, $attendance, Carbon $now)
+    private function handleCheckIn(Student $student, $teacher, $attendance, Carbon $now, $schedule)
     {
         // Already checked in today?
         if ($attendance && $attendance->check_in_at) {
@@ -152,20 +213,24 @@ class AttendanceController extends Controller
 
         $currentTime = $now->format('H:i');
 
-        // Block if before 06:00
-        if ($currentTime < self::CHECK_IN_START) {
+        $checkInStart = $schedule->start_time ? Carbon::parse($schedule->start_time)->format('H:i') : '07:00';
+        $checkInLimit = $schedule->late_time ? Carbon::parse($schedule->late_time)->format('H:i') : '07:15';
+        $checkOutStart = $schedule->checkout_start_time ? Carbon::parse($schedule->checkout_start_time)->format('H:i') : '11:30';
+
+        // Block if before start
+        if ($currentTime < $checkInStart) {
             return response()->json([
                 'status' => 'error',
-                'message' => "Mohon maaf, jadwal absensi masuk baru akan dimulai pada pukul " . self::CHECK_IN_START . ".",
+                'message' => "Mohon maaf, jadwal absensi masuk baru akan dimulai pada pukul {$checkInStart}.",
                 'type' => 'masuk',
             ], 403);
         }
 
-        // Block if after 07:15
-        if ($currentTime > self::CHECK_IN_LIMIT) {
+        // Block if after checkout session starts (Hard limit for check-in)
+        if ($currentTime >= $checkOutStart) {
             return response()->json([
                 'status' => 'error',
-                'message' => "Mohon maaf, sesi absensi masuk untuk hari ini telah ditutup pada pukul " . self::CHECK_IN_LIMIT . ".",
+                'message' => "Mohon maaf, sesi absensi masuk sudah ditutup karena sudah memasuki waktu absensi pulang ({$checkOutStart}).",
                 'type' => 'masuk',
             ], 403);
         }
@@ -173,7 +238,8 @@ class AttendanceController extends Controller
         // Determine check-in status
         $checkInStatus = 'present';
         $statusLabel = 'HADIR (Tepat Waktu)';
-        if ($currentTime > self::CHECK_IN_LIMIT) {
+        // Logic for late can be more complex, but for now we follow the limit
+        if ($currentTime > $checkInLimit) {
             $checkInStatus = 'late';
             $statusLabel = 'TERLAMBAT';
         }
@@ -221,7 +287,7 @@ class AttendanceController extends Controller
     /**
      * Handle Check-Out logic.
      */
-    private function handleCheckOut(Student $student, $teacher, $attendance, Carbon $now)
+    private function handleCheckOut(Student $student, $teacher, $attendance, Carbon $now, $schedule)
     {
         // Must check-in first
         if (!$attendance || !$attendance->check_in_at) {
@@ -244,20 +310,23 @@ class AttendanceController extends Controller
 
         $currentTime = $now->format('H:i');
 
+        $checkOutStart = $schedule->checkout_start_time ? Carbon::parse($schedule->checkout_start_time)->format('H:i') : '11:30';
+        $checkOutEnd = $schedule->end_time ? Carbon::parse($schedule->end_time)->format('H:i') : '17:00';
+
         // Block if before 11:30
-        if ($currentTime < self::CHECK_OUT_TIME) {
+        if ($currentTime < $checkOutStart) {
             return response()->json([
                 'status' => 'error',
-                'message' => "Mohon maaf, jadwal absensi kepulangan baru akan dimulai pada pukul " . self::CHECK_OUT_TIME . ".",
+                'message' => "Mohon maaf, jadwal absensi kepulangan baru akan dimulai pada pukul {$checkOutStart}.",
                 'type' => 'keluar',
             ], 403);
         }
 
-        // Block if after 18:00
-        if ($currentTime > self::CHECK_OUT_END) {
+        // Block if after end
+        if ($currentTime > $checkOutEnd) {
             return response()->json([
                 'status' => 'error',
-                'message' => "Mohon maaf, batas waktu absensi kepulangan untuk hari ini telah berakhir.",
+                'message' => "Mohon maaf, batas waktu absensi kepulangan untuk hari ini telah berakhir pada pukul {$checkOutEnd}.",
                 'type' => 'keluar',
             ], 403);
         }

@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Attendance;
+use App\Models\Schedule;
 use App\Models\Student;
+use App\Models\Teacher;
 use App\Notifications\StudentAttendanceNotification;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Notification;
 
 class AttendanceController extends Controller
@@ -50,9 +54,12 @@ class AttendanceController extends Controller
 
         if (!$teacher || !$teacher->assigned_class) {
             return view('attendance.scan', [
-                'assignedClass' => null,
-                'mode' => null,
-                'error' => 'Anda belum memiliki kelas yang ditugaskan. Hubungi Admin.',
+                'assignedClass'  => null,
+                'mode'           => null,
+                'error'          => 'Anda belum memiliki kelas yang ditugaskan. Hubungi Admin.',
+                'sessionStatus'  => 'closed',
+                'sessionMessage' => 'Kelas Belum Ditugaskan',
+                'timeRules'      => null,
             ]);
         }
 
@@ -64,9 +71,12 @@ class AttendanceController extends Controller
 
         if (!$schedule || $schedule->is_off) {
             return view('attendance.scan', [
-                'assignedClass' => $teacher->assigned_class,
-                'mode' => null,
-                'error' => 'Hari ini adalah hari libur atau tidak ada jadwal presensi.',
+                'assignedClass'  => $teacher->assigned_class,
+                'mode'           => null,
+                'error'          => 'Hari ini adalah hari libur atau tidak ada jadwal presensi.',
+                'sessionStatus'  => 'closed',
+                'sessionMessage' => 'Hari Libur',
+                'timeRules'      => null,
             ]);
         }
 
@@ -147,7 +157,7 @@ class AttendanceController extends Controller
 
         // Find student by username (from the users table)
         $username = $request->input('qr_code');
-        $student = Student::whereHas('user', function($query) use ($username) {
+        $student = Student::with('user')->whereHas('user', function($query) use ($username) {
             $query->where('username', $username);
         })->first();
 
@@ -170,12 +180,11 @@ class AttendanceController extends Controller
         $today = Carbon::today()->format('Y-m-d');
         $mode = $request->input('mode');
 
-        // Get or create today's attendance record
+        // Get today's attendance record (FIXED: proper where grouping)
         $attendance = Attendance::where('student_id', $student->id)
-            ->whereDate('check_in_at', $today)
-            ->orWhere(function ($query) use ($student, $today) {
-                $query->where('student_id', $student->id)
-                      ->whereDate('scanned_at', $today);
+            ->where(function ($query) use ($today) {
+                $query->whereDate('check_in_at', $today)
+                      ->orWhereDate('scanned_at', $today);
             })
             ->first();
 
@@ -188,18 +197,34 @@ class AttendanceController extends Controller
             ], 403);
         }
 
-        // Use mode from frontend (teacher's choice)
-        if ($mode === 'masuk') {
-            return $this->handleCheckIn($student, $teacher, $attendance, $now, $schedule);
-        } else {
-            return $this->handleCheckOut($student, $teacher, $attendance, $now, $schedule);
+        // Use mode from frontend (teacher's choice) — wrapped in transaction for data integrity
+        try {
+            return DB::transaction(function () use ($mode, $student, $teacher, $attendance, $now, $schedule) {
+                if ($mode === 'masuk') {
+                    return $this->handleCheckIn($student, $teacher, $attendance, $now, $schedule);
+                } else {
+                    return $this->handleCheckOut($student, $teacher, $attendance, $now, $schedule);
+                }
+            });
+        } catch (\Exception $e) {
+            Log::error('Attendance scan failed', [
+                'student_id' => $student->id,
+                'teacher_id' => $teacher->id,
+                'mode' => $mode,
+                'error' => $e->getMessage(),
+            ]);
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Terjadi kesalahan sistem. Silakan coba lagi.',
+            ], 500);
         }
     }
 
     /**
      * Handle Check-In logic.
      */
-    private function handleCheckIn(Student $student, $teacher, $attendance, Carbon $now, $schedule)
+    private function handleCheckIn(Student $student, Teacher $teacher, ?Attendance $attendance, Carbon $now, Schedule $schedule)
     {
         // Already checked in today?
         if ($attendance && $attendance->check_in_at) {
@@ -245,7 +270,7 @@ class AttendanceController extends Controller
         }
 
         // Create attendance record
-        $attendance = Attendance::create([
+        $newAttendance = Attendance::create([
             'student_id' => $student->id,
             'teacher_id' => $teacher->id,
             'scanned_at' => $now,
@@ -287,7 +312,7 @@ class AttendanceController extends Controller
     /**
      * Handle Check-Out logic.
      */
-    private function handleCheckOut(Student $student, $teacher, $attendance, Carbon $now, $schedule)
+    private function handleCheckOut(Student $student, Teacher $teacher, ?Attendance $attendance, Carbon $now, Schedule $schedule)
     {
         // Must check-in first
         if (!$attendance || !$attendance->check_in_at) {
@@ -410,6 +435,11 @@ class AttendanceController extends Controller
     public function history()
     {
         $user = Auth::user();
+
+        if (!$user->student) {
+            abort(404, 'Data profil siswa tidak ditemukan.');
+        }
+
         $attendances = Attendance::where('student_id', $user->student->id)
             ->latest('check_in_at')
             ->paginate(10);

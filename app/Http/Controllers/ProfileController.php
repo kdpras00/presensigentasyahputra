@@ -38,15 +38,16 @@ class ProfileController extends Controller
         $user->email = $validated['email'];
 
         if ($request->filled('password')) {
-            $user->password = Hash::make($validated['password']);
+            $user->password = $validated['password'];
         }
 
         if ($request->hasFile('avatar')) {
             $file = $request->file('avatar');
-            $filename = time() . '_' . $file->getClientOriginalName();
+            $filename = time() . '_' . \Illuminate\Support\Str::random(10) . '.' . $file->extension();
             $file->move(public_path('images/avatars'), $filename);
             
-            if ($user->avatar && file_exists(public_path($user->avatar)) && strpos($user->avatar, 'default-avatar') === false) {
+            // Delete old avatar (skip default avatars)
+            if ($user->avatar && file_exists(public_path($user->avatar)) && !str_contains($user->avatar, 'default-avatar')) {
                 @unlink(public_path($user->avatar));
             }
             

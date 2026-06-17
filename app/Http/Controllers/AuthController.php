@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
@@ -26,8 +27,21 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
+
+            Log::info('User login successful', [
+                'user_id'  => Auth::id(),
+                'username' => $request->input('username'),
+                'ip'       => $request->ip(),
+                'role'     => Auth::user()->role,
+            ]);
+
             return redirect()->intended('dashboard');
         }
+
+        Log::warning('Login attempt failed', [
+            'username' => $request->input('username'),
+            'ip'       => $request->ip(),
+        ]);
 
         return back()->withErrors([
             'username' => 'Kredensial yang diberikan tidak cocok dengan data kami.',
@@ -80,7 +94,7 @@ class AuthController extends Controller
             $request->only('email', 'password', 'password_confirmation', 'token'),
             function ($user, $password) {
                 $user->forceFill([
-                    'password' => \Illuminate\Support\Facades\Hash::make($password)
+                    'password' => $password
                 ])->setRememberToken(\Illuminate\Support\Str::random(60));
 
                 $user->save();

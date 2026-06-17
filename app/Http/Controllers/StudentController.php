@@ -6,6 +6,7 @@ use App\Models\Student;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
 
 class StudentController extends Controller
@@ -59,15 +60,17 @@ class StudentController extends Controller
             'name' => $validated['name'],
             'username' => $validated['username'],
             'email' => $validated['email'],
-            'password' => Hash::make($validated['password']),
+            'password' => $validated['password'],
             'role' => 'student',
         ]);
 
         Student::create([
-            'user_id' => $user->id,
-            'class' => $validated['class'],
+            'user_id'    => $user->id,
+            'class'      => $validated['class'],
             'generation' => $validated['generation'] ?? null,
         ]);
+
+        Log::info('Student created', ['admin' => auth()->id(), 'student_username' => $validated['username']]);
 
         return redirect()->route('students.index')->with('success', 'Siswa berhasil ditambahkan.');
     }
@@ -112,16 +115,18 @@ class StudentController extends Controller
         ];
 
         if (!empty($validated['password'])) {
-            $userData['password'] = Hash::make($validated['password']);
+            $userData['password'] = $validated['password'];
         }
 
         $student->user->update($userData);
 
         // Update Student
         $student->update([
-            'class' => $validated['class'],
+            'class'      => $validated['class'],
             'generation' => $validated['generation'],
         ]);
+
+        Log::info('Student updated', ['admin' => auth()->id(), 'student_id' => $student->id]);
 
         return redirect()->route('students.index')->with('success', 'Data siswa berhasil diperbarui.');
     }
@@ -131,9 +136,12 @@ class StudentController extends Controller
      */
     public function destroy(Student $student)
     {
+        $studentId = $student->id;
         // Deleting the user will cascade to the student record because of the FK constraint
         $student->user->delete();
-        
+
+        Log::info('Student deleted', ['admin' => auth()->id(), 'student_id' => $studentId]);
+
         return redirect()->route('students.index')->with('success', 'Data siswa berhasil dihapus.');
     }
 }

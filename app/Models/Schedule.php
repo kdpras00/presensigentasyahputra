@@ -14,4 +14,8 @@ class Schedule extends Model
         'end_time',
         'is_off',
     ];
+
+    protected $casts = [
+        'is_off' => 'boolean',
+    ];
 }

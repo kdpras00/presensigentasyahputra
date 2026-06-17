@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
 
 class TeacherController extends Controller
@@ -59,7 +60,7 @@ class TeacherController extends Controller
             'name' => $request->name,
             'username' => $request->username,
             'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'password' => $request->password,
             'role' => 'guru',
         ]);
 
@@ -93,9 +94,9 @@ class TeacherController extends Controller
         }
 
         $request->validate([
-            'username' => ['required', 'string', 'max:255', 'unique:users,username,' . $teacher->id],
+            'username' => ['required', 'string', 'max:255', Rule::unique('users')->ignore($teacher->id)],
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email,' . $teacher->id],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($teacher->id)],
             'assigned_class' => ['nullable', 'string', 'max:255'],
         ]);
 
@@ -121,7 +122,7 @@ class TeacherController extends Controller
                 'password' => ['confirmed', Rules\Password::defaults()],
             ]);
             $teacher->update([
-                'password' => Hash::make($request->password),
+                'password' => $request->password,
             ]);
         }
 

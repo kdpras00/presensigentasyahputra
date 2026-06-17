@@ -7,17 +7,6 @@
 @section('content')
 <div class="space-y-8">
 
-    <!-- Premium Header Banner -->
-    <div class="bg-[#345344] rounded-[2.5rem] p-10 relative overflow-hidden shadow-2xl shadow-[#345344]/20">
-        <div class="relative z-10">
-            <h2 class="text-4xl font-black text-white leading-tight tracking-tighter mb-2">Manajemen Guru</h2>
-            <p class="text-white/60 text-sm font-medium">Kelola data tenaga pendidik dan penugasan kelas.</p>
-        </div>
-        
-        <!-- Decoration -->
-        <div class="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-white/5 rounded-full pointer-events-none"></div>
-    </div>
-
     <!-- Alert Success -->
     @if(session('success'))
         <div class="bg-green-50 border border-green-100 p-4 rounded-2xl flex items-center gap-3 animate-fade-in">
@@ -36,13 +25,13 @@
             <div class="flex items-center gap-3 w-full md:w-auto">
                 <form action="{{ route('teachers.index') }}" method="GET" class="relative group flex-1 md:flex-none">
                     <input type="text" name="search" value="{{ $search ?? '' }}" placeholder="Cari guru..." 
-                        class="w-full md:w-64 h-[42px] bg-gray-50 border border-gray-100 text-sm font-medium rounded-xl px-10 focus:ring-0 focus:border-[#345344]/30 transition-all">
+                        class="w-full md:w-64 h-[42px] bg-gray-100 border border-gray-100 text-sm font-medium rounded-xl px-10 focus:ring-0 focus:border-[#345344]/30 transition-all">
                     <div class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-[#345344] transition-colors">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                     </div>
                 </form>
                 
-                <a href="{{ route('teachers.create') }}" class="bg-white text-[#345344] text-sm font-bold px-6 py-3 rounded-2xl transition-all shadow-lg shadow-black/5 border border-gray-100 flex items-center gap-2 whitespace-nowrap">
+                <a href="{{ route('teachers.create') }}" class="bg-gray-100 text-[#345344] text-sm font-bold px-6 py-3 rounded-xl transition-all shadow-lg shadow-black/5 border border-gray-100 flex items-center gap-2 whitespace-nowrap">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4"></path></svg>
                     Tambah Guru
                 </a>

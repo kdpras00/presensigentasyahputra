@@ -1,18 +1,11 @@
 @extends('layouts.app')
 
+@section('header')
+    {{-- Header text removed for clean look --}}
+@endsection
+
 @section('content')
 <div class="space-y-8">
-
-    <!-- Simplified Banner -->
-    <div class="bg-[#345344] rounded-[2.5rem] p-10 relative overflow-hidden shadow-2xl shadow-[#345344]/20">
-        <div class="relative z-10">
-            <h2 class="text-4xl font-black text-white leading-tight tracking-tighter mb-2">Kelola Jadwal</h2>
-            <p class="text-white/60 text-sm font-medium">Atur waktu operasional presensi untuk setiap hari.</p>
-        </div>
-        
-        <!-- Decoration -->
-        <div class="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 bg-white/5 rounded-full pointer-events-none"></div>
-    </div>
 
     @if(session('success'))
         <div class="bg-green-50 border border-green-200 text-green-700 px-6 py-4 rounded-3xl text-sm font-bold">

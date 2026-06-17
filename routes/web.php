@@ -7,12 +7,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/present', [\App\Http\Controllers\PublicAttendanceController::class, 'present'])->name('public.present');
-Route::get('/absent', [\App\Http\Controllers\PublicAttendanceController::class, 'absent'])->name('public.absent');
+// Public attendance routes (require auth to protect student data)
+Route::middleware('auth')->group(function () {
+    Route::get('/present', [\App\Http\Controllers\PublicAttendanceController::class, 'present'])->name('public.present');
+    Route::get('/absent', [\App\Http\Controllers\PublicAttendanceController::class, 'absent'])->name('public.absent');
+});
 
 Route::middleware('guest')->group(function () {
     Route::get('login', [AuthController::class, 'create'])->name('login');
-    Route::post('login', [AuthController::class, 'store']);
+    Route::post('login', [AuthController::class, 'store'])->middleware('throttle:5,1');
     
     Route::get('forgot-password', [AuthController::class, 'showForgotPassword'])->name('password.request');
     Route::post('forgot-password', [AuthController::class, 'sendResetLink'])->name('password.email');
@@ -43,7 +46,7 @@ Route::middleware('auth')->group(function () {
     // Guru Routes — QR Scan exclusively for teachers
     Route::middleware('role:guru')->group(function () {
         Route::get('/scan', [\App\Http\Controllers\AttendanceController::class, 'scan'])->name('attendance.scan');
-        Route::post('/attendance', [\App\Http\Controllers\AttendanceController::class, 'store'])->name('attendance.store');
+        Route::post('/attendance', [\App\Http\Controllers\AttendanceController::class, 'store'])->name('attendance.store')->middleware('throttle:30,1');
     });
 
     // Student Routes

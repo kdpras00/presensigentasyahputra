@@ -27,8 +27,11 @@ class Teacher extends Model
 
     /**
      * Get students that belong to this teacher's assigned class.
+     *
+     * NOTE: This is NOT an Eloquent relationship — it returns a Collection.
+     * Cannot be eager-loaded. Use Student::where('class', ...)->get() directly for queries.
      */
-    public function students()
+    public function getClassStudents()
     {
         return Student::where('class', $this->assigned_class)->get();
     }

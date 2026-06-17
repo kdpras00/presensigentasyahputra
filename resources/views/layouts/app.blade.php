@@ -108,12 +108,30 @@
                                 <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path></svg>
                             </button>
                             
-                            @hasSection('header')
-                                <div class="truncate text-white">@yield('header')</div>
+                            @php
+                                $navTitles = [
+                                    'dashboard'            => 'Beranda',
+                                    'teachers.index'       => 'Data Guru',
+                                    'teachers.create'      => 'Tambah Guru',
+                                    'teachers.edit'        => 'Edit Guru',
+                                    'students.index'       => 'Data Siswa',
+                                    'students.create'      => 'Tambah Siswa',
+                                    'students.edit'        => 'Edit Siswa',
+                                    'reports.index'        => 'Laporan',
+                                    'schedules.index'      => 'Kelola Jadwal',
+                                    'attendance.scan'      => 'Scan Presensi',
+                                    'attendance.my-qr'     => 'QR Absensi',
+                                    'attendance.history'   => 'Riwayat Absensi',
+                                    'profile.edit'         => 'Profil Saya',
+                                ];
+                                $currentRoute = Route::currentRouteName() ?? '';
+                                $pageTitle = $navTitles[$currentRoute] ?? null;
+                            @endphp
+
+                            @if($pageTitle)
+                                <h2 class="font-semibold text-base text-white/90 tracking-tight truncate">{{ $pageTitle }}</h2>
                             @else
-                                <h2 class="font-black text-xl text-white capitalize tracking-tighter truncate">
-                                    {{ str_replace('.', ' ', Route::currentRouteName()) }}
-                                </h2>
+                                <div class="truncate text-white">@yield('header')</div>
                             @endif
                         </div>
 

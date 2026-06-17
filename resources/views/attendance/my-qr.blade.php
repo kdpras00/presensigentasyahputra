@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('header')
+    {{-- Header text removed for clean look --}}
+@endsection
+
 @section('content')
 <div class="min-h-screen py-12 px-4 bg-[#F0F2F5] dark:bg-gray-950">
     <div class="max-w-4xl mx-auto flex flex-col items-center">

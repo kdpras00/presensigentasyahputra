@@ -17,6 +17,10 @@ class ScheduleController extends Controller
     {
         $request->validate([
             'schedules' => 'required|array',
+            'schedules.*.start_time' => 'nullable|date_format:H:i',
+            'schedules.*.late_time' => 'nullable|date_format:H:i',
+            'schedules.*.checkout_start_time' => 'nullable|date_format:H:i',
+            'schedules.*.end_time' => 'nullable|date_format:H:i',
         ]);
 
         foreach ($request->schedules as $id => $data) {

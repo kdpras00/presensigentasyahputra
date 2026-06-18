@@ -29,12 +29,17 @@
                 @error('username') <p class="text-red-500 font-medium text-xs mt-1">{{ $message }}</p> @enderror
             </div>
             <div>
+                <label for="nis" class="block mb-2 text-sm font-bold text-gray-700">NIS</label>
+                <input type="text" id="nis" name="nis" class="bg-[#F3F4F6] border-transparent text-gray-900 text-sm rounded-xl focus:ring-4 focus:ring-[#345344]/20 focus:border-[#345344] block w-full p-4 transition-all placeholder-gray-400" placeholder="Nomor Induk Siswa" value="{{ old('nis', $student->nis) }}">
+                @error('nis') <p class="text-red-500 font-medium text-xs mt-1">{{ $message }}</p> @enderror
+            </div>
+            <div>
                 <label for="class" class="block mb-2 text-sm font-bold text-gray-700">Kelas</label>
                 <select id="class" name="class" class="tom-select w-full">
-                    <option value="10 IPA 1" {{ old('class', $student->class) == '10 IPA 1' ? 'selected' : '' }}>10 IPA 1</option>
-                    <option value="10 IPA 2" {{ old('class', $student->class) == '10 IPA 2' ? 'selected' : '' }}>10 IPA 2</option>
-                    <option value="10 IPS 1" {{ old('class', $student->class) == '10 IPS 1' ? 'selected' : '' }}>10 IPS 1</option>
-                    <option value="11 IPA 1" {{ old('class', $student->class) == '11 IPA 1' ? 'selected' : '' }}>11 IPA 1</option>
+                    <option value="">-- Pilih Kelas --</option>
+                    @foreach(config('school.classes') as $class)
+                        <option value="{{ $class }}" {{ old('class', $student->class) == $class ? 'selected' : '' }}>{{ $class }}</option>
+                    @endforeach
                 </select>
                 @error('class') <p class="text-red-500 font-medium text-xs mt-1">{{ $message }}</p> @enderror
             </div>
@@ -54,6 +59,14 @@
                 <label for="generation" class="block mb-2 text-sm font-bold text-gray-700">Angkatan</label>
                 <input type="text" id="generation" name="generation" class="bg-[#F3F4F6] border-transparent text-gray-900 text-sm rounded-xl focus:ring-4 focus:ring-[#345344]/20 focus:border-[#345344] block w-full p-4 transition-all placeholder-gray-400" placeholder="2023/2024" value="{{ old('generation', $student->generation) }}">
                 @error('generation') <p class="text-red-500 font-medium text-xs mt-1">{{ $message }}</p> @enderror
+            </div>
+            <div>
+                <label for="gender" class="block mb-2 text-sm font-bold text-gray-700">Jenis Kelamin</label>
+                <select id="gender" name="gender" class="bg-[#F3F4F6] border-transparent text-gray-900 text-sm rounded-xl focus:ring-4 focus:ring-[#345344]/20 focus:border-[#345344] block w-full p-4 transition-all">
+                    <option value="man" {{ old('gender', $student->user->gender) == 'man' ? 'selected' : '' }}>Laki-laki</option>
+                    <option value="woman" {{ old('gender', $student->user->gender) == 'woman' ? 'selected' : '' }}>Perempuan</option>
+                </select>
+                @error('gender') <p class="text-red-500 font-medium text-xs mt-1">{{ $message }}</p> @enderror
             </div>
             <div>
                 <label for="password" class="block mb-2 text-sm font-bold text-gray-700">Password (Kosongkan jika tidak ingin diubah)</label>

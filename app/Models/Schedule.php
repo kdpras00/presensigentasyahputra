@@ -12,6 +12,10 @@ class Schedule extends Model
         'late_time',
         'checkout_start_time',
         'end_time',
+        'afternoon_start_time',
+        'afternoon_late_time',
+        'afternoon_checkout_start_time',
+        'afternoon_end_time',
         'is_off',
     ];
 

@@ -53,10 +53,13 @@
             <table class="w-full text-left">
                 <thead>
                     <tr class="bg-gray-50/50">
-                        <th class="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Siswa</th>
+                        <th class="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Nama Siswa</th>
+                        <th class="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Username</th>
                         <th class="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider text-center">Kelas</th>
-                        <th class="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider text-center">Waktu Masuk</th>
-                        <th class="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider text-center">Waktu Keluar</th>
+                        <th class="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider text-center">Jam Masuk</th>
+                        <th class="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider text-center">Ket. Masuk</th>
+                        <th class="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider text-center">Jam Keluar</th>
+                        <th class="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider text-center">Ket. Keluar</th>
                         <th class="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider text-center">Status</th>
                     </tr>
                 </thead>
@@ -70,29 +73,47 @@
                                     </div>
                                     <div>
                                         <p class="text-sm font-semibold text-gray-900">{{ optional($attendance->student->user)->name ?? '-' }}</p>
-                                        <p class="text-xs text-gray-400">{{ optional($attendance->student->user)->username ?? '-' }}</p>
                                     </div>
                                 </div>
+                            </td>
+                            <td class="px-6 py-3">
+                                <span class="text-sm font-medium text-gray-500">{{ optional($attendance->student->user)->username ?? '-' }}</span>
                             </td>
                             <td class="px-6 py-3 text-center">
                                 <span class="text-sm text-gray-700">{{ $attendance->student->class ?? '-' }}</span>
                             </td>
                             <td class="px-6 py-3 text-center">
                                 @if($attendance->check_in_at)
-                                    <div class="flex flex-col items-center">
-                                        <span class="font-mono text-sm font-semibold text-gray-700">{{ \Carbon\Carbon::parse($attendance->check_in_at)->format('H:i') }}</span>
-                                        <span class="text-xs text-gray-500">{{ $attendance->check_in_status == 'present' ? 'Tepat Waktu' : 'Terlambat' }}</span>
-                                    </div>
+                                    <span class="font-mono text-sm font-semibold text-gray-700">{{ \Carbon\Carbon::parse($attendance->check_in_at)->format('H:i') }}</span>
+                                @else
+                                    <span class="text-gray-300">—</span>
+                                @endif
+                            </td>
+                            <td class="px-6 py-3 text-center">
+                                @if($attendance->check_in_at)
+                                    @if($attendance->check_in_status == 'present')
+                                        <span class="text-sm font-semibold text-green-600">Tepat Waktu</span>
+                                    @else
+                                        <span class="text-sm font-semibold text-red-600">Terlambat</span>
+                                    @endif
                                 @else
                                     <span class="text-gray-300">—</span>
                                 @endif
                             </td>
                             <td class="px-6 py-3 text-center">
                                 @if($attendance->check_out_at)
-                                    <div class="flex flex-col items-center">
-                                        <span class="font-mono text-sm font-semibold text-gray-700">{{ \Carbon\Carbon::parse($attendance->check_out_at)->format('H:i') }}</span>
-                                        <span class="text-xs text-gray-500">{{ $attendance->check_out_status == 'present' ? 'Pulang Normal' : 'Pulang Awal' }}</span>
-                                    </div>
+                                    <span class="font-mono text-sm font-semibold text-gray-700">{{ \Carbon\Carbon::parse($attendance->check_out_at)->format('H:i') }}</span>
+                                @else
+                                    <span class="text-gray-300">—</span>
+                                @endif
+                            </td>
+                            <td class="px-6 py-3 text-center">
+                                @if($attendance->check_out_at)
+                                    @if($attendance->check_out_status == 'present')
+                                        <span class="text-sm font-semibold text-blue-600">Pulang Normal</span>
+                                    @else
+                                        <span class="text-sm font-semibold text-orange-600">Pulang Awal</span>
+                                    @endif
                                 @else
                                     <span class="text-gray-300">—</span>
                                 @endif
@@ -111,7 +132,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="5" class="px-6 py-16 text-center">
+                            <td colspan="8" class="px-6 py-16 text-center">
                                 <p class="text-sm text-gray-400 font-medium">Tidak ada data absensi untuk tanggal ini</p>
                             </td>
                         </tr>

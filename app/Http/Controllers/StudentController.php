@@ -11,9 +11,6 @@ use Illuminate\Validation\Rule;
 
 class StudentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request)
     {
         $search = $request->input('search');
@@ -33,17 +30,11 @@ class StudentController extends Controller
         return view('students.index', compact('students', 'search'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         return view('students.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -51,7 +42,7 @@ class StudentController extends Controller
             'username' => ['required', 'string', 'max:255', 'unique:users'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', 'min:8'],
-            
+            'nis' => ['nullable', 'string', 'max:50', 'unique:students,nis'],
             'class' => ['required', 'string'],
             'generation' => ['nullable', 'string'],
         ]);
@@ -66,6 +57,7 @@ class StudentController extends Controller
 
         Student::create([
             'user_id'    => $user->id,
+            'nis'        => $validated['nis'] ?? null,
             'class'      => $validated['class'],
             'generation' => $validated['generation'] ?? null,
         ]);
@@ -75,26 +67,16 @@ class StudentController extends Controller
         return redirect()->route('students.index')->with('success', 'Siswa berhasil ditambahkan.');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Student $student)
     {
-        //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Student $student)
     {
         $student->load('user');
         return view('students.edit', compact('student'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Student $student)
     {
         $validated = $request->validate([
@@ -102,9 +84,10 @@ class StudentController extends Controller
             'username' => ['required', 'string', 'max:255', Rule::unique('users')->ignore($student->user_id)],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($student->user_id)],
             'password' => ['nullable', 'confirmed', 'min:8'],
-            
+            'nis' => ['nullable', 'string', 'max:50', Rule::unique('students', 'nis')->ignore($student->id)],
             'class' => ['required', 'string'],
             'generation' => ['nullable', 'string'],
+            'gender' => ['required', 'in:man,woman'],
         ]);
 
         // Update User
@@ -112,6 +95,7 @@ class StudentController extends Controller
             'name' => $validated['name'],
             'username' => $validated['username'],
             'email' => $validated['email'],
+            'gender' => $validated['gender'],
         ];
 
         if (!empty($validated['password'])) {
@@ -122,6 +106,7 @@ class StudentController extends Controller
 
         // Update Student
         $student->update([
+            'nis'        => $validated['nis'] ?? null,
             'class'      => $validated['class'],
             'generation' => $validated['generation'],
         ]);
@@ -131,9 +116,6 @@ class StudentController extends Controller
         return redirect()->route('students.index')->with('success', 'Data siswa berhasil diperbarui.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Student $student)
     {
         $studentId = $student->id;

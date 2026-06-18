@@ -11,9 +11,6 @@ use Illuminate\Validation\Rules;
 
 class TeacherController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index(Request $request)
     {
         $search = $request->input('search');
@@ -34,18 +31,12 @@ class TeacherController extends Controller
         return view('teachers.index', compact('teachers', 'search'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
         $availableClasses = $this->getAvailableClasses();
         return view('teachers.create', compact('availableClasses'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -72,9 +63,6 @@ class TeacherController extends Controller
         return redirect()->route('teachers.index')->with('success', 'Data Guru berhasil ditambahkan.');
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(User $teacher)
     {
         if ($teacher->role !== 'guru') {
@@ -84,9 +72,6 @@ class TeacherController extends Controller
         return view('teachers.edit', compact('teacher', 'availableClasses'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, User $teacher)
     {
         if ($teacher->role !== 'guru') {
@@ -98,12 +83,14 @@ class TeacherController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($teacher->id)],
             'assigned_class' => ['nullable', 'string', 'max:255'],
+            'gender' => ['required', 'in:man,woman'],
         ]);
 
         $teacher->update([
             'name' => $request->name,
             'username' => $request->username,
             'email' => $request->email,
+            'gender' => $request->gender,
         ]);
 
         if ($teacher->teacher) {
@@ -129,9 +116,6 @@ class TeacherController extends Controller
         return redirect()->route('teachers.index')->with('success', 'Data Guru berhasil diperbarui.');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(User $teacher)
     {
         if ($teacher->role !== 'guru') {
@@ -147,6 +131,6 @@ class TeacherController extends Controller
      */
     private function getAvailableClasses(): array
     {
-        return Student::select('class')->distinct()->orderBy('class')->pluck('class')->toArray();
+        return config('school.classes', []);
     }
 }

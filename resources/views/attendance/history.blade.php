@@ -31,11 +31,11 @@
                     </td>
                     <td class="px-6 py-4">
                         @if($attendance->check_in_status == 'present')
-                            <span class="bg-green-50 text-green-700 font-bold px-3 py-1 rounded-lg text-xs border border-green-100">Hadir</span>
+                            <span class="font-bold text-green-600 text-sm">Hadir</span>
                         @elseif($attendance->check_in_status == 'late')
-                            <span class="bg-yellow-50 border-yellow-100 border text-yellow-700 font-bold px-3 py-1 rounded-lg text-xs">Terlambat</span>
+                            <span class="font-bold text-red-600 text-sm">Terlambat</span>
                         @else
-                            <span class="text-gray-400 text-xs">-</span>
+                            <span class="text-gray-400 text-sm">-</span>
                         @endif
                     </td>
                     <td class="px-6 py-4 font-mono font-medium text-gray-500">
@@ -43,11 +43,11 @@
                     </td>
                     <td class="px-6 py-4">
                         @if($attendance->check_out_status == 'present')
-                            <span class="bg-blue-50 border-blue-100 border text-blue-700 font-bold px-3 py-1 rounded-lg text-xs">Pulang</span>
+                            <span class="font-bold text-blue-600 text-sm">Pulang</span>
                         @elseif($attendance->check_out_status == 'early_leave')
-                            <span class="bg-orange-50 border-orange-100 border text-orange-700 font-bold px-3 py-1 rounded-lg text-xs">Pulang Awal</span>
+                            <span class="font-bold text-orange-600 text-sm">Pulang Awal</span>
                         @else
-                            <span class="text-gray-400 text-xs">Belum</span>
+                            <span class="text-gray-400 text-sm">Belum</span>
                         @endif
                     </td>
                 </tr>

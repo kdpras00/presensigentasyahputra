@@ -28,12 +28,17 @@
                 @error('username') <p class="text-red-500 font-medium text-xs mt-1">{{ $message }}</p> @enderror
             </div>
             <div>
+                <label for="nis" class="block mb-2 text-sm font-bold text-gray-700">NIS</label>
+                <input type="text" id="nis" name="nis" class="bg-[#F3F4F6] border-transparent text-gray-900 text-sm rounded-xl focus:ring-4 focus:ring-[#345344]/20 focus:border-[#345344] block w-full p-4 transition-all placeholder-gray-400" placeholder="Nomor Induk Siswa" value="{{ old('nis') }}">
+                @error('nis') <p class="text-red-500 font-medium text-xs mt-1">{{ $message }}</p> @enderror
+            </div>
+            <div>
                 <label for="class" class="block mb-2 text-sm font-bold text-gray-700">Kelas</label>
                 <select id="class" name="class" class="tom-select w-full">
-                    <option value="10 IPA 1">10 IPA 1</option>
-                    <option value="10 IPA 2">10 IPA 2</option>
-                    <option value="10 IPS 1">10 IPS 1</option>
-                    <option value="11 IPA 1">11 IPA 1</option>
+                    <option value="">-- Pilih Kelas --</option>
+                    @foreach(config('school.classes') as $class)
+                        <option value="{{ $class }}" {{ old('class') == $class ? 'selected' : '' }}>{{ $class }}</option>
+                    @endforeach
                 </select>
                 @error('class') <p class="text-red-500 font-medium text-xs mt-1">{{ $message }}</p> @enderror
             </div>

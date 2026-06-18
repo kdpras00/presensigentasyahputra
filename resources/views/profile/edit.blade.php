@@ -10,11 +10,6 @@
 <div class="max-w-2xl mx-auto">
     <div class="bg-white rounded-3xl shadow-lg border-transparent p-10">
         
-        @if (session('success'))
-            <div class="p-4 mb-6 text-sm text-green-800 rounded-xl bg-green-50 border border-green-100 font-bold" role="alert">
-                {{ session('success') }}
-            </div>
-        @endif
 
         <form method="POST" action="{{ route('profile.update') }}" class="space-y-6" enctype="multipart/form-data">
             @csrf
@@ -23,7 +18,7 @@
             <!-- Avatar -->
             <div class="flex flex-col items-center justify-center pt-2 pb-6 border-b border-gray-100">
                 <div class="relative group cursor-pointer mb-4">
-                    <img src="{{ $user->avatar ? asset($user->avatar) : asset('images/avatars/default-avatar.svg') }}" 
+                    <img src="{{ asset($user->avatar) }}" 
                          alt="Profil {{ $user->name }}" 
                          class="w-28 h-28 rounded-full object-cover border-4 border-[#F3F4F6] shadow-sm group-hover:opacity-75 transition-opacity">
                     <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">

@@ -19,8 +19,9 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
-        'email',
         'username',
+        'gender',
+        'email',
         'password',
         'role',
         'avatar',
@@ -72,5 +73,18 @@ class User extends Authenticatable
     public function isStudent()
     {
         return $this->role === 'student';
+    }
+
+    public function getAvatarAttribute($value)
+    {
+        if ($value) {
+            return $value;
+        }
+
+        if ($this->gender === 'woman') {
+            return 'images/avatars/default-profile-woman.png';
+        }
+
+        return 'images/avatars/default-profile-man.png';
     }
 }

@@ -53,7 +53,6 @@
                     <tr class="hover:bg-gray-50/50 transition-colors">
                         <td class="px-6 py-4">
                             <p class="text-sm font-semibold text-gray-900">{{ optional($activity->student->user)->name ?? '-' }}</p>
-                            <p class="text-xs text-gray-400 mt-0.5">Siswa</p>
                         </td>
                         <td class="px-6 py-4 text-center font-mono text-sm text-gray-500">
                             {{ $activity->check_in_at ? \Carbon\Carbon::parse($activity->check_in_at)->format('H:i') : '-' }}

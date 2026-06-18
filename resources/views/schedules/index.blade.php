@@ -7,11 +7,7 @@
 @section('content')
 <div class="space-y-8">
 
-    @if(session('success'))
-        <div class="bg-green-50 border border-green-200 text-green-700 px-6 py-4 rounded-3xl text-sm font-bold">
-            {{ session('success') }}
-        </div>
-    @endif
+
 
     <!-- Schedule Form -->
     <div class="bg-white rounded-[2.5rem] shadow-[0_10px_40px_rgba(0,0,0,0.03)] border border-gray-50 overflow-hidden">
@@ -26,6 +22,10 @@
                             <th class="px-8 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider text-center">Batas Tepat Waktu</th>
                             <th class="px-8 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider text-center">Mulai Pulang</th>
                             <th class="px-8 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider text-center">Batas Pulang</th>
+                            <th class="px-8 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider text-center">Mulai Masuk (Siang)</th>
+                            <th class="px-8 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider text-center">Batas (Siang)</th>
+                            <th class="px-8 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider text-center">Mulai Pulang (Siang)</th>
+                            <th class="px-8 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider text-center">Batas Pulang (Siang)</th>
                             <th class="px-8 py-4 text-xs font-bold text-gray-500 uppercase tracking-wider text-center">Libur</th>
                         </tr>
                     </thead>
@@ -50,6 +50,22 @@
                             <td class="px-4 py-6">
                                 <input type="time" name="schedules[{{ $schedule->id }}][end_time]" value="{{ $schedule->end_time ? \Carbon\Carbon::parse($schedule->end_time)->format('H:i') : '' }}" 
                                     class="bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-xl focus:ring-[#345344] focus:border-[#345344] block w-full p-2.5 transition-all duration-300 {{ $schedule->is_off ? 'opacity-50 pointer-events-none' : '' }}" id="end_{{ $schedule->id }}">
+                            </td>
+                            <td class="px-4 py-6">
+                                <input type="time" name="schedules[{{ $schedule->id }}][afternoon_start_time]" value="{{ $schedule->afternoon_start_time ? \Carbon\Carbon::parse($schedule->afternoon_start_time)->format('H:i') : '' }}" 
+                                    class="bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-xl focus:ring-[#345344] focus:border-[#345344] block w-full p-2.5 transition-all duration-300 {{ $schedule->is_off ? 'opacity-50 pointer-events-none' : '' }}" id="afternoon_start_{{ $schedule->id }}">
+                            </td>
+                            <td class="px-4 py-6">
+                                <input type="time" name="schedules[{{ $schedule->id }}][afternoon_late_time]" value="{{ $schedule->afternoon_late_time ? \Carbon\Carbon::parse($schedule->afternoon_late_time)->format('H:i') : '' }}" 
+                                    class="bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-xl focus:ring-[#345344] focus:border-[#345344] block w-full p-2.5 transition-all duration-300 {{ $schedule->is_off ? 'opacity-50 pointer-events-none' : '' }}" id="afternoon_late_{{ $schedule->id }}">
+                            </td>
+                            <td class="px-4 py-6">
+                                <input type="time" name="schedules[{{ $schedule->id }}][afternoon_checkout_start_time]" value="{{ $schedule->afternoon_checkout_start_time ? \Carbon\Carbon::parse($schedule->afternoon_checkout_start_time)->format('H:i') : '' }}" 
+                                    class="bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-xl focus:ring-[#345344] focus:border-[#345344] block w-full p-2.5 transition-all duration-300 {{ $schedule->is_off ? 'opacity-50 pointer-events-none' : '' }}" id="afternoon_checkout_start_{{ $schedule->id }}">
+                            </td>
+                            <td class="px-4 py-6">
+                                <input type="time" name="schedules[{{ $schedule->id }}][afternoon_end_time]" value="{{ $schedule->afternoon_end_time ? \Carbon\Carbon::parse($schedule->afternoon_end_time)->format('H:i') : '' }}" 
+                                    class="bg-gray-50 border border-gray-200 text-gray-900 text-sm rounded-xl focus:ring-[#345344] focus:border-[#345344] block w-full p-2.5 transition-all duration-300 {{ $schedule->is_off ? 'opacity-50 pointer-events-none' : '' }}" id="afternoon_end_{{ $schedule->id }}">
                             </td>
                             <td class="px-8 py-6 text-center">
                                 <label class="inline-flex items-center cursor-pointer">
@@ -78,13 +94,23 @@
         const checkoutStartInput = document.getElementById('checkout_start_' + id);
         const endInput = document.getElementById('end_' + id);
         
-        const inputs = [startInput, lateInput, checkoutStartInput, endInput];
+        const afternoonStartInput = document.getElementById('afternoon_start_' + id);
+        const afternoonLateInput = document.getElementById('afternoon_late_' + id);
+        const afternoonCheckoutStartInput = document.getElementById('afternoon_checkout_start_' + id);
+        const afternoonEndInput = document.getElementById('afternoon_end_' + id);
+        
+        const inputs = [
+            startInput, lateInput, checkoutStartInput, endInput,
+            afternoonStartInput, afternoonLateInput, afternoonCheckoutStartInput, afternoonEndInput
+        ];
         
         inputs.forEach(input => {
-            if (checkbox.checked) {
-                input.classList.add('opacity-50', 'pointer-events-none');
-            } else {
-                input.classList.remove('opacity-50', 'pointer-events-none');
+            if (input) {
+                if (checkbox.checked) {
+                    input.classList.add('opacity-50', 'pointer-events-none');
+                } else {
+                    input.classList.remove('opacity-50', 'pointer-events-none');
+                }
             }
         });
     }

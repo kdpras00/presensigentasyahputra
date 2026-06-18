@@ -7,11 +7,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Public attendance routes (require auth to protect student data)
-Route::middleware('auth')->group(function () {
-    Route::get('/present', [\App\Http\Controllers\PublicAttendanceController::class, 'present'])->name('public.present');
-    Route::get('/absent', [\App\Http\Controllers\PublicAttendanceController::class, 'absent'])->name('public.absent');
-});
+// Public attendance routes (protected by client-side password gate)
+Route::get('/present', [\App\Http\Controllers\PublicAttendanceController::class, 'present'])->name('public.present');
+Route::get('/absent', [\App\Http\Controllers\PublicAttendanceController::class, 'absent'])->name('public.absent');
 
 Route::middleware('guest')->group(function () {
     Route::get('login', [AuthController::class, 'create'])->name('login');

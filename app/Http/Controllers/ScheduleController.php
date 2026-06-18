@@ -21,6 +21,10 @@ class ScheduleController extends Controller
             'schedules.*.late_time' => 'nullable|date_format:H:i',
             'schedules.*.checkout_start_time' => 'nullable|date_format:H:i',
             'schedules.*.end_time' => 'nullable|date_format:H:i',
+            'schedules.*.afternoon_start_time' => 'nullable|date_format:H:i',
+            'schedules.*.afternoon_late_time' => 'nullable|date_format:H:i',
+            'schedules.*.afternoon_checkout_start_time' => 'nullable|date_format:H:i',
+            'schedules.*.afternoon_end_time' => 'nullable|date_format:H:i',
         ]);
 
         foreach ($request->schedules as $id => $data) {
@@ -31,6 +35,10 @@ class ScheduleController extends Controller
                     'late_time' => $data['late_time'] ?? null,
                     'checkout_start_time' => $data['checkout_start_time'] ?? null,
                     'end_time' => $data['end_time'] ?? null,
+                    'afternoon_start_time' => $data['afternoon_start_time'] ?? null,
+                    'afternoon_late_time' => $data['afternoon_late_time'] ?? null,
+                    'afternoon_checkout_start_time' => $data['afternoon_checkout_start_time'] ?? null,
+                    'afternoon_end_time' => $data['afternoon_end_time'] ?? null,
                     'is_off' => isset($data['is_off']),
                 ]);
             }

@@ -7,15 +7,6 @@
 @section('content')
 <div class="space-y-8">
 
-    <!-- Alert Success -->
-    @if(session('success'))
-        <div class="bg-green-50 border border-green-100 p-4 rounded-2xl flex items-center gap-3 animate-fade-in">
-            <div class="w-8 h-8 rounded-xl bg-green-500/20 flex items-center justify-center text-green-600">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>
-            </div>
-            <span class="text-xs font-black text-green-700 uppercase tracking-tight">{{ session('success') }}</span>
-        </div>
-    @endif
 
     <!-- Data Table (Ghost Style) -->
     <div class="bg-white rounded-[2.5rem] shadow-[0_10px_40px_rgba(0,0,0,0.03)] border border-gray-50 overflow-hidden">
@@ -31,7 +22,7 @@
                     </div>
                 </form>
                 
-                <a href="{{ route('students.create') }}" class="bg-gray-100 text-[#345344] text-sm font-bold px-6 py-3 rounded-xl transition-all shadow-lg shadow-black/5 border border-gray-100 flex items-center gap-2 whitespace-nowrap">
+                <a href="{{ route('students.create') }}" class="bg-gray-100 hover:bg-gray-200 text-[#345344] text-sm font-bold px-6 h-[42px] rounded-xl transition-all border border-gray-100 flex items-center gap-2 whitespace-nowrap">
                     <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 4v16m8-8H4"></path></svg>
                     Tambah Siswa
                 </a>
@@ -42,7 +33,8 @@
             <table class="w-full text-left">
                 <thead>
                     <tr class="bg-gray-50">
-                        <th class="px-10 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider">Nama & Akun</th>
+                        <th class="px-10 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider">Nama Siswa</th>
+                        <th class="px-10 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider">Username</th>
                         <th class="px-10 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider text-center">Kelas</th>
                         <th class="px-10 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider text-center">Email</th>
                         <th class="px-10 py-3 text-xs font-bold text-gray-500 uppercase tracking-wider text-center">Aksi</th>
@@ -53,18 +45,17 @@
                         <tr>
                             <td class="px-10 py-3">
                                 <div class="flex items-center gap-4">
-                                    <div class="w-12 h-12 rounded-2xl bg-gray-50 border border-gray-100 flex items-center justify-center overflow-hidden transition-transform">
-                                        <img src="{{ $student->user->avatar ? asset($student->user->avatar) : asset('images/avatars/default-avatar.svg') }}" alt="Avatar" class="w-full h-full object-cover">
-                                    </div>
                                     <div>
-                                        <p class="text-sm font-bold text-gray-800 leading-none mb-1.5">{{ $student->user->name }}</p>
-                                        <p class="text-xs font-medium text-gray-400">Username: {{ $student->user->username }}</p>
+                                        <p class="text-sm font-bold text-gray-800 leading-none">{{ $student->user->name }}</p>
                                     </div>
                                 </div>
                             </td>
+                            <td class="px-10 py-3">
+                                <span class="text-sm font-medium text-gray-500">{{ $student->user->username }}</span>
+                            </td>
                             <td class="px-10 py-3 text-center">
                                 <span class="text-sm font-medium text-gray-800">
-                                    {{ optional($student->student)->kelas ?? '-' }}
+                                    {{ $student->class ?? '-' }}
                                 </span>
                             </td>
                             <td class="px-10 py-3 text-center">
@@ -75,10 +66,10 @@
                                     <a href="{{ route('students.edit', $student) }}" class="p-2.5 rounded-xl bg-gray-50 text-gray-400 hover:bg-[#345344]/10 hover:text-[#345344] transition-all" title="Edit">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
                                     </a>
-                                    <form action="{{ route('students.destroy', $student) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus?');">
+                                    <form id="delete-student-{{ $student->id }}" action="{{ route('students.destroy', $student) }}" method="POST">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="p-2.5 rounded-xl bg-gray-50 text-gray-400 hover:bg-red-50 hover:text-red-500 transition-all" title="Hapus">
+                                        <button type="button" onclick="confirmDelete('delete-student-{{ $student->id }}', '{{ $student->user->name }}')" class="p-2.5 rounded-xl bg-gray-50 text-gray-400 hover:bg-red-50 hover:text-red-500 transition-all" title="Hapus">
                                             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                         </button>
                                     </form>
@@ -87,7 +78,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="px-10 py-24 text-center">
+                            <td colspan="5" class="px-10 py-24 text-center">
                                 <p class="text-[10px] font-black text-gray-300 uppercase tracking-[0.2em]">Belum ada data siswa terdaftar</p>
                             </td>
                         </tr>
@@ -101,4 +92,25 @@
         {{ $students->links() }}
     </div>
 </div>
+@endsection
+
+@section('scripts')
+<script>
+function confirmDelete(formId, name) {
+    Swal.fire({
+        title: 'Hapus Data?',
+        text: 'Data ' + name + ' akan dihapus permanen.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#EF4444',
+        cancelButtonColor: '#6B7280',
+        confirmButtonText: 'Ya, Hapus',
+        cancelButtonText: 'Batal',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            document.getElementById(formId).submit();
+        }
+    });
+}
+</script>
 @endsection

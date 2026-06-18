@@ -68,6 +68,18 @@
                 @enderror
             </div>
 
+            <!-- Gender -->
+            <div>
+                <label for="gender" class="block mb-2 text-sm font-bold text-gray-700">Jenis Kelamin</label>
+                <select id="gender" name="gender" class="bg-[#F3F4F6] border-transparent text-gray-900 text-sm rounded-xl focus:ring-4 focus:ring-[#345344]/20 focus:border-[#345344] block w-full p-4 transition-all">
+                    <option value="man" {{ old('gender', $teacher->gender) == 'man' ? 'selected' : '' }}>Laki-laki</option>
+                    <option value="woman" {{ old('gender', $teacher->gender) == 'woman' ? 'selected' : '' }}>Perempuan</option>
+                </select>
+                @error('gender')
+                    <p class="mt-2 text-sm text-red-500 font-medium">{{ $message }}</p>
+                @enderror
+            </div>
+
             <!-- Password -->
             <div class="pt-6 mt-6 border-t border-gray-100">
                 <h3 class="text-sm font-bold text-[#345344] mb-4 uppercase tracking-wider">Ubah Password (Opsional)</h3>

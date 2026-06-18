@@ -7,19 +7,17 @@
 
     <title>{{ config('app.name', 'Presensi Genta Syaputra') }}</title>
 
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700,800&display=swap" rel="stylesheet" />
 
-    <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    <!-- Tom Select -->
     <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <style>
-        /* Tom Select Premium Customization */
         .ts-control {
             border: transparent !important;
             background-color: #F3F4F6 !important;
@@ -337,7 +335,7 @@
                 }
 
                 list.innerHTML = notifications.map(n => `
-                    <div class="px-4 py-3 hover:bg-gray-50/50 transition-colors ${!n.read_at ? 'bg-blue-50/40 border-l-4 border-blue-500' : ''}">
+                    <div class="px-4 py-3 hover:bg-gray-50/50 transition-colors ${!n.read_at ? 'bg-gray-50' : ''}">
                         <div class="flex justify-between items-start mb-1">
                             <span class="text-[10px] font-bold text-gray-900 uppercase tracking-tight">${n.data.title}</span>
                             <span class="text-[9px] font-medium text-gray-400 font-mono">${n.data.time || ''}</span>
@@ -377,7 +375,7 @@
                     })
                     .catch(err => {
                         console.error(err);
-                        alert('Gagal menandai notifikasi. Silakan coba lagi.');
+                        Swal.fire({ icon: 'error', title: 'Gagal', text: 'Gagal menandai notifikasi. Silakan coba lagi.', confirmButtonColor: '#345344' });
                     })
                     .finally(() => {
                         markBtn.innerText = originalText;
@@ -388,5 +386,34 @@
             }
         });
     </script>
+
+    <!-- SweetAlert2 Flash Messages -->
+    @if(session('success'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil',
+                text: '{{ session('success') }}',
+                confirmButtonColor: '#345344',
+                timer: 3000,
+                timerProgressBar: true,
+            });
+        });
+    </script>
+    @endif
+    @if(session('error'))
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            Swal.fire({
+                icon: 'error',
+                title: 'Gagal',
+                text: '{{ session('error') }}',
+                confirmButtonColor: '#345344',
+            });
+        });
+    </script>
+    @endif
+    @yield('scripts')
 </body>
 </html>

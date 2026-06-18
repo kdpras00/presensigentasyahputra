@@ -52,27 +52,14 @@
                     <div class="p-10 text-center w-full">
                         <!-- Scanner Input -->
                         <div class="max-w-sm mx-auto">
-                            <div id="status-indicator" class="mb-4 text-[10px] font-bold uppercase tracking-[0.2em] flex items-center justify-center gap-2 py-2 px-4 rounded-full border mx-auto w-fit transition-all duration-500 bg-gray-50 text-gray-400 border-gray-100">
-                                <span id="session-dot" class="flex h-2 w-2 rounded-full bg-gray-400 animate-pulse"></span>
-                                <span id="session-label">Memuat jadwal...</span>
-                            </div>
-
-                            <!-- Hardware Scanner Connection Status -->
-                            <div id="hw-status" class="flex items-center gap-2.5 px-4 py-2.5 rounded-xl border text-xs font-semibold mb-4 transition-all duration-500 bg-yellow-50 border-yellow-200 text-yellow-700">
-                                <span id="hw-status-dot" class="w-2 h-2 rounded-full shrink-0 bg-yellow-500 animate-pulse"></span>
-                                <svg id="hw-status-icon" class="w-4 h-4 shrink-0 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                                </svg>
-                                <span id="hw-status-text" class="truncate">Mendeteksi scanner...</span>
+                            <div class="mb-6 text-center">
+                                <p id="session-label" class="text-sm font-semibold text-gray-500 transition-colors duration-500">Memuat jadwal...</p>
                             </div>
 
                             <div class="relative group">
-                                <div class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
-                                    <div id="input-dot" class="w-2.5 h-2.5 rounded-full bg-yellow-500 animate-pulse transition-colors duration-500"></div>
-                                </div>
                                 <input type="text" id="scanner-input" autocomplete="off" autofocus
-                                    class="w-full pl-10 pr-4 py-5 bg-gray-100 border-2 border-transparent rounded-xl text-center font-mono text-2xl font-bold text-[#345344] focus:bg-white focus:border-[#345344] focus:ring-4 focus:ring-[#345344]/5 transition-all duration-300 placeholder:text-gray-300"
-                                    placeholder="WAITING...">
+                                    class="w-full px-6 py-5 bg-gray-100 border-2 border-transparent rounded-xl text-center font-mono text-2xl font-bold text-[#345344] focus:bg-white focus:border-[#345344] focus:ring-4 focus:ring-[#345344]/5 transition-all duration-300 placeholder:text-gray-300"
+                                    placeholder="Scan Barcode...">
                             </div>
                         </div>
                     </div>
@@ -134,22 +121,17 @@
     }
 </style>
 
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script>
-    $(document).ready(function() {
+    document.addEventListener('DOMContentLoaded', function() {
         function updateClock() {
             const now = new Date();
-            $('#live-clock').text(now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
+            document.getElementById('live-clock').innerText = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
         }
         setInterval(updateClock, 1000);
         updateClock();
 
         @if(!$error)
-        // ========================================
-        // REAL-TIME SESSION STATUS (from server timeRules)
-        // ========================================
         const timeRules = @json($timeRules ?? null);
-
         function parseHHMM(str) {
             if (!str) return null;
             const [h, m] = str.split(':').map(Number);
@@ -166,129 +148,46 @@
             const keluarStart = parseHHMM(timeRules.keluar_start);
             const keluarEnd   = parseHHMM(timeRules.keluar_end);
 
-            let label, dotClass, containerClass;
+            let label, textClass;
 
             if (cur >= masukStart && cur < masukEnd) {
-                label = 'Sesi Masuk: Tepat Waktu';
-                dotClass = 'bg-green-500';
-                containerClass = 'bg-green-50 text-green-600 border-green-100';
+                label = 'Sesi Masuk Tepat Waktu';
+                textClass = 'text-gray-600';
             } else if (cur >= masukEnd && cur < keluarStart) {
-                label = 'Sesi Masuk: Terlambat';
-                dotClass = 'bg-yellow-500';
-                containerClass = 'bg-yellow-50 text-yellow-600 border-yellow-100';
+                label = 'Sesi Masuk Terlambat';
+                textClass = 'text-gray-600';
             } else if (cur >= keluarStart && cur <= keluarEnd) {
-                label = 'Sesi Pulang: Dibuka';
-                dotClass = 'bg-orange-500';
-                containerClass = 'bg-orange-50 text-orange-600 border-orange-100';
+                label = 'Sesi Pulang Dibuka';
+                textClass = 'text-gray-600';
             } else if (cur > keluarEnd) {
                 label = 'Sesi Presensi Hari Ini Berakhir';
-                dotClass = 'bg-red-500';
-                containerClass = 'bg-red-50 text-red-600 border-red-100';
+                textClass = 'text-red-500';
             } else {
                 label = 'Sesi Presensi Belum Dimulai';
-                dotClass = 'bg-red-500';
-                containerClass = 'bg-red-50 text-red-600 border-red-100';
+                textClass = 'text-gray-500';
             }
 
-            const indicator = document.getElementById('status-indicator');
-            const dot = document.getElementById('session-dot');
             const lbl = document.getElementById('session-label');
-
-            indicator.className = 'mb-4 text-[10px] font-bold uppercase tracking-[0.2em] flex items-center justify-center gap-2 py-2 px-4 rounded-full border mx-auto w-fit transition-all duration-500 ' + containerClass;
-            dot.className = 'flex h-2 w-2 rounded-full animate-pulse ' + dotClass;
-            lbl.textContent = label;
+            if (lbl) {
+                lbl.className = 'text-sm font-semibold transition-colors duration-500 ' + textClass;
+                lbl.textContent = label;
+            }
         }
 
         updateSessionStatus();
         setInterval(updateSessionStatus, 30000); // re-check every 30s
-        const csrfToken = $('meta[name="csrf-token"]').attr('content');
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
         let currentMode = '{{ $mode }}';
         let scanTotal = 0;
         let isProcessing = false;
-        // Use native DOM for scanner input (faster than jQuery wrapper)
         const scannerInput = document.getElementById('scanner-input');
 
-        // ========================================
-        // SCANNER HARDWARE CONNECTION DETECTION
-        // ========================================
-        let scannerState = 'waiting';
-        let lastScanTime = null;
-        let connectionCheckTimer = null;
-        let inactivityTimer = null;
-
-        const INITIAL_DETECT_TIMEOUT = 8000;   // 8s — mark disconnected if no scan received
-        const INACTIVITY_TIMEOUT = 180000;      // 3min — mark inactive if scanner goes idle
-
-        function updateScannerStatus(state, message) {
-            scannerState = state;
-            const container = document.getElementById('hw-status');
-            const dot = document.getElementById('hw-status-dot');
-            const text = document.getElementById('hw-status-text');
-            const inputDot = document.getElementById('input-dot');
-            const icon = document.getElementById('hw-status-icon');
-
-            // Update container style
-            container.className = 'flex items-center gap-2.5 px-4 py-2.5 rounded-xl border text-xs font-semibold mb-4 transition-all duration-500 ' +
-                (state === 'connected'    ? 'bg-green-50 border-green-200 text-green-700' :
-                 state === 'waiting'      ? 'bg-yellow-50 border-yellow-200 text-yellow-700' :
-                                            'bg-red-50 border-red-200 text-red-700');
-
-            // Update status dot
-            dot.className = 'w-2 h-2 rounded-full shrink-0 transition-colors duration-500 ' +
-                (state === 'connected'    ? 'bg-green-500 animate-pulse' :
-                 state === 'waiting'      ? 'bg-yellow-500 animate-pulse' :
-                                            'bg-red-500');
-
-            // Update input field dot color
-            inputDot.className = 'w-2.5 h-2.5 rounded-full transition-colors duration-500 ' +
-                (state === 'connected'    ? 'bg-green-500 animate-pulse' :
-                 state === 'waiting'      ? 'bg-yellow-500 animate-pulse' :
-                                            'bg-red-500 animate-pulse');
-
-            // Update icon: checkmark / spinner / x
-            if (state === 'connected') {
-                icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />';
-            } else if (state === 'waiting') {
-                icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />';
-            } else {
-                icon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />';
-            }
-
-            text.textContent = message || state;
-        }
-
-        // Initial state: waiting for scanner
-        updateScannerStatus('waiting', 'Mendeteksi scanner...');
-
-        // After timeout, if no scan has been received, mark as disconnected
-        connectionCheckTimer = setTimeout(function() {
-            if (!lastScanTime) {
-                updateScannerStatus('disconnected', 'Scanner tidak terdeteksi — periksa koneksi USB');
-            }
-        }, INITIAL_DETECT_TIMEOUT);
-
         function onScannerActivity() {
-            lastScanTime = Date.now();
-            if (connectionCheckTimer) { clearTimeout(connectionCheckTimer); connectionCheckTimer = null; }
-            if (inactivityTimer) clearTimeout(inactivityTimer);
-
-            updateScannerStatus('connected', 'Scanner terhubung');
-
-            // Start inactivity timer
-            inactivityTimer = setTimeout(function() {
-                updateScannerStatus('waiting', 'Scanner tidak aktif — coba scan ulang');
-            }, INACTIVITY_TIMEOUT);
         }
 
-        // ========================================
-        // OPTIMIZED SCANNER INPUT (ZERO-DELAY)
-        // ========================================
-        // Old approach: keypress (deprecated) + per-keystroke avg interval calc = SLOW
-        // New approach: keydown (native) + single buffer timestamp = INSTANT
         let bufferStartTime = 0;
         let autoClearTimer = null;
 
-        // Lightweight focus management (old code had 4+ listeners fighting each other)
         function refocus() {
             if (!isProcessing && document.activeElement !== scannerInput) {
                 scannerInput.focus({ preventScroll: true });
@@ -300,34 +199,40 @@
         });
         document.addEventListener('click', refocus);
 
-        // ========================================
-        // MODE TOGGLE
-        // ========================================
         window.toggleMode = function() {
             currentMode = currentMode === 'masuk' ? 'keluar' : 'masuk';
             updateModeUI();
         };
 
         function updateModeUI() {
-            const pill = $('#mode-pill');
-            const optMasuk = $('#mode-opt-masuk');
-            const optKeluar = $('#mode-opt-keluar');
+            const pill = document.getElementById('mode-pill');
+            const optMasuk = document.getElementById('mode-opt-masuk');
+            const optKeluar = document.getElementById('mode-opt-keluar');
 
             if (currentMode === 'masuk') {
-                pill.css('left', '4px').removeClass('bg-orange-500/25').addClass('bg-white/20');
-                optMasuk.removeClass('text-white/30').addClass('text-white');
-                optKeluar.removeClass('text-orange-300').addClass('text-white/30');
+                pill.style.left = '4px';
+                pill.classList.remove('bg-orange-500/25');
+                pill.classList.add('bg-white/20');
+                
+                optMasuk.classList.remove('text-white/30');
+                optMasuk.classList.add('text-white');
+                
+                optKeluar.classList.remove('text-orange-300');
+                optKeluar.classList.add('text-white/30');
             } else {
-                pill.css('left', 'calc(50%)').removeClass('bg-white/20').addClass('bg-orange-500/25');
-                optKeluar.removeClass('text-white/30').addClass('text-orange-300');
-                optMasuk.removeClass('text-white').addClass('text-white/30');
+                pill.style.left = 'calc(50%)';
+                pill.classList.remove('bg-white/20');
+                pill.classList.add('bg-orange-500/25');
+                
+                optKeluar.classList.remove('text-white/30');
+                optKeluar.classList.add('text-orange-300');
+                
+                optMasuk.classList.remove('text-white');
+                optMasuk.classList.add('text-white/30');
             }
             scannerInput.focus({ preventScroll: true });
         }
 
-        // ========================================
-        // FAST KEYDOWN HANDLER (replaces slow keypress)
-        // ========================================
         scannerInput.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
                 e.preventDefault();
@@ -375,59 +280,70 @@
             }, 2000);
         });
 
-        // ========================================
-        // NOTIFICATIONS
-        // ========================================
         function showNotification(type, message) {
             const id = 'notif-' + Date.now();
-            const dotColor = type === 'success' ? 'bg-green-500' : (type === 'warning' ? 'bg-yellow-500' : 'bg-red-500');
+            const textColor = type === 'success' ? 'text-green-600' : (type === 'warning' ? 'text-yellow-600' : 'text-red-600');
 
-            const html = `
-                <div id="${id}" class="notif-entrance flex items-center gap-3 p-4 rounded-xl bg-white pointer-events-auto border border-gray-100 shadow-lg shadow-black/5">
-                    <div class="shrink-0 w-2 h-2 rounded-full ${dotColor}"></div>
-                    <p class="text-sm font-semibold text-gray-800 leading-snug">${message}</p>
+            const container = document.getElementById('notification-container');
+            container.insertAdjacentHTML('afterbegin', `
+                <div id="${id}" class="notif-entrance p-4 rounded-xl bg-white pointer-events-auto border border-gray-100 shadow-lg shadow-black/5">
+                    <p class="text-sm font-semibold ${textColor} leading-snug">${message}</p>
                 </div>
-            `;
-
-            $('#notification-container').prepend(html);
+            `);
+            
             setTimeout(() => {
-                $(`#${id}`).removeClass('notif-entrance').addClass('notif-exit');
-                setTimeout(() => $(`#${id}`).remove(), 500);
+                const el = document.getElementById(id);
+                if(el) {
+                    el.classList.remove('notif-entrance');
+                    el.classList.add('notif-exit');
+                    setTimeout(() => el.remove(), 500);
+                }
             }, 5000);
         }
 
-        // ========================================
-        // SCAN REQUEST (AJAX)
-        // ========================================
         function executeScanRequest(code) {
             isProcessing = true;
             scannerInput.disabled = true;
-            $('#status-indicator').html('<span class="flex h-2 w-2 rounded-full bg-blue-500 animate-ping"></span> Memproses...');
+            scannerInput.placeholder = 'Memproses...';
 
-            $.ajax({
-                url: "{{ route('attendance.store') }}",
+            fetch("{{ route('attendance.store') }}", {
                 method: "POST",
-                data: JSON.stringify({ qr_code: code, mode: currentMode }),
-                contentType: "application/json",
-                headers: { "X-CSRF-TOKEN": csrfToken, "Accept": "application/json" },
-                success: function(res) { processResponse(res); },
-                error: function(xhr) {
-                    const res = xhr.responseJSON || { status: 'error', message: 'Koneksi server bermasalah.' };
-                    processResponse(res);
+                headers: {
+                    "Content-Type": "application/json",
+                    "Accept": "application/json",
+                    "X-CSRF-TOKEN": csrfToken
                 },
-                complete: function() {
-                    isProcessing = false;
-                    scannerInput.disabled = false;
-                    scannerInput.value = '';
-                    scannerInput.focus({ preventScroll: true });
-                    bufferStartTime = 0;
-                    $('#status-indicator').html('<span class="flex h-2 w-2 rounded-full bg-green-500 animate-pulse"></span> Siap scan');
+                body: JSON.stringify({ qr_code: code, mode: currentMode })
+            })
+            .then(response => response.json().then(data => ({ ok: response.ok, data })))
+            .then(result => {
+                if (!result.ok) throw result.data;
+                processResponse(result.data);
+            })
+            .catch(error => {
+                const res = error.message ? error : { status: 'error', message: 'Koneksi server bermasalah.' };
+                processResponse(res);
+            })
+            .finally(() => {
+                isProcessing = false;
+                scannerInput.disabled = false;
+                scannerInput.value = '';
+                scannerInput.placeholder = 'Scan Barcode...';
+                scannerInput.focus({ preventScroll: true });
+                bufferStartTime = 0;
 
-                    setTimeout(function() {
-                        $('#status-overlay').removeClass('opacity-100 scale-100').addClass('opacity-0 scale-95');
-                        $('#status-icon-wrapper').removeClass('scale-100').addClass('scale-50');
-                    }, 800);
-                }
+                setTimeout(function() {
+                    const overlay = document.getElementById('status-overlay');
+                    const wrapper = document.getElementById('status-icon-wrapper');
+                    if(overlay) {
+                        overlay.classList.remove('opacity-100', 'scale-100');
+                        overlay.classList.add('opacity-0', 'scale-95');
+                    }
+                    if(wrapper) {
+                        wrapper.classList.remove('scale-100');
+                        wrapper.classList.add('scale-50');
+                    }
+                }, 800);
             });
         }
 
@@ -439,27 +355,33 @@
         }
 
         function showLargeFeedback(status, title, message, type) {
-            const overlay = $('#status-overlay');
-            const wrapper = $('#status-icon-wrapper');
-            const badge = $('#status-type-badge');
+            const overlay = document.getElementById('status-overlay');
+            const wrapper = document.getElementById('status-icon-wrapper');
+            const badge = document.getElementById('status-type-badge');
 
-            overlay.removeClass('opacity-0 scale-95').addClass('opacity-100 scale-100');
-            wrapper.removeClass('scale-50 bg-green-500 bg-yellow-500 bg-red-500').addClass('scale-100');
+            overlay.classList.remove('opacity-0', 'scale-95');
+            overlay.classList.add('opacity-100', 'scale-100');
+            
+            wrapper.classList.remove('scale-50', 'bg-green-500', 'bg-yellow-500', 'bg-red-500');
+            wrapper.classList.add('scale-100');
             
             const colorMap = { success: 'green', warning: 'yellow', error: 'red' };
             const color = colorMap[status] || 'gray';
-            wrapper.addClass(`bg-${color}-500`);
+            wrapper.classList.add(`bg-${color}-500`);
 
-            $('#status-title').text(title);
-            $('#status-desc').text(message);
-            badge.removeClass().addClass(`mt-6 px-5 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] bg-${color}-50 text-${color}-600 border border-${color}-100`);
-            badge.text(type === 'masuk' ? 'Absen Masuk' : (type === 'keluar' ? 'Absen Keluar' : 'Info'));
+            document.getElementById('status-title').innerText = title;
+            document.getElementById('status-desc').innerText = message;
+            
+            badge.className = `mt-6 px-5 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-[0.2em] bg-${color}-50 text-${color}-600 border border-${color}-100`;
+            badge.innerText = type === 'masuk' ? 'Absen Masuk' : (type === 'keluar' ? 'Absen Keluar' : 'Info');
         }
 
         function updateHistoryList(status, message, type) {
-            $('#history-empty').hide();
+            const emptyHistory = document.getElementById('history-empty');
+            if (emptyHistory) emptyHistory.style.display = 'none';
+            
             scanTotal++;
-            $('#scan-count').text(scanTotal);
+            document.getElementById('scan-count').innerText = scanTotal;
 
             const now = new Date();
             const timeStr = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
@@ -475,9 +397,10 @@
                 </div>
             `;
 
-            $('#scan-history').prepend(item);
-            if ($('#scan-history').children().length > 15) {
-                $('#scan-history').children().last().remove();
+            const container = document.getElementById('scan-history');
+            container.insertAdjacentHTML('afterbegin', item);
+            if (container.children.length > 15) {
+                container.lastElementChild.remove();
             }
         }
         @endif

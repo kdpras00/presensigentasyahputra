@@ -58,9 +58,8 @@ class DashboardController extends Controller
         $classStudentIds = [];
         $totalClassStudents = 0;
         if ($assignedClass) {
-            $classStudents = Student::where('class', $assignedClass)->get();
-            $classStudentIds = $classStudents->pluck('id')->toArray();
-            $totalClassStudents = $classStudents->count();
+            $classStudentIds = Student::where('class', $assignedClass)->pluck('id')->toArray();
+            $totalClassStudents = count($classStudentIds);
         }
 
         $presentToday = Attendance::whereDate('check_in_at', $today)

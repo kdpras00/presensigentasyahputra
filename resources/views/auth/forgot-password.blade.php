@@ -34,11 +34,11 @@
                     <div class="space-y-1.5">
                         <div class="relative group">
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-white transition-colors">
-                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg class="h-5 w-5" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                 </svg>
                             </div>
-                            <input id="email" name="email" type="email" autocomplete="email" required autofocus
+                            <input id="email" name="email" type="email" aria-label="Email Terdaftar" autocomplete="email" required autofocus
                                 class="block w-full pl-11 pr-4 py-4 bg-[#345344] border-transparent rounded-xl text-white placeholder-gray-400 focus:ring-4 focus:ring-white/10 focus:border-white/20 transition-all duration-300" 
                                 placeholder="Email Terdaftar" value="{{ old('email') }}">
                         </div>

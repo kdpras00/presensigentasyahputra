@@ -17,7 +17,7 @@
             <div class="relative z-10 flex flex-col items-center">
                 <div class="mb-8 relative group/logo">
                     <div class="absolute inset-0 bg-white/10 blur-2xl rounded-full scale-110 group-hover/logo:scale-150 transition-transform duration-700"></div>
-                    <img src="{{ asset('images/gentalogoico.png') }}" alt="Logo" class="relative z-10 w-28 h-28 object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.3)] transform transition-transform duration-500 group-hover/logo:scale-110">
+                    <img src="{{ asset('images/gentalogoico.png') }}" alt="Logo" class="relative z-10 w-28 h-28 object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.3)] transform transition-transform duration-500 group-hover/logo:scale-110" width="112" height="112">
                 </div>
                 <h1 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight mb-4 text-white leading-none whitespace-nowrap">SMA Genta Syaputra.</h1>
                 <p class="text-white/70 font-medium leading-relaxed max-w-xs mx-auto">Sistem Presensi Digital Terpadu.</p>
@@ -37,13 +37,13 @@
                     <div class="space-y-1.5">
                         <div class="relative group">
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-white transition-colors">
-                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg class="h-5 w-5" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                                 </svg>
                             </div>
-                            <input id="username" name="username" type="text" autocomplete="username" required 
+                            <input id="username" name="username" type="text" aria-label="NISN atau NIP" required 
                                 class="block w-full pl-11 pr-4 py-4 bg-[#345344] border-transparent rounded-xl text-white placeholder-gray-400 focus:ring-4 focus:ring-white/10 focus:border-white/20 transition-all duration-300" 
-                                placeholder="Username">
+                                placeholder="NISN / NIP">
                         </div>
                         @error('username')
                             <p class="text-sm text-red-500 ml-1 mt-1 font-medium">{{ $message }}</p>
@@ -55,19 +55,19 @@
                         
                         <div class="relative group">
                             <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 group-focus-within:text-white transition-colors">
-                                <svg class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg class="h-5 w-5" aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                                 </svg>
                             </div>
-                            <input id="password" name="password" type="password" autocomplete="current-password" required 
+                            <input id="password" name="password" type="password" aria-label="Kata Sandi" autocomplete="current-password" required 
                                 class="block w-full pl-11 pr-12 py-4 bg-[#345344] border-transparent rounded-xl text-white placeholder-gray-400 focus:ring-4 focus:ring-white/10 focus:border-white/20 transition-all duration-300" 
                                 placeholder="Password">
-                            <button type="button" onclick="togglePassword()" class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-white transition-colors focus:outline-none">
-                                <svg id="eye-icon" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <button type="button" onclick="togglePassword()" aria-label="Tampilkan kata sandi" class="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-400 hover:text-white transition-colors focus:outline-none">
+                                <svg id="eye-icon" aria-hidden="true" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                                 </svg>
-                                <svg id="eye-off-icon" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <svg id="eye-off-icon" aria-hidden="true" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l18 18" />
                                 </svg>
                             </button>

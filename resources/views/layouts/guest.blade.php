@@ -18,6 +18,8 @@
     <link rel="icon" type="image/png" href="{{ asset('images/gentalogoico.png') }}">
 </head>
 <body class="font-sans text-gray-900 antialiased">
-    @yield('content')
+    <main>
+        @yield('content')
+    </main>
 </body>
 </html>

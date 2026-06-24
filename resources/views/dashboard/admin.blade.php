@@ -10,24 +10,24 @@
     {{-- Stats Grid --}}
     <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <div class="bg-white rounded-xl border border-gray-100 p-5">
-            <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Total Siswa</p>
+            <p class="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-3">Total Siswa</p>
             <p class="text-3xl font-bold text-gray-900 tracking-tight">{{ $totalStudents }}</p>
-            <p class="text-xs text-gray-400 mt-1">Terdaftar</p>
+            <p class="text-xs text-gray-600 mt-1">Terdaftar</p>
         </div>
         <div class="bg-white rounded-xl border border-gray-100 p-5">
-            <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Total Guru</p>
+            <p class="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-3">Total Guru</p>
             <p class="text-3xl font-bold text-gray-900 tracking-tight">{{ $totalTeachers }}</p>
-            <p class="text-xs text-gray-400 mt-1">Aktif</p>
+            <p class="text-xs text-gray-600 mt-1">Aktif</p>
         </div>
         <div class="bg-white rounded-xl border border-gray-100 p-5">
-            <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Kehadiran</p>
+            <p class="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-3">Kehadiran</p>
             <p class="text-3xl font-bold text-gray-900 tracking-tight">{{ $presentToday }}</p>
-            <p class="text-xs text-gray-400 mt-1">Hari ini</p>
+            <p class="text-xs text-gray-600 mt-1">Hari ini</p>
         </div>
         <div class="bg-white rounded-xl border border-gray-100 p-5">
-            <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Terlambat</p>
+            <p class="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-3">Terlambat</p>
             <p class="text-3xl font-bold text-gray-900 tracking-tight">{{ $lateToday }}</p>
-            <p class="text-xs text-gray-400 mt-1">Hari ini</p>
+            <p class="text-xs text-gray-600 mt-1">Hari ini</p>
         </div>
     </div>
 
@@ -43,9 +43,9 @@
             <table class="w-full text-left">
                 <thead>
                     <tr class="bg-gray-50/50">
-                        <th class="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider">Nama</th>
-                        <th class="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider text-center">Waktu</th>
-                        <th class="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider text-center">Status</th>
+                        <th class="px-6 py-3 text-xs font-semibold text-gray-600 uppercase tracking-wider">Nama</th>
+                        <th class="px-6 py-3 text-xs font-semibold text-gray-600 uppercase tracking-wider text-center">Waktu</th>
+                        <th class="px-6 py-3 text-xs font-semibold text-gray-600 uppercase tracking-wider text-center">Status</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-50">
@@ -54,7 +54,7 @@
                         <td class="px-6 py-4">
                             <p class="text-sm font-semibold text-gray-900">{{ optional($activity->student->user)->name ?? '-' }}</p>
                         </td>
-                        <td class="px-6 py-4 text-center font-mono text-sm text-gray-500">
+                        <td class="px-6 py-4 text-center font-mono text-sm text-gray-600">
                             {{ $activity->check_in_at ? \Carbon\Carbon::parse($activity->check_in_at)->format('H:i') : '-' }}
                         </td>
                         <td class="px-6 py-4 text-center">
@@ -67,7 +67,7 @@
         </div>
         @else
         <div class="text-center py-16">
-            <p class="text-sm text-gray-400 font-medium">Belum ada aktivitas hari ini</p>
+            <p class="text-sm text-gray-600 font-medium">Belum ada aktivitas hari ini</p>
         </div>
         @endif
     </div>

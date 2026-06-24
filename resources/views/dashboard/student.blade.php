@@ -11,7 +11,7 @@
     <div class="bg-white rounded-xl border border-gray-100 p-6">
         <div class="flex items-center justify-between">
             <div>
-                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1">Status Absensi Hari Ini</p>
+                <p class="text-xs font-semibold text-gray-600 uppercase tracking-wider mb-1">Status Absensi Hari Ini</p>
                 @if($todayAttendance)
                     @if($todayAttendance->check_in_status == 'present')
                         <p class="text-lg font-bold text-gray-900">Hadir</p>
@@ -19,12 +19,12 @@
                         <p class="text-lg font-bold text-gray-900">Terlambat</p>
                     @endif
                 @else
-                    <p class="text-lg font-bold text-gray-400">Belum Scan</p>
+                    <p class="text-lg font-bold text-gray-600">Belum Scan</p>
                 @endif
             </div>
             @if($todayAttendance && $todayAttendance->check_in_at)
                 <div class="text-right">
-                    <p class="text-xs text-gray-400 mb-0.5">Check-in</p>
+                    <p class="text-xs text-gray-600 mb-0.5">Check-in</p>
                     <p class="font-mono text-sm font-semibold text-gray-700">{{ \Carbon\Carbon::parse($todayAttendance->check_in_at)->format('H:i') }}</p>
                 </div>
             @endif
@@ -42,10 +42,10 @@
             <table class="w-full text-left">
                 <thead>
                     <tr class="bg-gray-50/50">
-                        <th class="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider text-center">Tanggal</th>
-                        <th class="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider text-center">Masuk</th>
-                        <th class="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider text-center">Status</th>
-                        <th class="px-6 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider text-center">Pulang</th>
+                        <th class="px-6 py-3 text-xs font-semibold text-gray-600 uppercase tracking-wider text-center">Tanggal</th>
+                        <th class="px-6 py-3 text-xs font-semibold text-gray-600 uppercase tracking-wider text-center">Masuk</th>
+                        <th class="px-6 py-3 text-xs font-semibold text-gray-600 uppercase tracking-wider text-center">Status</th>
+                        <th class="px-6 py-3 text-xs font-semibold text-gray-600 uppercase tracking-wider text-center">Pulang</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-50">
@@ -54,7 +54,7 @@
                         <td class="px-6 py-4 text-center">
                             <span class="text-sm font-semibold text-gray-900">{{ \Carbon\Carbon::parse($log->date)->translatedFormat('d M Y') }}</span>
                         </td>
-                        <td class="px-6 py-4 text-center font-mono text-sm text-gray-500">
+                        <td class="px-6 py-4 text-center font-mono text-sm text-gray-600">
                             {{ $log->check_in_at ? \Carbon\Carbon::parse($log->check_in_at)->format('H:i') : '-' }}
                         </td>
                         <td class="px-6 py-4 text-center">
@@ -68,7 +68,7 @@
                                 @endif
                             </span>
                         </td>
-                        <td class="px-6 py-4 text-center font-mono text-sm text-gray-500">
+                        <td class="px-6 py-4 text-center font-mono text-sm text-gray-600">
                             {{ $log->check_out_at ? \Carbon\Carbon::parse($log->check_out_at)->format('H:i') : '-' }}
                         </td>
                     </tr>
@@ -78,7 +78,7 @@
         </div>
         @else
         <div class="text-center py-16">
-            <p class="text-sm text-gray-400 font-medium">Belum ada riwayat absensi</p>
+            <p class="text-sm text-gray-600 font-medium">Belum ada riwayat absensi</p>
         </div>
         @endif
     </div>

@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Sistem Presensi Digital SMA Genta Syaputra">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Presensi Genta Syaputra') }}</title>
@@ -12,10 +13,9 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js" defer></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
     
     <style>
         .ts-control {
@@ -102,8 +102,8 @@
                         <!-- Page Header -->
                         <div class="flex items-center gap-4">
                             <!-- Mobile Toggle -->
-                            <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" type="button" class="inline-flex items-center p-2 text-white/50 rounded-xl sm:hidden hover:bg-white/10 transition-colors">
-                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path></svg>
+                            <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" aria-haspopup="true" aria-expanded="false" type="button" aria-label="Toggle navigation" class="inline-flex items-center p-2 text-white/80 rounded-xl sm:hidden hover:bg-white/10 transition-colors">
+                                <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"><path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path></svg>
                             </button>
                             
                             @php
@@ -137,8 +137,8 @@
                         <div class="flex items-center gap-8">
                             <!-- Notification Button -->
                             <div class="relative" id="notification-wrapper">
-                                <button id="notification-btn" class="relative p-3 text-white/50 hover:bg-white/10 active:bg-white/20 rounded-2xl transition-all duration-300 group">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
+                                <button id="notification-btn" aria-label="Notifikasi" aria-haspopup="true" aria-expanded="false" class="relative p-3 text-white/80 hover:bg-white/10 active:bg-white/20 rounded-2xl transition-all duration-300 group">
+                                    <svg class="w-5 h-5" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
                                 </button>
                                 
                                 <!-- Notification Dropdown -->
@@ -148,27 +148,27 @@
                                         <button id="mark-read-btn" class="text-[9px] font-black text-blue-600 hover:text-blue-700 uppercase tracking-widest">Tandai Baca</button>
                                     </div>
                                     <div id="notification-list" class="max-h-80 overflow-y-auto divide-y divide-gray-50/50">
-                                        <div class="px-4 py-12 text-center text-gray-400 text-[11px] font-bold italic">Memuat...</div>
+                                        <div class="px-4 py-12 text-center text-gray-500 text-[11px] font-bold italic">Memuat...</div>
                                     </div>
                                 </div>
                             </div>
 
                             <!-- User Profile Dropdown -->
                             <div class="relative" id="user-wrapper">
-                                <button type="button" id="user-menu-btn" class="flex items-center hover:opacity-80 transition-opacity">
-                                    <img class="w-10 h-10 rounded-full object-cover border border-white/20 shadow-sm" src="{{ Auth::user()->avatar ? asset(Auth::user()->avatar) : asset('images/avatars/default-avatar.svg') }}" alt="user photo">
+                                <button type="button" id="user-menu-btn" aria-label="Menu Pengguna" aria-haspopup="true" aria-expanded="false" class="flex items-center hover:opacity-80 transition-opacity">
+                                    <img class="w-10 h-10 rounded-full object-cover border border-white/20 shadow-sm" src="{{ Auth::user()->avatar ? asset(Auth::user()->avatar) : asset('images/avatars/default-profile-man.png') }}" alt="user photo" width="40" height="40">
                                 </button>
                                 
                                 <div class="z-50 hidden absolute -right-14 top-full mt-4 w-64 bg-white/90 backdrop-blur-xl rounded-[2.5rem] shadow-[0_30px_100px_rgba(0,0,0,0.2)] border border-white/20 origin-top-right" id="dropdown-user">
                                     <div class="px-6 py-5 border-b border-gray-100/50">
                                         <p class="text-base font-bold text-[#345344] leading-none mb-1">{{ Auth::user()->name }}</p>
-                                        <p class="text-xs text-gray-400 truncate tracking-tight">{{ Auth::user()->email }}</p>
+                                        <p class="text-xs text-gray-600 truncate tracking-tight">{{ Auth::user()->email }}</p>
                                     </div>
                                     <ul class="p-3 space-y-1" role="none">
                                         <li>
                                             <a href="{{ route('profile.edit') }}" class="flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:bg-[#345344]/5 hover:text-[#345344] rounded-2xl transition-all group" role="menuitem">
                                                 <div class="w-8 h-8 rounded-xl bg-gray-50 flex items-center justify-center mr-3 group-hover:bg-[#345344]/10 transition-colors">
-                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                                                    <svg class="w-4 h-4" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
                                                 </div>
                                                 Profil Saya
                                             </a>
@@ -176,9 +176,9 @@
                                         <li>
                                             <form method="POST" action="{{ route('logout') }}">
                                                 @csrf
-                                                <button type="submit" class="w-full flex items-center px-4 py-3 text-sm font-medium text-red-500 hover:bg-red-50 active:bg-red-100 rounded-2xl transition-all group" role="menuitem">
+                                                <button type="submit" class="w-full flex items-center px-4 py-3 text-sm font-medium text-red-600 hover:bg-red-50 active:bg-red-100 rounded-2xl transition-all group" role="menuitem">
                                                     <div class="w-8 h-8 rounded-xl bg-red-50 flex items-center justify-center mr-3 group-hover:bg-red-100 transition-colors">
-                                                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                                                        <svg class="w-4 h-4" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
                                                     </div>
                                                     Keluar
                                                 </button>
@@ -235,10 +235,14 @@
             if (btn) {
                 btn.addEventListener('click', function(e) {
                     e.stopPropagation();
-                    dropdown.classList.toggle('hidden');
+                    const isHidden = dropdown.classList.toggle('hidden');
+                    btn.setAttribute('aria-expanded', !isHidden);
                     if (!dropdown.classList.contains('hidden')) {
                         fetchNotifications(false);
-                        if (userDropdown) userDropdown.classList.add('hidden'); // Tutup profil jika notif dibuka
+                        if (userDropdown) {
+                            userDropdown.classList.add('hidden'); // Tutup profil jika notif dibuka
+                            userBtn.setAttribute('aria-expanded', 'false');
+                        }
                     }
                 });
             }
@@ -250,15 +254,25 @@
             if (userBtn) {
                 userBtn.addEventListener('click', function(e) {
                     e.stopPropagation();
-                    userDropdown.classList.toggle('hidden');
-                    if (dropdown) dropdown.classList.add('hidden'); // Close other
+                    const isHidden = userDropdown.classList.toggle('hidden');
+                    userBtn.setAttribute('aria-expanded', !isHidden);
+                    if (dropdown) {
+                        dropdown.classList.add('hidden'); // Close other
+                        btn.setAttribute('aria-expanded', 'false');
+                    }
                 });
             }
 
             // Close on click outside
             document.addEventListener('click', function() {
-                if (dropdown) dropdown.classList.add('hidden');
-                if (userDropdown) userDropdown.classList.add('hidden');
+                if (dropdown) {
+                    dropdown.classList.add('hidden');
+                    btn.setAttribute('aria-expanded', 'false');
+                }
+                if (userDropdown) {
+                    userDropdown.classList.add('hidden');
+                    userBtn.setAttribute('aria-expanded', 'false');
+                }
             });
 
             if (dropdown) dropdown.addEventListener('click', (e) => e.stopPropagation());
@@ -298,10 +312,10 @@
                 const type = data.type || 'info';
                 
                 // Icon mapping based on type
-                let iconSvg = '<svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>';
-                if (type === 'success') iconSvg = '<svg class="w-5 h-5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>';
-                if (type === 'warning') iconSvg = '<svg class="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>';
-                if (type === 'error') iconSvg = '<svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>';
+                let iconSvg = '<svg class="w-5 h-5 text-blue-500" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>';
+                if (type === 'success') iconSvg = '<svg class="w-5 h-5 text-green-500" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>';
+                if (type === 'warning') iconSvg = '<svg class="w-5 h-5 text-yellow-500" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>';
+                if (type === 'error') iconSvg = '<svg class="w-5 h-5 text-red-500" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>';
 
                 const html = `
                     <div id="${id}" class="global-notif-toast flex items-start p-5 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.1)] bg-white w-full max-w-sm border border-gray-100">
@@ -309,12 +323,12 @@
                             ${iconSvg}
                         </div>
                         <div class="flex-grow">
-                            <h4 class="text-[10px] font-black uppercase tracking-widest mb-1 text-gray-400">${data.title}</h4>
+                            <h4 class="text-[10px] font-black uppercase tracking-widest mb-1 text-gray-500">${data.title}</h4>
                             <p class="text-xs font-bold text-gray-800 leading-tight">${data.message}</p>
-                            <p class="text-[9px] text-gray-400 font-bold mt-2 uppercase tracking-tighter">Sistem Presensi • Baru Saja</p>
+                            <p class="text-[9px] text-gray-500 font-bold mt-2 uppercase tracking-tighter">Sistem Presensi • Baru Saja</p>
                         </div>
-                        <button onclick="$(this).closest('.global-notif-toast').remove()" class="ml-4 text-gray-300 hover:text-gray-500 transition-colors">
-                            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
+                        <button onclick="$(this).closest('.global-notif-toast').remove()" aria-label="Tutup" class="ml-4 text-gray-300 hover:text-gray-500 transition-colors">
+                            <svg class="w-3.5 h-3.5" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"></path></svg>
                         </button>
                     </div>
                 `;
@@ -330,7 +344,7 @@
 
             function renderNotifications(notifications) {
                 if (notifications.length === 0) {
-                    list.innerHTML = `<div class="px-4 py-8 text-center text-gray-400 text-xs italic">Tidak ada notifikasi.</div>`;
+                    list.innerHTML = `<div class="px-4 py-8 text-center text-gray-500 text-xs italic">Tidak ada notifikasi.</div>`;
                     return;
                 }
 
@@ -338,7 +352,7 @@
                     <div class="px-4 py-3 hover:bg-gray-50/50 transition-colors ${!n.read_at ? 'bg-gray-50' : ''}">
                         <div class="flex justify-between items-start mb-1">
                             <span class="text-[10px] font-bold text-gray-900 uppercase tracking-tight">${n.data.title}</span>
-                            <span class="text-[9px] font-medium text-gray-400 font-mono">${n.data.time || ''}</span>
+                            <span class="text-[9px] font-medium text-gray-500 font-mono">${n.data.time || ''}</span>
                         </div>
                         <p class="text-xs text-gray-600 leading-snug">${n.data.message}</p>
                     </div>

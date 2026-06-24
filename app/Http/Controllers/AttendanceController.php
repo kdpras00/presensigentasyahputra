@@ -191,16 +191,14 @@ class AttendanceController extends Controller
             ], 403);
         }
 
-        // Find student by username (from the users table)
-        $username = $request->input('qr_code');
-        $student = Student::with('user')->whereHas('user', function($query) use ($username) {
-            $query->where('username', $username);
-        })->first();
+        // Find student by NIS (from the students table)
+        $nis = $request->input('qr_code');
+        $student = Student::with('user')->where('nis', $nis)->first();
 
         if (!$student) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Mohon maaf, data siswa dengan Username tersebut tidak ditemukan dalam sistem.'
+                'message' => 'Mohon maaf, data siswa dengan NISN tersebut tidak ditemukan dalam sistem.'
             ], 404);
         }
 
@@ -479,17 +477,17 @@ class AttendanceController extends Controller
         // 2. Ensure user relation on student is loaded
         $student = $user->student->load('user');
 
-        // 3. Ensure QR text (username) is not null — fail early with a clear message
-        if (empty($user->username)) {
+        // 3. Ensure QR text (NIS) is not null — fail early with a clear message
+        if (empty($student->nis)) {
             return redirect()->back()->withErrors([
-                'qr' => 'Username / NIS belum diatur. Silakan hubungi administrator untuk melengkapi data Anda.'
+                'qr' => 'NISN belum diatur. Silakan hubungi administrator untuk melengkapi data Anda.'
             ]);
         }
 
         // 4. Cast to string explicitly as a final safety measure before passing to view
         return view('attendance.my-qr', [
             'student'   => $student,
-            'qrContent' => (string) $user->username,
+            'qrContent' => (string) $student->nis,
         ]);
     }
 

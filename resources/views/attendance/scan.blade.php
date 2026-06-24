@@ -21,20 +21,20 @@
                 <div class="flex items-center gap-3">
                     <h2 class="text-white text-lg font-bold">{{ $assignedClass }}</h2>
                     <span class="text-white/20">|</span>
-                    <span id="live-clock" class="text-white/50 text-sm font-mono"></span>
+                    <span id="live-clock" class="text-white/80 text-sm font-mono"></span>
                 </div>
 
                 <div class="flex items-center gap-3">
-                    <button id="mode-toggle" onclick="toggleMode()" class="relative flex items-center p-1 rounded-xl bg-white/10 border border-white/10 transition-all duration-300 hover:bg-white/15 cursor-pointer">
+                    <button id="mode-toggle" onclick="toggleMode()" aria-label="Ubah Mode Presensi" class="relative flex items-center p-1 rounded-xl bg-white/10 border border-white/10 transition-all duration-300 hover:bg-white/15 cursor-pointer">
                         <div id="mode-pill" class="absolute top-1 h-[calc(100%-8px)] rounded-lg transition-all duration-300 ease-in-out
                             {{ $mode === 'masuk' ? 'bg-white/20' : 'bg-orange-500/25' }}"
                             style="width: calc(50% - 4px); left: {{ $mode === 'masuk' ? '4px' : 'calc(50%)' }};"></div>
                         <div id="mode-opt-masuk" class="relative z-10 px-4 py-2 rounded-lg text-xs font-bold transition-colors duration-300
-                            {{ $mode === 'masuk' ? 'text-white' : 'text-white/30' }}">
+                            {{ $mode === 'masuk' ? 'text-white' : 'text-white/70' }}">
                             MASUK
                         </div>
                         <div id="mode-opt-keluar" class="relative z-10 px-4 py-2 rounded-lg text-xs font-bold transition-colors duration-300
-                            {{ $mode === 'keluar' ? 'text-orange-300' : 'text-white/30' }}">
+                            {{ $mode === 'keluar' ? 'text-orange-300' : 'text-white/70' }}">
                             KELUAR
                         </div>
                     </button>
@@ -57,8 +57,8 @@
                             </div>
 
                             <div class="relative group">
-                                <input type="text" id="scanner-input" autocomplete="off" autofocus
-                                    class="w-full px-6 py-5 bg-gray-100 border-2 border-transparent rounded-xl text-center font-mono text-2xl font-bold text-[#345344] focus:bg-white focus:border-[#345344] focus:ring-4 focus:ring-[#345344]/5 transition-all duration-300 placeholder:text-gray-300"
+                                <input type="text" id="scanner-input" aria-label="Scanner Input" autocomplete="off" autofocus
+                                    class="w-full px-6 py-5 bg-gray-100 border-2 border-transparent rounded-xl text-center font-mono text-2xl font-bold text-[#345344] focus:bg-white focus:border-[#345344] focus:ring-4 focus:ring-[#345344]/5 transition-all duration-300 placeholder:text-gray-500"
                                     placeholder="Scan Barcode...">
                             </div>
                         </div>
@@ -68,7 +68,7 @@
                     <div id="status-overlay" class="absolute inset-0 z-30 flex flex-col items-center justify-center bg-white/98 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-500 scale-95" tabindex="-1">
                         <div id="status-icon-wrapper" class="w-20 h-20 rounded-2xl flex items-center justify-center mb-6 transition-transform duration-700 scale-50"></div>
                         <h3 id="status-title" class="text-3xl font-bold text-gray-800 mb-2 tracking-tight"></h3>
-                        <p id="status-desc" class="text-base text-gray-500 text-center px-12 font-medium max-w-md"></p>
+                        <p id="status-desc" class="text-base text-gray-600 text-center px-12 font-medium max-w-md"></p>
                         <div id="status-type-badge" class="mt-6 px-5 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-[0.2em]"></div>
                     </div>
                 </div>
@@ -85,7 +85,7 @@
                     </div>
                     <div id="scan-history" class="p-4 space-y-3 flex-grow overflow-y-auto max-h-[500px]">
                         <div id="history-empty" class="text-center py-20">
-                            <p class="text-xs text-gray-400 font-medium">Belum ada scan</p>
+                            <p class="text-xs text-gray-600 font-medium">Belum ada scan</p>
                         </div>
                     </div>
                 </div>

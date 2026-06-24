@@ -8,6 +8,7 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <link rel="icon" type="image/png" href="{{ asset('images/gentalogoico.png') }}">
         <style>
             body { font-family: 'Plus Jakarta Sans', sans-serif; }
             .glass-card {
@@ -19,7 +20,6 @@
     </head>
     <body class="antialiased bg-[#F1F5F9] min-h-screen overflow-hidden">
         <div id="main-content" class="blur-md pointer-events-none select-none transition-all duration-700">
-        <!-- Header -->
         <div class="relative overflow-hidden {{ $theme === 'green' ? 'bg-[#345344]' : 'bg-red-900' }} py-16 lg:py-24">
             <div class="absolute top-0 left-0 w-full h-full opacity-10">
                 <svg width="100%" height="100%" fill="none" viewBox="0 0 100 100">
@@ -46,11 +46,9 @@
             </div>
         </div>
 
-        <!-- Content -->
         <div class="max-w-7xl mx-auto px-6 -mt-16 pb-32 relative z-20">
             @if($students->isEmpty())
                 <div class="bg-white rounded-[4rem] p-20 lg:p-32 text-center shadow-[0_40px_100px_-20px_rgba(0,0,0,0.05)] border border-white relative overflow-hidden group">
-                    <!-- Background Decor for Empty State -->
                     <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-gray-50/50 to-white pointer-events-none"></div>
                     <div class="absolute -top-24 -right-24 w-96 h-96 {{ $theme === 'green' ? 'bg-green-50/50' : 'bg-red-50/50' }} rounded-full blur-3xl opacity-50"></div>
                     
@@ -70,11 +68,9 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-10">
                     @foreach($students as $student)
                         <div class="relative bg-white rounded-[3rem] p-10 shadow-sm border border-gray-100 overflow-hidden">
-                            <!-- Background Decor -->
                             <div class="absolute top-0 right-0 -mr-6 -mt-6 w-32 h-32 {{ $theme === 'green' ? 'bg-green-50' : 'bg-red-50' }} rounded-full opacity-50"></div>
                             
                             <div class="relative z-10 flex flex-col items-center">
-                                <!-- Large Avatar -->
                                 <div class="w-36 h-36 rounded-[2.5rem] overflow-hidden mb-8 shadow-md border-8 border-white">
                                     <img src="{{ asset($student->user->avatar) }}" class="w-full h-full object-cover" alt="{{ $student->user->name }}">
                                 </div>
@@ -98,12 +94,10 @@
         <div class="text-center pb-12">
             <p class="text-[10px] text-gray-400 font-black uppercase tracking-[0.3em]">© {{ date('Y') }} SMA GENTA SYAPUTRA </p>
         </div>
-        </div> <!-- End main-content -->
+        </div>
 
-        <!-- Password Popup Overlay -->
         <div id="password-overlay" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm transition-opacity duration-500">
             <div class="bg-white rounded-[2rem] p-10 shadow-2xl w-full max-w-md mx-4 transform transition-all duration-500 border border-white/20 relative overflow-hidden">
-                <!-- Decorative background -->
                 <div class="absolute -top-24 -right-24 w-64 h-64 {{ $theme === 'green' ? 'bg-green-100' : 'bg-red-100' }} rounded-full blur-3xl opacity-50 pointer-events-none"></div>
                 
                 <div class="relative z-10 text-center">
@@ -167,7 +161,6 @@
                     }
                 }
 
-                // Check if already unlocked in session
                 if (targetPassword && sessionStorage.getItem('unlocked_' + targetPassword) === 'true') {
                     overlay.style.display = 'none';
                     mainContent.classList.remove('blur-md', 'pointer-events-none', 'select-none');
@@ -175,7 +168,6 @@
                 } else if (targetPassword) {
                     passwordInput.focus();
                 } else {
-                    // No password set, unlock by default
                     unlockPage();
                 }
 

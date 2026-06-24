@@ -7,14 +7,11 @@
 
     <title>{{ config('app.name', 'Presensi Genta Syaputra') }}</title>
 
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600&display=swap" rel="stylesheet" />
 
-    <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    <!-- Favicon -->
     <link rel="icon" type="image/png" href="{{ asset('images/gentalogoico.png') }}">
 </head>
 <body class="font-sans text-gray-900 antialiased">

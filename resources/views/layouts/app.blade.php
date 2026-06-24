@@ -14,7 +14,6 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js" defer></script>
-
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
     
     <style>
@@ -53,7 +52,6 @@
             font-size: 0.875rem !important;
             font-weight: 500 !important;
         }
-        /* Custom Arrow Animation */
         .ts-wrapper .ts-control::after {
             border-color: #345344 transparent transparent transparent !important;
             transition: transform 0.3s ease !important;
@@ -69,13 +67,10 @@
         }
     </style>
 
-    <!-- Favicon -->
     <link rel="icon" type="image/png" href="{{ asset('images/gentalogoico.png') }}">
     
     <style>
-        /* Smooth scrolling for the whole app */
         html { scroll-behavior: smooth; }
-        /* Custom scrollbar for webkit */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
@@ -86,22 +81,16 @@
 <body class="font-sans antialiased text-gray-800 bg-[#F3F4F6] dark:bg-[#0f172a] dark:text-gray-100 selection:bg-[#345344] selection:text-white">
     <div class="h-screen flex overflow-hidden relative">
 
-        <!-- Include Sidebar -->
         @include('layouts.navigation')
 
-        <!-- Main Content Wrapper -->
         <div class="flex-1 flex flex-col min-w-0 sm:ml-60 relative z-10 h-full overflow-hidden transition-all duration-300">
             
-            <!-- Main Scrollable Area -->
             <main class="flex-1 overflow-y-auto w-full bg-[#F1F5F9] relative scroll-smooth">
                 
-                <!-- Navbar Wrapper (Non-sticky, scrolls with content) -->
                 <div class="w-full px-8 pt-8 pb-4">
                     <header class="w-full px-8 py-5 bg-[#345344] border border-white/10 flex justify-between items-center rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.1)]">
                         
-                        <!-- Page Header -->
                         <div class="flex items-center gap-4">
-                            <!-- Mobile Toggle -->
                             <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar" aria-controls="logo-sidebar" aria-haspopup="true" aria-expanded="false" type="button" aria-label="Toggle navigation" class="inline-flex items-center p-2 text-white/80 rounded-xl sm:hidden hover:bg-white/10 transition-colors">
                                 <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"><path clip-rule="evenodd" fill-rule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path></svg>
                             </button>
@@ -133,15 +122,12 @@
                             @endif
                         </div>
 
-                        <!-- Right Side Actions & User -->
                         <div class="flex items-center gap-8">
-                            <!-- Notification Button -->
                             <div class="relative" id="notification-wrapper">
                                 <button id="notification-btn" aria-label="Notifikasi" aria-haspopup="true" aria-expanded="false" class="relative p-3 text-white/80 hover:bg-white/10 active:bg-white/20 rounded-2xl transition-all duration-300 group">
                                     <svg class="w-5 h-5" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"></path></svg>
                                 </button>
                                 
-                                <!-- Notification Dropdown -->
                                 <div id="notification-dropdown" class="hidden absolute -right-10 top-full mt-4 w-80 bg-white/90 backdrop-blur-xl rounded-[2.5rem] shadow-[0_30px_100px_rgba(0,0,0,0.2)] border border-white/20 z-50 overflow-hidden origin-top-right">
                                     <div class="px-6 py-5 border-b border-gray-100/50 flex justify-between items-center bg-gray-50/50">
                                         <h3 class="text-[10px] font-black text-[#345344] uppercase tracking-[0.2em]">Notifikasi</h3>
@@ -153,7 +139,6 @@
                                 </div>
                             </div>
 
-                            <!-- User Profile Dropdown -->
                             <div class="relative" id="user-wrapper">
                                 <button type="button" id="user-menu-btn" aria-label="Menu Pengguna" aria-haspopup="true" aria-expanded="false" class="flex items-center hover:opacity-80 transition-opacity">
                                     <img class="w-10 h-10 rounded-full object-cover border border-white/20 shadow-sm" src="{{ Auth::user()->avatar ? asset(Auth::user()->avatar) : asset('images/avatars/default-profile-man.png') }}" alt="user photo" width="40" height="40">
@@ -191,7 +176,6 @@
                     </header>
                 </div>
 
-                <!-- Page Content -->
                 <div class="px-8 pt-2 pb-12 w-full">
                     @yield('content')
                 </div>
@@ -199,7 +183,6 @@
             
         </div>
     </div>
-    <!-- Global Notification Container -->
     <div id="global-notif-container" class="fixed top-8 right-8 z-[100] w-full max-w-sm flex flex-col gap-3 pointer-events-none"></div>
 
     <style>
@@ -231,7 +214,6 @@
             let lastNotifId = null;
             let isFirstLoad = true;
 
-            // Toggle Dropdown
             if (btn) {
                 btn.addEventListener('click', function(e) {
                     e.stopPropagation();
@@ -240,14 +222,13 @@
                     if (!dropdown.classList.contains('hidden')) {
                         fetchNotifications(false);
                         if (userDropdown) {
-                            userDropdown.classList.add('hidden'); // Tutup profil jika notif dibuka
+                            userDropdown.classList.add('hidden');
                             userBtn.setAttribute('aria-expanded', 'false');
                         }
                     }
                 });
             }
 
-            // Profile Dropdown Toggle
             const userBtn = document.getElementById('user-menu-btn');
             const userDropdown = document.getElementById('dropdown-user');
 
@@ -257,13 +238,12 @@
                     const isHidden = userDropdown.classList.toggle('hidden');
                     userBtn.setAttribute('aria-expanded', !isHidden);
                     if (dropdown) {
-                        dropdown.classList.add('hidden'); // Close other
+                        dropdown.classList.add('hidden');
                         btn.setAttribute('aria-expanded', 'false');
                     }
                 });
             }
 
-            // Close on click outside
             document.addEventListener('click', function() {
                 if (dropdown) {
                     dropdown.classList.add('hidden');
@@ -284,7 +264,6 @@
                     .then(data => {
                         const notifications = data.notifications;
                         
-                        // Update UI
                         if (list) renderNotifications(notifications);
                         
                         if (data.unreadCount > 0) {
@@ -293,11 +272,9 @@
                             if (dot) dot.classList.add('hidden');
                         }
 
-                        // Check for new notifications to show toast
                         if (notifications.length > 0) {
                             const newest = notifications[0];
                             if (lastNotifId && newest.id !== lastNotifId && showToast) {
-                                // New notification detected
                                 showGlobalToast(newest.data);
                             }
                             lastNotifId = newest.id;
@@ -311,7 +288,6 @@
                 const id = 'toast-' + Date.now();
                 const type = data.type || 'info';
                 
-                // Icon mapping based on type
                 let iconSvg = '<svg class="w-5 h-5 text-blue-500" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>';
                 if (type === 'success') iconSvg = '<svg class="w-5 h-5 text-green-500" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path></svg>';
                 if (type === 'warning') iconSvg = '<svg class="w-5 h-5 text-yellow-500" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>';
@@ -335,7 +311,6 @@
 
                 $('#global-notif-container').prepend(html);
                 
-                // Auto hide
                 setTimeout(() => {
                     $(`#${id}`).addClass('toast-slide-out');
                     setTimeout(() => $(`#${id}`).remove(), 500);
@@ -359,11 +334,9 @@
                 `).join('');
             }
 
-            // Initial load
             fetchNotifications(false);
 
-            // Poll for new notifications every 10 seconds
-            setInterval(() => fetchNotifications(true), 10000);
+            setInterval(() => fetchNotifications(false), 10000);
 
             if (markBtn) {
                 markBtn.addEventListener('click', function() {
@@ -401,7 +374,6 @@
         });
     </script>
 
-    <!-- SweetAlert2 Flash Messages -->
     @if(session('success'))
     <script>
         document.addEventListener('DOMContentLoaded', function() {

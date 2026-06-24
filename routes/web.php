@@ -10,6 +10,7 @@ Route::get('/', function () {
 // Public attendance routes (protected by client-side password gate)
 Route::get('/present', [\App\Http\Controllers\PublicAttendanceController::class, 'present'])->name('public.present');
 Route::get('/absent', [\App\Http\Controllers\PublicAttendanceController::class, 'absent'])->name('public.absent');
+Route::get('/api/public/recent-attendances', [\App\Http\Controllers\PublicAttendanceController::class, 'recentAttendances'])->name('public.recent-attendances');
 
 Route::middleware('guest')->group(function () {
     Route::get('login', [AuthController::class, 'create'])->name('login');
